@@ -1,6 +1,7 @@
 {
   "name": "turbo-starter",
   "private": true,
+  "author": "Herry Roby",
   "scripts": {
     "prepare": "husky",
     "build": "turbo run build",
