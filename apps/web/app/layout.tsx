@@ -1,5 +1,8 @@
+import { ClientProvider } from '@/components/providers/client-provider';
+import '@repo/ui/globals.css';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { ReactNode } from 'react';
 import './globals.css';
 
 const geistSans = localFont({
@@ -19,11 +22,14 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
+    <html lang="en" suppressHydrationWarning className="light">
+      <head />
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <ClientProvider>{children}</ClientProvider>
+      </body>
     </html>
   );
 }
