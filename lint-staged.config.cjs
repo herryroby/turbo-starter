@@ -1,4 +1,3 @@
-// lint-staged.config.js
 const path = require('path');
 
 // helper: given a filename like "packages/ui/src/button.tsx",
