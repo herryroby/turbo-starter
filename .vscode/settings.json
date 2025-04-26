@@ -91,5 +91,5 @@
   "git.inputValidationSubjectLength": 100, // Allow longer commit titles
 
   // IGNORE WORDS
-  "cSpell.words": ["ctas", "fastmcp", "logomark", "openai", "qubix", "turborepo"]
+  "cSpell.words": ["ctas", "fastmcp", "Herry", "logomark", "openai", "qubix", "Roby", "turborepo"]
 }
