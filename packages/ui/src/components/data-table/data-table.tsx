@@ -59,14 +59,14 @@ export function DataTable<TData, TValue>({
       {filterColumn && (
         <DataTableToolbar table={table} filterColumn={filterColumn} searchPlaceholder={searchPlaceholder} />
       )}
-      <div className="rounded-md border">
+      <div className="border-b border-l-0 border-r-0">
         <Table>
           <TableHeader className="bg-neutral-50 dark:bg-neutral-800">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="h-10 p-4 font-bold">
+                    <TableHead key={header.id} className="h-10 p-4 text-neutral-800 dark:text-neutral-200">
                       {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );

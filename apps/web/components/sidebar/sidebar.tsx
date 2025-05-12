@@ -137,7 +137,7 @@ export const Sidebar = () => {
   return (
     <aside
       className={cn(
-        'absolute left-0 h-screen w-60 border-r border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900',
+        'absolute left-0 h-screen w-60 border-r border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900',
         isOpen ? 'translate-x-0' : '-translate-x-full'
       )}
     >

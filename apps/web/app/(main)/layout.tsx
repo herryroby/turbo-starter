@@ -32,10 +32,12 @@ const MainLayoutContent = ({ children }: { children: ReactNode }) => {
         )}
       >
         <Header />
-        <main className="flex-1 overflow-auto p-6">
-          <Card className="rounded-lg p-6">
-            <CardContent className="h-full p-0">{children}</CardContent>
-          </Card>
+        <main className="h-full overflow-auto bg-neutral-50 dark:bg-neutral-900">
+          <div className="mx-auto max-w-[1560px] p-6">
+            <Card className="rounded-lg p-6">
+              <CardContent className="h-full p-0">{children}</CardContent>
+            </Card>
+          </div>
         </main>
       </div>
     </div>

@@ -141,10 +141,7 @@ export default function InvoicesPage() {
           <span>Add Sales Invoice</span>
         </Button>
       </div>
-
-      <div className="rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
-        <DataTable columns={columns} data={data} filterColumn="customerName" searchPlaceholder="Search customer..." />
-      </div>
+      <DataTable columns={columns} data={data} filterColumn="customerName" searchPlaceholder="Search customer..." />
     </div>
   );
 }
