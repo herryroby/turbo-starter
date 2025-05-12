@@ -20,24 +20,15 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <Button
-        variant="outline"
-        size="icon"
-        className="cursor-pointer rounded-full border-none bg-zinc-100 p-2 dark:bg-zinc-800"
-      >
-        <span className="h-4 w-4" />
+      <Button variant="ghost" size="icon">
+        <span className="size-5" />
       </Button>
     );
   }
 
   return (
-    <Button
-      variant="outline"
-      size="icon"
-      onClick={toggleTheme}
-      className="cursor-pointer rounded-full border-none bg-zinc-100 p-2 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
-    >
-      {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+    <Button variant="ghost" size="icon" onClick={toggleTheme}>
+      {theme === 'dark' ? <Sun className="size-5" /> : <Moon className="size-5" />}
     </Button>
   );
 }

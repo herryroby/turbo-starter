@@ -1,5 +1,6 @@
 'use client';
 
+import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/components/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,14 +9,16 @@ import {
   DropdownMenuTrigger
 } from '@repo/ui/components/dropdown-menu';
 import { LogOut, Settings, User } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 
 export function UserDropdown() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="ring-offset-background focus-visible:ring-ring flex h-9 w-9 cursor-pointer items-center justify-center overflow-hidden rounded-full outline-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2">
-        <Image src="/placeholder-avatar.svg" alt="User avatar" width={36} height={36} className="h-full w-full" />
+      <DropdownMenuTrigger asChild>
+        <Avatar className="cursor-pointer">
+          <AvatarImage src="/placeholder-avatar.svg" alt="User avatar" />
+          <AvatarFallback>UN</AvatarFallback>
+        </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
