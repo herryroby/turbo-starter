@@ -12,7 +12,7 @@ import {
 } from '@tanstack/react-table';
 import * as React from 'react';
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../table';
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@repo/ui/components/table';
 import { DataTablePagination } from './data-table-pagination';
 import { DataTableToolbar } from './data-table-toolbar';
 
@@ -91,6 +91,14 @@ export function DataTable<TData, TValue>({
               </TableRow>
             )}
           </TableBody>
+          <TableFooter className="border-t bg-neutral-50 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200">
+            <TableRow className="border-0">
+              <TableCell colSpan={6}>Total</TableCell>
+              <TableCell className="text-right">103.258.514</TableCell>
+              <TableCell className="text-right">103.258.514</TableCell>
+              <TableCell colSpan={columns.length - 7}></TableCell>
+            </TableRow>
+          </TableFooter>
         </Table>
       </div>
       <DataTablePagination table={table} />

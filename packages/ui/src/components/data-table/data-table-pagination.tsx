@@ -97,7 +97,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
                 size="icon"
                 onClick={() => table.setPageIndex(0)}
                 disabled={!table.getCanPreviousPage()}
-                aria-label="Ke halaman pertama"
+                aria-label="First page"
               >
                 <ChevronsLeft className="h-4 w-4" />
               </PaginationLink>
@@ -108,7 +108,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
               <PaginationPrevious
                 onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
-                aria-label="Ke halaman sebelumnya"
+                aria-label="Previous page"
                 size="default"
               />
             </PaginationItem>
@@ -141,7 +141,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
               <PaginationNext
                 onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
-                aria-label="Ke halaman berikutnya"
+                aria-label="Next page"
                 size="default"
               />
             </PaginationItem>
@@ -152,7 +152,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
                 size="icon"
                 onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                 disabled={!table.getCanNextPage()}
-                aria-label="Ke halaman terakhir"
+                aria-label="Last page"
               >
                 <ChevronsRight className="h-4 w-4" />
               </PaginationLink>
