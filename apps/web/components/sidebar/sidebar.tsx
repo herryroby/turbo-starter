@@ -136,8 +136,8 @@ export const Sidebar = () => {
   return (
     <aside
       className={cn(
-        'h-screen border-r border-zinc-200 bg-white p-4 transition-all duration-300 dark:border-zinc-800 dark:bg-zinc-950',
-        isOpen ? 'w-60' : 'w-0 overflow-hidden p-0'
+        'absolute left-0 h-screen border-r border-zinc-200 bg-white p-4 w-60 transition-all duration-300 ease-in-out dark:border-zinc-800 dark:bg-zinc-950',
+        isOpen ? 'translate-x-0' : '-translate-x-full'
       )}
     >
       <div className="mb-6 flex items-center gap-2 pb-4">
