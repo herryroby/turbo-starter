@@ -1,13 +1,23 @@
 'use client';
 
+import { useSidebar } from '@/components/sidebar/sidebar-context';
 import { UserDropdown } from '@/components/header/user-dropdown';
 import { ThemeToggle } from '@repo/ui/components/theme-toggle';
-import { Bell, MessageCircle, Search } from 'lucide-react';
+import { Bell, Menu, MessageCircle, Search } from 'lucide-react';
 
 export function Header() {
+  const { toggle } = useSidebar();
+  
   return (
-    <header className="flex h-16 items-center justify-between border-b border-zinc-200 px-6 dark:border-zinc-800">
+    <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-zinc-200 bg-white px-6 dark:border-zinc-800 dark:bg-zinc-900">
       <div className="flex items-center gap-4">
+        <button 
+          onClick={toggle}
+          className="cursor-pointer rounded-full bg-zinc-100 p-2 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 mr-2"
+          aria-label="Toggle sidebar"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
         <div className="relative">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
           <input

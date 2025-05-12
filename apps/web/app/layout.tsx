@@ -27,7 +27,7 @@ const RootLayout = ({
   return (
     <html lang="en" suppressHydrationWarning className="light">
       <head />
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} overflow-hidden`}>
         <ClientProvider>{children}</ClientProvider>
       </body>
     </html>
