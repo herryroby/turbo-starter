@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react';
 
 interface SidebarContextType {
   isOpen: boolean;
@@ -16,11 +16,7 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
     setIsOpen((prev) => !prev);
   };
 
-  return (
-    <SidebarContext.Provider value={{ isOpen, toggle }}>
-      {children}
-    </SidebarContext.Provider>
-  );
+  return <SidebarContext.Provider value={{ isOpen, toggle }}>{children}</SidebarContext.Provider>;
 }
 
 export function useSidebar() {

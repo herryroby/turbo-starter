@@ -1,7 +1,7 @@
 'use client';
 
 import { UserDropdown } from '@/components/header/user-dropdown';
-import { useSidebar } from '@/components/sidebar/sidebar-context';
+import { useSidebar } from '@/components/providers/sidebar-provider';
 import { Button } from '@repo/ui/components/button';
 import { ThemeToggle } from '@repo/ui/components/theme-toggle';
 import { Bell, Menu, MessageCircle } from 'lucide-react';

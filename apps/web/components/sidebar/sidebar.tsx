@@ -1,5 +1,6 @@
 'use client';
 
+import { useSidebar } from '@/components/providers/sidebar-provider';
 import { cn } from '@repo/ui/lib/utils';
 import {
   BarChart,
@@ -14,7 +15,6 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useSidebar } from './sidebar-context';
 
 type MenuItem = {
   name: string;
