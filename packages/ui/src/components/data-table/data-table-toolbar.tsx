@@ -14,7 +14,7 @@ interface DataTableToolbarProps<TData> {
 export function DataTableToolbar<TData>({
   table,
   filterColumn,
-  searchPlaceholder = 'Cari...'
+  searchPlaceholder = 'Search...'
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
@@ -25,10 +25,10 @@ export function DataTableToolbar<TData>({
           placeholder={searchPlaceholder}
           value={(table.getColumn(filterColumn)?.getFilterValue() as string) ?? ''}
           onChange={(event) => table.getColumn(filterColumn)?.setFilterValue(event.target.value)}
-          className="h-8 w-[150px] lg:w-[250px]"
+          className="w-[150px] lg:w-[250px]"
         />
         {isFiltered && (
-          <Button variant="ghost" onClick={() => table.resetColumnFilters()} className="h-8 px-2 lg:px-3">
+          <Button variant="ghost" onClick={() => table.resetColumnFilters()} className="px-2 lg:px-3">
             Reset
             <X className="ml-2 h-4 w-4" />
           </Button>
