@@ -15,9 +15,10 @@ import {
 } from '@repo/ui/components/dropdown-menu';
 import type { ColumnDef } from '@tanstack/react-table';
 import { FilePlus, MoreVertical } from 'lucide-react';
+import Link from 'next/link';
 import { useState } from 'react';
 
-export default function InvoicesPage() {
+const SalesInvoicesPage = () => {
   const [data] = useState<SalesInvoice[]>(salesInvoices);
 
   const columns: ColumnDef<SalesInvoice>[] = [
@@ -136,10 +137,12 @@ export default function InvoicesPage() {
           <h1 className="mb-1 text-3xl font-bold">Sales Invoices</h1>
           <p className="text-zinc-500 dark:text-zinc-400">Manage all sales invoices</p>
         </div>
-        <Button className="flex items-center gap-1" onClick={() => (window.location.href = '/sales/invoices/add')}>
-          <FilePlus className="h-4 w-4" />
-          <span>Add Sales Invoice</span>
-        </Button>
+        <Link href="/sales/invoices/add">
+          <Button>
+            <FilePlus className="size-4" />
+            <span>Add Sales Invoice</span>
+          </Button>
+        </Link>
       </div>
       <DataTable
         columns={columns}
@@ -150,4 +153,6 @@ export default function InvoicesPage() {
       />
     </div>
   );
-}
+};
+
+export default SalesInvoicesPage;
