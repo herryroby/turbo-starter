@@ -142,7 +142,7 @@ export const Sidebar = () => {
       )}
     >
       <div className="mb-6 flex justify-center pb-4">
-        <div className="relative size-36">
+        <div className="size-34 relative">
           <div className="dark:hidden">
             <Image src="/logo.webp" alt="Qubix Logo" fill className="rounded-sm object-contain" priority />
           </div>
