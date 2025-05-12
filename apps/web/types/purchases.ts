@@ -1,7 +1,7 @@
 export interface PurchaseInvoice {
   invoiceId: string;
-  vendorId: string;
-  vendorName: string;
+  supplierId: string;
+  supplierName: string;
   date: Date;
   dueDate: Date;
   status: 'Paid' | 'Unpaid';

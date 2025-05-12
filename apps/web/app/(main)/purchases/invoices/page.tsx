@@ -47,9 +47,9 @@ const PurchaseInvoicesPage = () => {
       cell: ({ row }) => <div>{row.getValue('invoiceId')}</div>
     },
     {
-      accessorKey: 'vendorName',
-      header: 'Vendor Name',
-      cell: ({ row }) => <div className="max-w-[200px] truncate">{row.getValue('vendorName')}</div>
+      accessorKey: 'supplierName',
+      header: 'Supplier Name',
+      cell: ({ row }) => <div className="max-w-[200px] truncate">{row.getValue('supplierName')}</div>
     },
     {
       accessorKey: 'date',
@@ -134,7 +134,7 @@ const PurchaseInvoicesPage = () => {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">Purchase Invoices</h1>
+            <h1 className="mb-1 text-3xl font-bold">Purchase Invoices</h1>
             <p className="text-zinc-500 dark:text-zinc-400">Manage all purchase invoices</p>
           </div>
           <Link href="/purchases/invoices/add">

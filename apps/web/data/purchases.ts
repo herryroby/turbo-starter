@@ -7,8 +7,8 @@ const createPurchaseInvoice = (numInvoices: number) => {
   for (let i = 0; i < numInvoices; i++) {
     purchaseInvoice.push({
       invoiceId: `PI/00000${i + 1}`,
-      vendorId: `V000${i + 1}`,
-      vendorName: faker.company.name(),
+      supplierId: `S000${i + 1}`,
+      supplierName: faker.company.name(),
       date: faker.date.past(),
       dueDate: faker.date.past(),
       status: faker.helpers.arrayElement(['Unpaid', 'Paid']) as 'Unpaid' | 'Paid',
