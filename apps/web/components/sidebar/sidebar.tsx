@@ -13,6 +13,7 @@ import {
   ShoppingBasket,
   Users
 } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -140,9 +141,15 @@ export const Sidebar = () => {
         isOpen ? 'translate-x-0' : '-translate-x-full'
       )}
     >
-      <div className="mb-6 flex items-center gap-2 pb-4">
-        <Home className="text-primary h-6 w-6" />
-        <span className="text-xl font-semibold">Qubix</span>
+      <div className="mb-6 flex justify-center pb-4">
+        <div className="relative size-36">
+          <div className="dark:hidden">
+            <Image src="/logo.webp" alt="Qubix Logo" fill className="rounded-sm object-contain" priority />
+          </div>
+          <div className="hidden dark:block">
+            <Image src="/logo-dark.png" alt="Qubix Logo" fill className="rounded-sm object-contain" priority />
+          </div>
+        </div>
       </div>
       <nav className="space-y-1">
         {menuItems.map((item, index) => (
