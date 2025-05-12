@@ -1,0 +1,61 @@
+# General Code Style & Formatting
+
+- Follow the Airbnb Style Guide for code formatting.
+- Use kebab-case for React component file names (e.g., user-card.tsx, not UserCard.tsx).
+- Prefer export default at the end of the file (e.g., export default UserCard;, not export default UserCard() {};).
+
+# Project Structure & Architecture
+
+- Use Context7 MCP Tool to find applicable components and packages if you don't know about one. You can also use this to know about a library or a package.
+- Use TurboRepo for monorepo management.
+- Use pnpm for package management.
+- Follow Next.js patterns and use the App Router.
+- Correctly determine when to use server vs. client components in Next.js.
+- All shared UI component should be in the shared `packages/ui` package.
+
+# Styling & UI
+
+- Use Tailwind CSS for styling.
+- Use Shadcn UI for components.
+- Use Sonner for notifications.
+- Use Recharts for charts.
+- Use React Joyride for onboarding.
+
+# Data Fetching & Forms
+
+- Use TanStack Query (react-query) for frontend data fetching.
+- Use TanStack React Table for data tables.
+- Use React Hook Form for form handling.
+- Use Zod for validation.
+
+# State Management & Logic
+
+- Use React Context for state management.
+
+# Backend & Database
+
+- Use Nest.js for backend.
+- Use Supabase for authentication and database.
+- Use Prisma for database access.
+- Use Axios for HTTP requests.
+- Use BullMQ for background jobs.
+- Use Nodemailer for email.
+- Use Stripe for payments.
+
+# Utilities
+
+- Use PDFKit for PDF generation.
+- Use SheetJS for Excel generation.
+- Use Day.js for date and time.
+- Use Metabase for analytics.
+- Use Jest for testing.
+- Use React Testing Library for component testing.
+- Use Playwright for end-to-end testing.
+
+# Security
+
+- Use Helmet for security headers.
+
+# Other
+
+- If the user provides a URL for a component or package then use the fetch tool to scrape it and use that.
