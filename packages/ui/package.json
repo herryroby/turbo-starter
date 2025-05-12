@@ -13,7 +13,8 @@
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "generate:component": "turbo gen react-component",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "refresh": "rm -rf node_modules dist"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
