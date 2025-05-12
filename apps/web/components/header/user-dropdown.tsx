@@ -9,6 +9,7 @@ import {
 } from '@repo/ui/components/dropdown-menu';
 import { LogOut, Settings, User } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export function UserDropdown() {
   return (
@@ -34,10 +35,12 @@ export function UserDropdown() {
           <span>Settings</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator className="mx-1 my-1 h-px bg-zinc-200 dark:bg-zinc-700" />
-        <DropdownMenuItem className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm text-red-500 hover:bg-zinc-100 dark:hover:bg-zinc-700">
-          <LogOut className="h-4 w-4" />
-          <span>Logout</span>
-        </DropdownMenuItem>
+        <Link href="/auth">
+          <DropdownMenuItem className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm text-red-500 hover:bg-zinc-100 dark:hover:bg-zinc-700">
+            <LogOut className="h-4 w-4" />
+            <span>Logout</span>
+          </DropdownMenuItem>
+        </Link>
       </DropdownMenuContent>
     </DropdownMenu>
   );

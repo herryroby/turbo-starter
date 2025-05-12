@@ -10,6 +10,7 @@ import {
   LayoutDashboard,
   Package,
   Settings,
+  ShoppingBasket,
   Users
 } from 'lucide-react';
 import Link from 'next/link';
@@ -27,6 +28,17 @@ const menuItems: MenuItem[] = [
     name: 'Dashboard',
     icon: <LayoutDashboard className="h-4 w-4" />,
     href: '/'
+  },
+  {
+    name: 'Sales',
+    icon: <ShoppingBasket className="h-4 w-4" />,
+    submenu: [
+      { name: 'Overview', icon: <ChevronRight className="h-3 w-3" />, href: '/sales/overview' },
+      { name: 'Quotes', icon: <ChevronRight className="h-3 w-3" />, href: '/sales/quotes' },
+      { name: 'Orders', icon: <ChevronRight className="h-3 w-3" />, href: '/sales/orders' },
+      { name: 'Deliveries', icon: <ChevronRight className="h-3 w-3" />, href: '/sales/deliveries' },
+      { name: 'Invoices', icon: <ChevronRight className="h-3 w-3" />, href: '/sales/invoices' }
+    ]
   },
   {
     name: 'Finance',
@@ -112,7 +124,7 @@ export function Sidebar() {
     <div className="h-screen w-60 border-r border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-950">
       <div className="mb-6 flex items-center gap-2 pb-4">
         <Home className="h-6 w-6 text-blue-600" />
-        <span className="text-xl font-semibold">Voxy</span>
+        <span className="text-xl font-semibold">Qubix</span>
       </div>
       <nav className="space-y-1">
         {menuItems.map((item, index) => (

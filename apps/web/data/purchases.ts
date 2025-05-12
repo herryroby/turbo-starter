@@ -1,0 +1,22 @@
+import type { PurchaseInvoice } from '@/types/purchases';
+import { faker } from '@faker-js/faker';
+
+const createPurchaseInvoice = (numInvoices: number) => {
+  const purchaseInvoice: PurchaseInvoice[] = [];
+
+  for (let i = 0; i < numInvoices; i++) {
+    purchaseInvoice.push({
+      invoiceId: `PI/00000${i + 1}`,
+      vendorId: `V000${i + 1}`,
+      vendorName: faker.company.name(),
+      date: faker.date.past(),
+      dueDate: faker.date.past(),
+      status: faker.helpers.arrayElement(['Unpaid', 'Paid']) as 'Unpaid' | 'Paid',
+      amount: faker.number.int({ min: 100000, max: 1000000 }),
+      totalAmount: faker.number.int({ min: 100000, max: 1000000 })
+    });
+  }
+  return purchaseInvoice;
+};
+
+export const purchaseInvoices: PurchaseInvoice[] = createPurchaseInvoice(100);
