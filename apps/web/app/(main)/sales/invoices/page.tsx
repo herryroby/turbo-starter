@@ -141,7 +141,13 @@ export default function InvoicesPage() {
           <span>Add Sales Invoice</span>
         </Button>
       </div>
-      <DataTable columns={columns} data={data} filterColumn="customerName" searchPlaceholder="Search customer..." />
+      <DataTable
+        columns={columns}
+        data={data}
+        totals={{ columns: [{ id: 'amount' }, { id: 'totalAmount' }] }}
+        filterColumn="customerName"
+        searchPlaceholder="Search customer..."
+      />
     </div>
   );
 }
