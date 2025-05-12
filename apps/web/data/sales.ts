@@ -12,8 +12,8 @@ const createSalesInvoice = (numInvoices: number) => {
       date: faker.date.past(),
       dueDate: faker.date.past(),
       status: faker.helpers.arrayElement(['Unpaid', 'Paid']) as 'Unpaid' | 'Paid',
-      amount: faker.number.int({ min: 100000, max: 1000000 }),
-      totalAmount: faker.number.int({ min: 100000, max: 1000000 })
+      amount: faker.number.int({ min: 100000, max: 5000000 }),
+      totalAmount: faker.number.int({ min: 100000, max: 10000000 })
     });
   }
   return salesInvoice;
