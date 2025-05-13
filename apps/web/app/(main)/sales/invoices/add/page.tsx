@@ -12,14 +12,14 @@ export default function AddInvoicePage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Tambah Tagihan</h1>
-          <p className="text-zinc-500 dark:text-zinc-400">Buat tagihan baru untuk pelanggan Anda</p>
+          <p className="text-neutral-500 dark:text-neutral-400">Buat tagihan baru untuk pelanggan Anda</p>
         </div>
         <Button variant="outline" onClick={() => router.push('/sales/invoices')}>
           Kembali
         </Button>
       </div>
 
-      <div className="rounded-lg border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="rounded-lg border border-neutral-200 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900">
         <InvoiceForm />
       </div>
     </div>

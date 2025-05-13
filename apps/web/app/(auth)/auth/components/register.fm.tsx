@@ -55,7 +55,7 @@ const RegisterForm = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs font-bold text-zinc-500 dark:text-white">Name</FormLabel>
+                  <FormLabel className="text-xs font-bold text-neutral-500 dark:text-white">Name</FormLabel>
                   <FormControl>
                     <Input
                       className="focus-visible: border-0 bg-slate-100 text-black ring-offset-0 focus-visible:ring-0 dark:bg-slate-500 dark:text-white"
@@ -73,7 +73,7 @@ const RegisterForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs font-bold text-zinc-500 dark:text-white">Email</FormLabel>
+                  <FormLabel className="text-xs font-bold text-neutral-500 dark:text-white">Email</FormLabel>
                   <FormControl>
                     <Input
                       className="focus-visible: border-0 bg-slate-100 text-black ring-offset-0 focus-visible:ring-0 dark:bg-slate-500 dark:text-white"
@@ -91,7 +91,7 @@ const RegisterForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs font-bold text-zinc-500 dark:text-white">Password</FormLabel>
+                  <FormLabel className="text-xs font-bold text-neutral-500 dark:text-white">Password</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
@@ -110,7 +110,7 @@ const RegisterForm = () => {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs font-bold text-zinc-500 dark:text-white">Confirm Password</FormLabel>
+                  <FormLabel className="text-xs font-bold text-neutral-500 dark:text-white">Confirm Password</FormLabel>
                   <FormControl>
                     <Input
                       type="confirmPassword"
