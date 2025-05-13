@@ -22,6 +22,7 @@ interface ListPageProps<TData> {
   filterColumn: string;
   searchPlaceholder: string;
   data: TData[];
+  addLink?: string;
 }
 
 function ListPage<TData>({
@@ -30,7 +31,8 @@ function ListPage<TData>({
   columns,
   filterColumn,
   searchPlaceholder,
-  data
+  data,
+  addLink
 }: ListPageProps<TData>) {
   const tableColumns: ColumnDef<TData>[] = [
     {
@@ -86,12 +88,14 @@ function ListPage<TData>({
             <h1 className="mb-1 text-3xl font-bold">{pageTitle}</h1>
             <p className="text-neutral-500 dark:text-neutral-400">{subPageTitle}</p>
           </div>
-          <Link href="/purchases/invoices/add">
-            <Button>
-              <FilePlus className="size-4" />
-              <span>Add {pageTitle}</span>
-            </Button>
-          </Link>
+          {addLink && (
+            <Link href={addLink}>
+              <Button>
+                <FilePlus className="size-4" />
+                <span>Add {pageTitle}</span>
+              </Button>
+            </Link>
+          )}
         </div>
         <DataTable
           columns={tableColumns}

@@ -84,6 +84,7 @@ const PurchaseInvoicesPage = () => {
       filterColumn="supplierName"
       searchPlaceholder="Search supplier..."
       data={data}
+      addLink="/purchases/invoices/add"
     />
   );
 };

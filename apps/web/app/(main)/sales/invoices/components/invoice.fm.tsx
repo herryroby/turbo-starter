@@ -1,361 +1,371 @@
 'use client';
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
 import { Button } from '@repo/ui/components/button';
 import { Input } from '@repo/ui/components/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui/components/select';
-import { ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, SaveIcon, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 
-// Create schema for form validation
 const invoiceFormSchema = z.object({
-  // Customer information
-  pelanggan: z.string().min(1, { message: "Pelanggan wajib diisi" }),
-  nomor: z.string().min(1, { message: "Nomor wajib diisi" }),
-  
-  // Transaction details
-  tanggalTransaksi: z.string().min(1, { message: "Tanggal transaksi wajib diisi" }),
-  tanggalJatuhTempo: z.string().min(1, { message: "Tanggal jatuh tempo wajib diisi" }),
-  termin: z.string().optional(),
-  gudang: z.string().optional(),
-  referensi: z.string().optional(),
+  customerName: z.string().min(1, { message: 'Customer is required' }),
+  salesInvoiceId: z.string().min(1, { message: 'Invoice No is required' }),
+  transactionDate: z.string().min(1, { message: 'Transaction Date is required' }),
+  dueDate: z.string().min(1, { message: 'Due Date is required' }),
+  termOfPayment: z.string().optional(),
+  warehouse: z.string().optional(),
+  reference: z.string().optional(),
   tag: z.string().optional(),
-  
-  // Sales person
-  salesPerson: z.string().optional(),
-  
-  // Payment information
-  nomorPengiriman: z.string().optional(),
-  hargaPajak: z.string().optional(),
-  biayaPengiriman: z.string().optional(),
-  diskonPembayaran: z.string().optional(),
-  uangMuka: z.string().optional(),
-  
-  // Products will be handled separately
+  salesmanName: z.string().optional(),
+  shippingDate: z.string().optional(),
+  expedition: z.string().optional(),
+  trackingNo: z.string().optional(),
+  taxAmount: z.string().optional(),
+  shippingCost: z.string().optional(),
+  paymentDiscount: z.string().optional(),
+  advancePayment: z.string().optional()
 });
 
 type InvoiceFormValues = z.infer<typeof invoiceFormSchema>;
 
-// Product type
 type Product = {
-  id: string;
+  productId: string;
   name: string;
+  description: string;
   quantity: number;
+  unit: string;
   price: number;
   discount: number;
-  tax: number;
+  taxRate: number;
   total: number;
 };
 
-export function InvoiceForm() {
-  // Initialize form with default values
+const SalesInvoiceForm = () => {
   const form = useForm<InvoiceFormValues>({
     resolver: zodResolver(invoiceFormSchema),
     defaultValues: {
-      pelanggan: '',
-      nomor: '',
-      tanggalTransaksi: new Date().toISOString().split('T')[0],
-      tanggalJatuhTempo: '',
-      termin: 'Net 30',
-      gudang: '',
-      referensi: '',
+      customerName: '',
+      salesInvoiceId: '',
+      transactionDate: new Date().toISOString().split('T')[0],
+      dueDate: '',
+      termOfPayment: 'Net 30',
+      warehouse: '',
+      reference: '',
       tag: '',
-      salesPerson: '',
-      nomorPengiriman: '',
-      hargaPajak: '0',
-      biayaPengiriman: '0',
-      diskonPembayaran: '0',
-      uangMuka: '0',
-    },
+      salesmanName: '',
+      shippingDate: '',
+      expedition: '',
+      trackingNo: '',
+      taxAmount: '0',
+      shippingCost: '0',
+      paymentDiscount: '0',
+      advancePayment: '0'
+    }
   });
-  
-  // State for products
+
   const [products, setProducts] = useState<Product[]>([
     {
-      id: '1',
+      productId: '1',
       name: '',
+      description: '',
       quantity: 1,
+      unit: '',
       price: 0,
       discount: 0,
-      tax: 0,
-      total: 0,
-    },
+      taxRate: 0,
+      total: 0
+    }
   ]);
-  
+
   // State for collapsible sections
   const [isInfoPengirimanOpen, setIsInfoPengirimanOpen] = useState(false);
   const [isAttachmentOpen, setIsAttachmentOpen] = useState(false);
-  const [isPaymentContractOpen, setIsPaymentContractOpen] = useState(false);
-  
+  const [isPaymentConnectOpen, setIsPaymentConnectOpen] = useState(false);
+
   // Calculate subtotal, tax, and total
   const calculateSubtotal = () => {
-    return products.reduce((sum, product) => sum + (product.price * product.quantity * (1 - product.discount / 100)), 0);
+    return products.reduce((sum, product) => sum + product.price * product.quantity * (1 - product.discount / 100), 0);
   };
-  
+
   const calculateTax = () => {
-    const taxRate = parseFloat(form.watch('hargaPajak') || '0') / 100;
+    const taxRate = parseFloat(form.watch('taxAmount') || '0') / 100;
     return calculateSubtotal() * taxRate;
   };
-  
+
   const calculateTotal = () => {
     const subtotal = calculateSubtotal();
     const tax = calculateTax();
-    const shipping = parseFloat(form.watch('biayaPengiriman') || '0');
-    const discount = parseFloat(form.watch('diskonPembayaran') || '0');
-    const advance = parseFloat(form.watch('uangMuka') || '0');
-    
+    const shipping = parseFloat(form.watch('shippingCost') || '0');
+    const discount = parseFloat(form.watch('paymentDiscount') || '0');
+    const advance = parseFloat(form.watch('advancePayment') || '0');
+
     return subtotal + tax + shipping - discount - advance;
   };
-  
+
   // Add a new product row
   const addProduct = () => {
     setProducts([
       ...products,
       {
-        id: (products.length + 1).toString(),
+        productId: (products.length + 1).toString(),
         name: '',
+        description: '',
         quantity: 1,
+        unit: '',
         price: 0,
         discount: 0,
-        tax: 0,
-        total: 0,
-      },
+        taxRate: 0,
+        total: 0
+      }
     ]);
   };
-  
+
   // Remove a product row
   const removeProduct = (id: string) => {
-    setProducts(products.filter(product => product.id !== id));
+    setProducts(products.filter((product) => product.productId !== id));
   };
-  
+
   // Update product values
   const updateProduct = (id: string, field: keyof Product, value: string | number) => {
-    setProducts(products.map(product => {
-      if (product.id === id) {
-        const updatedProduct = { ...product, [field]: value };
-        
-        // Recalculate total
-        const quantity = updatedProduct.quantity;
-        const price = updatedProduct.price;
-        const discount = updatedProduct.discount;
-        updatedProduct.total = quantity * price * (1 - discount / 100);
-        
-        return updatedProduct;
-      }
-      return product;
-    }));
+    setProducts(
+      products.map((product) => {
+        if (product.productId === id) {
+          const updatedProduct = { ...product, [field]: value };
+
+          // Recalculate total
+          const quantity = updatedProduct.quantity;
+          const price = updatedProduct.price;
+          const discount = updatedProduct.discount;
+          updatedProduct.total = quantity * price * (1 - discount / 100);
+
+          return updatedProduct;
+        }
+        return product;
+      })
+    );
   };
-  
+
   // Form submission
   const onSubmit = (data: InvoiceFormValues) => {
     console.log('Form data:', data);
     console.log('Products:', products);
-    
+
     // Here you would typically send the data to your API
     alert('Tagihan berhasil disimpan!');
   };
-  
+
   // Format number as currency
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('id-ID').format(value);
   };
-  
+
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-      {/* Customer and Invoice Information */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div className="space-y-4">
           <div>
-            <label htmlFor="pelanggan" className="mb-1 block text-sm font-medium text-red-500">* Pelanggan</label>
-            <Input
-              id="pelanggan"
-              {...form.register('pelanggan')}
-              placeholder="Pilih pelanggan"
-              className="w-full"
-            />
-            {form.formState.errors.pelanggan && (
-              <p className="mt-1 text-xs text-red-500">{form.formState.errors.pelanggan.message}</p>
-            )}
-          </div>
-          
-          <div>
-            <label htmlFor="tanggalTransaksi" className="mb-1 block text-sm font-medium text-red-500">* Tgl Transaksi</label>
-            <Input
-              id="tanggalTransaksi"
-              type="date"
-              {...form.register('tanggalTransaksi')}
-              className="w-full"
-            />
-            {form.formState.errors.tanggalTransaksi && (
-              <p className="mt-1 text-xs text-red-500">{form.formState.errors.tanggalTransaksi.message}</p>
-            )}
-          </div>
-          
-          <div>
-            <label htmlFor="tanggalJatuhTempo" className="mb-1 block text-sm font-medium text-red-500">* Tanggal Jatuh Tempo</label>
-            <Input
-              id="tanggalJatuhTempo"
-              type="date"
-              {...form.register('tanggalJatuhTempo')}
-              className="w-full"
-            />
-            {form.formState.errors.tanggalJatuhTempo && (
-              <p className="mt-1 text-xs text-red-500">{form.formState.errors.tanggalJatuhTempo.message}</p>
-            )}
-          </div>
-          
-          <div>
-            <label htmlFor="gudang" className="mb-1 block text-sm font-medium">Gudang</label>
-            <Input
-              id="gudang"
-              {...form.register('gudang')}
-              placeholder="Pilih gudang"
-              className="w-full"
-            />
-          </div>
-        </div>
-        
-        <div className="space-y-4">
-          <div>
-            <label htmlFor="nomor" className="mb-1 block text-sm font-medium text-red-500">* Nomor</label>
-            <Input
-              id="nomor"
-              {...form.register('nomor')}
-              placeholder="INV/00046"
-              className="w-full"
-            />
-            {form.formState.errors.nomor && (
-              <p className="mt-1 text-xs text-red-500">{form.formState.errors.nomor.message}</p>
-            )}
-          </div>
-          
-          <div>
-            <label htmlFor="termin" className="mb-1 block text-sm font-medium">Termin</label>
-            <Select onValueChange={(value) => form.setValue('termin', value)} defaultValue={form.watch('termin')}>              
-              <SelectTrigger id="termin" className="w-full">
-                <SelectValue placeholder="Pilih termin" />
+            <label htmlFor="customerName" className="mb-1 block text-sm">
+              <span className="text-red-500">*</span> Customer
+            </label>
+            <Select
+              onValueChange={(value) => form.setValue('customerName', value)}
+              defaultValue={form.watch('customerName')}
+            >
+              <SelectTrigger id="customerName" className="w-full">
+                <SelectValue placeholder="Select customer" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Net 30">Net 30</SelectItem>
-                <SelectItem value="Net 15">Net 15</SelectItem>
-                <SelectItem value="Net 7">Net 7</SelectItem>
-                <SelectItem value="COD">COD</SelectItem>
+                <SelectItem value="Konopelski Inc">Konopelski Inc</SelectItem>
+                <SelectItem value="Bashirian - Homenick">Bashirian - Homenick</SelectItem>
+                <SelectItem value="Kuhic - Kuhic">Kuhic - Kuhic</SelectItem>
+                <SelectItem value="Dickens, Wiza and Beatty">Dickens, Wiza and Beatty</SelectItem>
+                <SelectItem value="Treutel Inc">Treutel Inc</SelectItem>
+                <SelectItem value="Lynch Group">Lynch Group</SelectItem>
+                <SelectItem value="Denesik - Yost">Denesik - Yost</SelectItem>
+                <SelectItem value="Hoppe Group">Hoppe Group</SelectItem>
+                <SelectItem value="Gerlach, Kreiger and Russel">Gerlach, Kreiger and Russel</SelectItem>
+                <SelectItem value="Smitham, Hane and Hickle">Smitham, Hane and Hickle</SelectItem>
+              </SelectContent>
+            </Select>
+            {form.formState.errors.customerName && (
+              <p className="mt-1 text-xs text-red-500">{form.formState.errors.customerName.message}</p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="transactionDate" className="mb-1 block text-sm">
+              <span className="text-red-500">*</span> Transaction Date
+            </label>
+            <Input id="transactionDate" type="date" {...form.register('transactionDate')} className="w-full" />
+            {form.formState.errors.transactionDate && (
+              <p className="mt-1 text-xs text-red-500">{form.formState.errors.transactionDate.message}</p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="dueDate" className="mb-1 block text-sm">
+              <span className="text-red-500">*</span> Due Date
+            </label>
+            <Input id="dueDate" type="date" {...form.register('dueDate')} className="w-full" />
+            {form.formState.errors.dueDate && (
+              <p className="mt-1 text-xs text-red-500">{form.formState.errors.dueDate.message}</p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="warehouse" className="mb-1 block text-sm">
+              Warehouse
+            </label>
+            <Select onValueChange={(value) => form.setValue('warehouse', value)} defaultValue={form.watch('warehouse')}>
+              <SelectTrigger id="warehouse" className="w-full">
+                <SelectValue placeholder="Select warehouse" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Unassigned">Unassigned</SelectItem>
+                <SelectItem value="Main">Main</SelectItem>
+                <SelectItem value="Sub">Sub</SelectItem>
               </SelectContent>
             </Select>
           </div>
-          
+        </div>
+
+        <div className="space-y-4">
           <div>
-            <label htmlFor="referensi" className="mb-1 block text-sm font-medium">Referensi</label>
+            <label htmlFor="salesInvoiceId" className="mb-1 block text-sm">
+              <span className="text-red-500">*</span> Invoice No
+            </label>
             <Input
-              id="referensi"
-              {...form.register('referensi')}
-              placeholder="Referensi"
+              id="salesInvoiceId"
+              {...form.register('salesInvoiceId')}
+              placeholder="INV/00046"
               className="w-full"
             />
+            {form.formState.errors.salesInvoiceId && (
+              <p className="mt-1 text-xs text-red-500">{form.formState.errors.salesInvoiceId.message}</p>
+            )}
           </div>
-          
+
           <div>
-            <label htmlFor="tag" className="mb-1 block text-sm font-medium">Tag</label>
-            <Input
-              id="tag"
-              {...form.register('tag')}
-              placeholder="Pilih Tag"
-              className="w-full"
-            />
+            <label htmlFor="termOfPayment" className="mb-1 block text-sm">
+              Term of Payment
+            </label>
+            <Select
+              onValueChange={(value) => form.setValue('termOfPayment', value)}
+              defaultValue={form.watch('termOfPayment')}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select term of payment" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Net30">Net 30</SelectItem>
+                <SelectItem value="Net15">Net 15</SelectItem>
+                <SelectItem value="Net7">Net 7</SelectItem>
+                <SelectItem value="COD">Cash On Delivery</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <label htmlFor="reference" className="mb-1 block text-sm">
+              Reference
+            </label>
+            <Input id="reference" {...form.register('reference')} placeholder="Reference" className="w-full" />
+          </div>
+
+          <div>
+            <label htmlFor="tag" className="mb-1 block text-sm">
+              Tag
+            </label>
+            <Input id="tag" {...form.register('tag')} placeholder="Tag" className="w-full" />
           </div>
         </div>
       </div>
-      
-      {/* Sales Person */}
+
       <div className="border-t border-gray-200 pt-4">
-        <h3 className="mb-4 text-sm font-medium">Sambungkan Sales Person</h3>
+        <h3 className="mb-4 text-sm font-medium">Sales Person</h3>
         <div className="mb-4">
-          <label htmlFor="salesPerson" className="mb-1 block text-sm font-medium">Sales Person</label>
+          <label htmlFor="salesmanName" className="mb-1 block text-sm">
+            Sales Person
+          </label>
           <Input
-            id="salesPerson"
-            {...form.register('salesPerson')}
-            placeholder="Pilih sales person"
+            id="salesmanName"
+            {...form.register('salesmanName')}
+            placeholder="Select sales person"
             className="w-full md:w-1/2"
           />
         </div>
       </div>
-      
-      {/* Shipping Information */}
+
       <div className="border-t border-gray-200 pt-4">
         <button
           type="button"
           className="flex w-full items-center justify-between text-sm font-medium"
           onClick={() => setIsInfoPengirimanOpen(!isInfoPengirimanOpen)}
         >
-          <span>Sambungkan Informasi Pengiriman</span>
+          <span>Shipping Information</span>
           {isInfoPengirimanOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
         </button>
-        
+
         {isInfoPengirimanOpen && (
           <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
             <div>
-              <label htmlFor="tanggalPengiriman" className="mb-1 block text-sm font-medium">Tanggal Pengiriman</label>
-              <Input
-                id="tanggalPengiriman"
-                type="date"
-                className="w-full"
-              />
+              <label htmlFor="shippingDate" className="mb-1 block text-sm">
+                Shipping Date
+              </label>
+              <Input id="shippingDate" type="date" {...form.register('shippingDate')} className="w-full" />
             </div>
             <div>
-              <label htmlFor="metodePengiriman" className="mb-1 block text-sm font-medium">Metode Pengiriman</label>
-              <Input
-                id="metodePengiriman"
-                placeholder="Pilih metode"
-                className="w-full"
-              />
+              <label htmlFor="expedition" className="mb-1 block text-sm">
+                Expedition
+              </label>
+              <Input id="expedition" {...form.register('expedition')} placeholder="Expedition" className="w-full" />
             </div>
             <div>
-              <label htmlFor="nomorResi" className="mb-1 block text-sm font-medium">No. Resi</label>
-              <Input
-                id="nomorResi"
-                placeholder="No. Resi"
-                className="w-full"
-              />
+              <label htmlFor="trackingNo" className="mb-1 block text-sm">
+                Tracking No
+              </label>
+              <Input id="trackingNo" {...form.register('trackingNo')} placeholder="Tracking No" className="w-full" />
             </div>
           </div>
         )}
       </div>
-      
-      {/* Products Table */}
+
       <div className="border-t border-gray-200 pt-4">
-        <h3 className="mb-4 text-sm font-medium">Produk</h3>
-        
+        <h3 className="mb-4 text-sm font-medium">Products</h3>
+
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
               <tr className="border-b text-xs">
-                <th className="px-2 py-2 text-left font-medium">Produk</th>
-                <th className="px-2 py-2 text-left font-medium">Deskripsi</th>
-                <th className="px-2 py-2 text-center font-medium">Kuantitas</th>
-                <th className="px-2 py-2 text-center font-medium">Satuan</th>
+                <th className="px-2 py-2 text-left font-medium">Product</th>
+                <th className="px-2 py-2 text-left font-medium">Description</th>
+                <th className="px-2 py-2 text-center font-medium">Quantity</th>
+                <th className="px-2 py-2 text-center font-medium">Unit</th>
                 <th className="px-2 py-2 text-center font-medium">Discount</th>
-                <th className="px-2 py-2 text-center font-medium">Harga</th>
-                <th className="px-2 py-2 text-center font-medium">Pajak</th>
-                <th className="px-2 py-2 text-right font-medium">Jumlah</th>
-                <th className="px-2 py-2 w-8"></th>
+                <th className="px-2 py-2 text-center font-medium">Price</th>
+                <th className="px-2 py-2 text-center font-medium">Tax</th>
+                <th className="px-2 py-2 text-right font-medium">Amount</th>
+                <th className="w-8 px-2 py-2"></th>
               </tr>
             </thead>
             <tbody>
               {products.map((product) => (
-                <tr key={product.id} className="border-b">
+                <tr key={product.productId} className="border-b">
                   <td className="px-2 py-2">
                     <Input
-                      placeholder="Pilih Produk"
+                      placeholder="Product"
                       value={product.name}
-                      onChange={(e) => updateProduct(product.id, 'name', e.target.value)}
+                      onChange={(e) => updateProduct(product.productId, 'name', e.target.value)}
                       className="w-full"
                     />
                   </td>
                   <td className="px-2 py-2">
                     <Input
-                      placeholder="Deskripsi"
+                      placeholder="Description"
+                      value={product.description}
+                      onChange={(e) => updateProduct(product.productId, 'description', e.target.value)}
                       className="w-full"
                     />
                   </td>
@@ -364,13 +374,15 @@ export function InvoiceForm() {
                       type="number"
                       min="1"
                       value={product.quantity}
-                      onChange={(e) => updateProduct(product.id, 'quantity', parseInt(e.target.value))}
+                      onChange={(e) => updateProduct(product.productId, 'quantity', parseInt(e.target.value))}
                       className="w-full text-center"
                     />
                   </td>
                   <td className="px-2 py-2">
                     <Input
                       placeholder="pcs"
+                      value={product.unit}
+                      onChange={(e) => updateProduct(product.productId, 'unit', e.target.value)}
                       className="w-full text-center"
                     />
                   </td>
@@ -381,7 +393,7 @@ export function InvoiceForm() {
                         min="0"
                         max="100"
                         value={product.discount}
-                        onChange={(e) => updateProduct(product.id, 'discount', parseInt(e.target.value))}
+                        onChange={(e) => updateProduct(product.productId, 'discount', parseInt(e.target.value))}
                         className="w-full text-center"
                       />
                       <span className="ml-1">%</span>
@@ -392,15 +404,12 @@ export function InvoiceForm() {
                       type="number"
                       min="0"
                       value={product.price}
-                      onChange={(e) => updateProduct(product.id, 'price', parseInt(e.target.value))}
+                      onChange={(e) => updateProduct(product.productId, 'price', parseInt(e.target.value))}
                       className="w-full text-right"
                     />
                   </td>
                   <td className="px-2 py-2">
-                    <Input
-                      placeholder="Pajak"
-                      className="w-full text-center"
-                    />
+                    <Input placeholder="Tax" {...form.register('taxAmount')} className="w-full text-center" />
                   </td>
                   <td className="px-2 py-2 text-right">
                     {formatCurrency(product.quantity * product.price * (1 - product.discount / 100))}
@@ -409,7 +418,7 @@ export function InvoiceForm() {
                     {products.length > 1 && (
                       <button
                         type="button"
-                        onClick={() => removeProduct(product.id)}
+                        onClick={() => removeProduct(product.productId)}
                         className="text-red-500 hover:text-red-700"
                       >
                         <Trash2 size={16} />
@@ -421,17 +430,12 @@ export function InvoiceForm() {
             </tbody>
           </table>
         </div>
-        
-        <Button
-          type="button"
-          variant="outline"
-          className="mt-4"
-          onClick={addProduct}
-        >
-          + tambah baris
+
+        <Button type="button" variant="outline" className="mt-4" onClick={addProduct}>
+          + Add Row
         </Button>
       </div>
-      
+
       {/* Attachment Section */}
       <div className="border-t border-gray-200 pt-4">
         <button
@@ -439,42 +443,39 @@ export function InvoiceForm() {
           className="flex w-full items-center justify-between text-sm font-medium"
           onClick={() => setIsAttachmentOpen(!isAttachmentOpen)}
         >
-          <span>Attachment</span>
+          <span>Attachments</span>
           {isAttachmentOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
         </button>
-        
+
         {isAttachmentOpen && (
           <div className="mt-4">
-            <Input
-              type="file"
-              className="w-full"
-            />
+            <Input type="file" className="w-full" />
           </div>
         )}
       </div>
-      
-      {/* Payment Contract */}
+
+      {/* Payment Connect */}
       <div className="border-t border-gray-200 pt-4">
         <button
           type="button"
           className="flex w-full items-center justify-between text-sm font-medium"
-          onClick={() => setIsPaymentContractOpen(!isPaymentContractOpen)}
+          onClick={() => setIsPaymentConnectOpen(!isPaymentConnectOpen)}
         >
-          <span>Payment Contract</span>
-          {isPaymentContractOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          <span>Payment Connect</span>
+          {isPaymentConnectOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
         </button>
-        
-        {isPaymentContractOpen && (
+
+        {isPaymentConnectOpen && (
           <div className="mt-4">
             <textarea
               className="w-full rounded-md border border-gray-300 p-2"
               rows={4}
-              placeholder="Payment contract details..."
+              placeholder="Payment connect details..."
             />
           </div>
         )}
       </div>
-      
+
       {/* Totals */}
       <div className="border-t border-gray-200 pt-4">
         <div className="flex flex-col items-end space-y-2">
@@ -482,86 +483,93 @@ export function InvoiceForm() {
             <span className="text-sm">Sub Total</span>
             <span>{formatCurrency(calculateSubtotal())}</span>
           </div>
-          
+
           <div className="flex w-full items-center justify-between md:w-1/3">
-            <label htmlFor="hargaPajak" className="text-sm">Pajak</label>
+            <label htmlFor="taxAmount" className="text-sm">
+              Tax
+            </label>
             <div className="flex items-center">
               <Input
-                id="hargaPajak"
+                id="taxAmount"
                 type="number"
                 min="0"
                 max="100"
-                {...form.register('hargaPajak')}
+                {...form.register('taxAmount')}
                 className="w-20 text-right"
               />
               <span className="ml-1">%</span>
               <span className="ml-2 w-24 text-right">{formatCurrency(calculateTax())}</span>
             </div>
           </div>
-          
+
           <div className="flex w-full items-center justify-between md:w-1/3">
-            <label htmlFor="biayaPengiriman" className="text-sm">Biaya pengiriman</label>
+            <label htmlFor="shippingCost" className="text-sm">
+              Shipping Cost
+            </label>
             <div className="flex items-center">
               <Input
-                id="biayaPengiriman"
+                id="shippingCost"
                 type="number"
                 min="0"
-                {...form.register('biayaPengiriman')}
+                {...form.register('shippingCost')}
                 className="w-32 text-right"
               />
               <span className="ml-1">Rp</span>
             </div>
           </div>
-          
+
           <div className="flex w-full items-center justify-between md:w-1/3">
-            <label htmlFor="diskonPembayaran" className="text-sm">Diskon pembayaran</label>
+            <label htmlFor="paymentDiscount" className="text-sm">
+              Payment Discount
+            </label>
             <div className="flex items-center">
               <Input
-                id="diskonPembayaran"
+                id="paymentDiscount"
                 type="number"
                 min="0"
-                {...form.register('diskonPembayaran')}
+                {...form.register('paymentDiscount')}
                 className="w-32 text-right"
               />
               <span className="ml-1">Rp</span>
             </div>
           </div>
-          
+
           <div className="flex w-full justify-between md:w-1/3">
-            <span className="text-sm">Biaya pengiriman</span>
-            <span>{formatCurrency(parseFloat(form.watch('biayaPengiriman') || '0'))}</span>
+            <span className="text-sm">Shipping Cost</span>
+            <span>{formatCurrency(parseFloat(form.watch('shippingCost') || '0'))}</span>
           </div>
-          
+
           <div className="flex w-full items-center justify-between md:w-1/3">
-            <label htmlFor="uangMuka" className="text-sm">Uang muka</label>
+            <label htmlFor="advancePayment" className="text-sm">
+              Advance Payment
+            </label>
             <div className="flex items-center">
               <Input
-                id="uangMuka"
+                id="advancePayment"
                 type="number"
                 min="0"
-                {...form.register('uangMuka')}
+                {...form.register('advancePayment')}
                 className="w-32 text-right"
               />
               <span className="ml-1">Rp</span>
             </div>
           </div>
-          
-          <div className="flex w-full justify-between border-t border-gray-200 pt-2 md:w-1/3">
+
+          <div className="mb-5 flex w-full justify-between border-t border-gray-200 pt-2 md:w-1/3">
             <span className="font-medium">Total</span>
             <span className="font-medium">{formatCurrency(calculateTotal())}</span>
           </div>
         </div>
-      </div>
-      
-      {/* Submit Button */}
-      <div className="flex justify-end">
-        <Button
-          type="submit"
-          className="bg-blue-600 text-white hover:bg-blue-700"
-        >
-          Simpan
-        </Button>
+
+        {/* Submit Button */}
+        <div className="flex justify-end">
+          <Button type="submit" className="w-full bg-blue-600 text-white hover:bg-blue-700 md:w-1/3">
+            <SaveIcon size={16} /> Save
+          </Button>
+        </div>
       </div>
     </form>
   );
-}
+};
+
+export default SalesInvoiceForm;

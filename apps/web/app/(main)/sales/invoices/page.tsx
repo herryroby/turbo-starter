@@ -84,6 +84,7 @@ const SalesInvoicesPage = () => {
       filterColumn="customerName"
       searchPlaceholder="Search customer..."
       data={data}
+      addLink="/sales/invoices/add"
     />
   );
 };

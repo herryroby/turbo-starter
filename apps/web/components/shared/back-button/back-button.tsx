@@ -1,19 +1,20 @@
 'use client';
 
+import { Button } from '@repo/ui/components/button';
 import { ArrowLeftIcon } from 'lucide-react';
 import Link from 'next/link';
 
 interface BackButtonProps {
-  text: string;
+  text?: string;
   link: string;
 }
 
-const BackButton = ({ text, link }: BackButtonProps) => {
+export const BackButton = ({ text, link }: BackButtonProps) => {
   return (
-    <Link href={link} className="mb-5 flex items-center gap-1 font-bold text-gray-500 hover:underline">
-      <ArrowLeftIcon size={18} /> {text}
+    <Link href={link}>
+      <Button variant="outline">
+        <ArrowLeftIcon size={18} /> {text || 'Back'}
+      </Button>
     </Link>
   );
 };
-
-export default BackButton;
