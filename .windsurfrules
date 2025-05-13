@@ -107,7 +107,8 @@
 
 ## Git Usage
 
-- Follow the commitlint rules file: commitlint.config.{js,cjs,mjs} (if exists).
+- Use conventional commits for commit messages.
+- Follow the commitlint rules file: `commitlint.config.{js,cjs,mjs}` (if exists) when generating commit messages.
 - Use lowercase for commit messages.
 - Keep the summary line concise.
 - Include description for non-obvious changes.
