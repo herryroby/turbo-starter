@@ -1,46 +1,15 @@
 'use client';
 
+import ListPage from '@/components/shared/list-page/list-page';
 import { salesInvoices } from '@/data/sales';
 import type { SalesInvoice } from '@/types/sales';
-import { Button } from '@repo/ui/components/button';
-import { Checkbox } from '@repo/ui/components/checkbox';
-import { DataTable } from '@repo/ui/components/data-table';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@repo/ui/components/dropdown-menu';
 import type { ColumnDef } from '@tanstack/react-table';
-import { FilePlus, MoreVertical } from 'lucide-react';
-import Link from 'next/link';
 import { useState } from 'react';
 
 const SalesInvoicesPage = () => {
   const [data] = useState<SalesInvoice[]>(salesInvoices);
 
   const columns: ColumnDef<SalesInvoice>[] = [
-    {
-      id: 'select',
-      header: ({ table }) => (
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && undefined)}
-          onCheckedChange={(checked) => table.toggleAllPageRowsSelected(!!checked)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(checked) => row.toggleSelected(!!checked)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false
-    },
     {
       accessorKey: 'invoiceId',
       header: 'Invoice No',
@@ -104,54 +73,18 @@ const SalesInvoicesPage = () => {
         const formatted = new Intl.NumberFormat('id-ID').format(amount);
         return <div className="text-right font-medium">{formatted}</div>;
       }
-    },
-    {
-      id: 'more',
-      cell: () => (
-        <div className="w-1">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant={'ghost'}>
-                <MoreVertical />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="" onCloseAutoFocus={(e) => e.preventDefault()}>
-              <DropdownMenuLabel className="">Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="">Copy</DropdownMenuItem>
-              <DropdownMenuItem>Paste</DropdownMenuItem>
-              <DropdownMenuItem>Cut</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      ),
-      enableSorting: false,
-      enableHiding: false
     }
   ];
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="mb-1 text-3xl font-bold">Sales Invoices</h1>
-          <p className="text-zinc-500 dark:text-zinc-400">Manage all sales invoices</p>
-        </div>
-        <Link href="/sales/invoices/add">
-          <Button>
-            <FilePlus className="size-4" />
-            <span>Add Sales Invoice</span>
-          </Button>
-        </Link>
-      </div>
-      <DataTable
-        columns={columns}
-        data={data}
-        totals={{ columns: [{ id: 'amount' }, { id: 'totalAmount' }] }}
-        filterColumn="customerName"
-        searchPlaceholder="Search customer..."
-      />
-    </div>
+    <ListPage
+      pageTitle="Sales Invoices"
+      subPageTitle="Manage all sales invoices"
+      columns={columns}
+      filterColumn="customerName"
+      searchPlaceholder="Search customer..."
+      data={data}
+    />
   );
 };
 
