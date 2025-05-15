@@ -8,7 +8,10 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable
+  useReactTable,
+  type Cell,
+  type Header,
+  type Row
 } from '@tanstack/react-table';
 import * as React from 'react';
 
@@ -29,15 +32,17 @@ interface DataTableProps<TData, TValue> {
       formatter?: (value: number) => string;
     }[];
   };
+  error?: Error | null;
 }
 
-export function DataTable<TData, TValue>({
+export const DataTable = <TData, TValue>({
   columns,
   data,
   filterColumn,
   searchPlaceholder = 'Search...',
-  totals
-}: DataTableProps<TData, TValue>) {
+  totals,
+  error
+}: DataTableProps<TData, TValue>): React.ReactElement => {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -48,9 +53,9 @@ export function DataTable<TData, TValue>({
     columns,
     state: {
       sorting,
+      columnFilters,
       columnVisibility,
-      rowSelection,
-      columnFilters
+      rowSelection
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
@@ -63,6 +68,14 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel()
   });
 
+  if (error) {
+    return (
+      <div className="bg-destructive/10 text-destructive my-4 rounded-md border p-4">
+        <p>Error loading data: {error.message}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
       {filterColumn && (
@@ -73,21 +86,19 @@ export function DataTable<TData, TValue>({
           <TableHeader className="bg-neutral-50 dark:bg-neutral-800">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} className="h-10 p-4 text-neutral-800 dark:text-neutral-200">
-                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header: Header<TData, unknown>) => (
+                  <TableHead key={header.id} className="h-10 p-4 text-neutral-800 dark:text-neutral-200">
+                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map((row: Row<TData>) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                  {row.getVisibleCells().map((cell) => (
+                  {row.getVisibleCells().map((cell: Cell<TData, unknown>) => (
                     <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                   ))}
                 </TableRow>
@@ -95,7 +106,7 @@ export function DataTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No data found.
+                  No results.
                 </TableCell>
               </TableRow>
             )}
@@ -106,4 +117,4 @@ export function DataTable<TData, TValue>({
       <DataTablePagination table={table} />
     </div>
   );
-}
+};

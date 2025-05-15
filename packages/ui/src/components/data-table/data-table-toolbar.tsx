@@ -11,22 +11,26 @@ interface DataTableToolbarProps<TData> {
   searchPlaceholder?: string;
 }
 
-export function DataTableToolbar<TData>({
+export const DataTableToolbar = <TData,>({
   table,
   filterColumn,
   searchPlaceholder = 'Search...'
-}: DataTableToolbarProps<TData>) {
+}: DataTableToolbarProps<TData>): React.ReactElement => {
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
     <div className="mb-5 flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
-        <Input
-          placeholder={searchPlaceholder}
-          value={(table.getColumn(filterColumn)?.getFilterValue() as string) ?? ''}
-          onChange={(event) => table.getColumn(filterColumn)?.setFilterValue(event.target.value)}
-          className="w-[150px] lg:w-[250px]"
-        />
+        {filterColumn && (
+          <Input
+            placeholder={searchPlaceholder}
+            value={(table.getColumn(filterColumn)?.getFilterValue() as string) ?? ''}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              table.getColumn(filterColumn)?.setFilterValue(event.target.value)
+            }
+            className="w-[150px] lg:w-[250px]"
+          />
+        )}
         {isFiltered && (
           <Button variant="ghost" onClick={() => table.resetColumnFilters()} className="px-2 lg:px-3">
             Reset
@@ -37,4 +41,4 @@ export function DataTableToolbar<TData>({
       <DataTableViewOptions table={table} />
     </div>
   );
-}
+};

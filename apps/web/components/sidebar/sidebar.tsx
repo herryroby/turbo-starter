@@ -53,6 +53,11 @@ const menuItems: MenuItem[] = [
     ]
   },
   {
+    name: 'Products',
+    icon: <Package className="h-4 w-4" />,
+    href: '/products'
+  },
+  {
     name: 'Finance',
     icon: <CreditCard className="h-4 w-4" />,
     submenu: [
@@ -73,11 +78,6 @@ const menuItems: MenuItem[] = [
     name: 'Settings',
     icon: <Settings className="h-4 w-4" />,
     href: '/settings'
-  },
-  {
-    name: 'Products',
-    icon: <Package className="h-4 w-4" />,
-    href: '/products'
   },
   {
     name: 'Statistics',

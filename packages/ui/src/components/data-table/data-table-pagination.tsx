@@ -9,48 +9,50 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious
-} from '../pagination';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../select';
+} from '@repo/ui/components/pagination';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui/components/select';
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
 }
 
-export function DataTablePagination<TData>({ table }: DataTablePaginationProps<TData>) {
+export const DataTablePagination = <TData,>({ table }: DataTablePaginationProps<TData>): React.ReactElement => {
   // Calculate page numbers to display
-  const currentPage = table.getState().pagination.pageIndex + 1;
+  const basePage = table.getState().pagination.pageIndex + 1;
   const totalPages = table.getPageCount();
 
   // Generate page numbers to display
-  const generatePagination = () => {
+  const generatePagination = (): (number | string)[] => {
     // If there are 7 or fewer pages, show all
     if (totalPages <= 7) {
       return Array.from({ length: totalPages || 0 }, (_, i) => i + 1);
     }
 
     // Always include first and last page
-    const pages = [1, totalPages];
+    const basePages = [1, totalPages];
 
     // Add current page and pages around it
-    const startPages = currentPage <= 3 ? [2, 3, 4] : [];
-    const endPages = currentPage >= totalPages - 2 ? [totalPages - 3, totalPages - 2, totalPages - 1] : [];
-    const middlePages =
-      currentPage > 3 && currentPage < totalPages - 2 ? [currentPage - 1, currentPage, currentPage + 1] : [];
+    const startPages = basePage <= 3 ? [2, 3, 4] : [];
+    const endPages = basePage >= totalPages - 2 ? [totalPages - 3, totalPages - 2, totalPages - 1] : [];
+    const middlePages = basePage > 3 && basePage < totalPages - 2 ? [basePage - 1, basePage, basePage + 1] : [];
 
     // Combine all page numbers and remove duplicates
-    const uniquePages = [...new Set([...pages, ...startPages, ...middlePages, ...endPages])].sort(
+    const uniquePages = [...new Set([...basePages, ...startPages, ...middlePages, ...endPages])].sort(
       (a, b) => a - b
     ) as number[];
 
     // Add ellipsis indicators
     const pagesWithEllipsis: (number | string)[] = [];
     for (let i = 0; i < uniquePages.length; i++) {
-      pagesWithEllipsis.push(uniquePages[i] || '');
+      // Ensure we're not pushing undefined values
+      if (typeof uniquePages[i] !== 'undefined') {
+        pagesWithEllipsis.push(uniquePages[i] as number);
+      }
 
       // Add ellipsis if there's a gap
       const nextPage = uniquePages[i + 1];
       const currentPage = uniquePages[i];
-      if (nextPage && currentPage && nextPage - currentPage > 1) {
+      if (typeof nextPage !== 'undefined' && typeof currentPage !== 'undefined' && nextPage - currentPage > 1) {
         pagesWithEllipsis.push('ellipsis');
       }
     }
@@ -76,7 +78,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
               table.setPageSize(Number(value));
             }}
           >
-            <SelectTrigger className="h-8 w-[70px]">
+            <SelectTrigger className="h-8 w-[70px] cursor-pointer">
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
@@ -95,9 +97,11 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
             <PaginationItem className="hidden sm:inline-flex">
               <PaginationLink
                 size="icon"
-                onClick={() => table.setPageIndex(0)}
-                disabled={!table.getCanPreviousPage()}
+                onClick={!table.getCanPreviousPage() ? undefined : () => table.setPageIndex(0)}
                 aria-label="First page"
+                aria-disabled={!table.getCanPreviousPage()}
+                tabIndex={!table.getCanPreviousPage() ? -1 : 0}
+                className={!table.getCanPreviousPage() ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
               >
                 <ChevronsLeft className="h-4 w-4" />
               </PaginationLink>
@@ -106,9 +110,11 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
             {/* Previous page button */}
             <PaginationItem>
               <PaginationPrevious
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
+                onClick={!table.getCanPreviousPage() ? undefined : () => table.previousPage()}
                 aria-label="Previous page"
+                aria-disabled={!table.getCanPreviousPage()}
+                tabIndex={!table.getCanPreviousPage() ? -1 : 0}
+                className={!table.getCanPreviousPage() ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
                 size="default"
               />
             </PaginationItem>
@@ -117,16 +123,16 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
             {pages.map((page, i) => {
               if (page === 'ellipsis') {
                 return (
-                  <PaginationItem key={`ellipsis-${i}`} className="hidden sm:inline-flex">
+                  <PaginationItem key={`ellipsis-${i}`} className="hidden cursor-pointer sm:inline-flex">
                     <PaginationEllipsis />
                   </PaginationItem>
                 );
               }
 
               return (
-                <PaginationItem key={page} className="hidden sm:inline-flex">
+                <PaginationItem key={`page-${page}-${i}`} className="hidden cursor-pointer sm:inline-flex">
                   <PaginationLink
-                    isActive={page === currentPage}
+                    isActive={page === basePage}
                     onClick={() => table.setPageIndex(typeof page === 'number' ? page - 1 : 0)}
                     size="default"
                   >
@@ -139,9 +145,11 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
             {/* Next page button */}
             <PaginationItem>
               <PaginationNext
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
+                onClick={!table.getCanNextPage() ? undefined : () => table.nextPage()}
                 aria-label="Next page"
+                aria-disabled={!table.getCanNextPage()}
+                tabIndex={!table.getCanNextPage() ? -1 : 0}
+                className={!table.getCanNextPage() ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
                 size="default"
               />
             </PaginationItem>
@@ -150,9 +158,11 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
             <PaginationItem className="hidden sm:inline-flex">
               <PaginationLink
                 size="icon"
-                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                disabled={!table.getCanNextPage()}
+                onClick={!table.getCanNextPage() ? undefined : () => table.setPageIndex(table.getPageCount() - 1)}
                 aria-label="Last page"
+                aria-disabled={!table.getCanNextPage()}
+                tabIndex={!table.getCanNextPage() ? -1 : 0}
+                className={!table.getCanNextPage() ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
               >
                 <ChevronsRight className="h-4 w-4" />
               </PaginationLink>
@@ -161,9 +171,9 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
         </Pagination>
 
         <div className="text-sm font-medium sm:hidden">
-          {currentPage} of {totalPages}
+          {basePage} of {totalPages}
         </div>
       </div>
     </div>
   );
-}
+};
