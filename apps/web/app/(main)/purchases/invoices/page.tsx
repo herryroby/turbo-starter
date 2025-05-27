@@ -3,17 +3,40 @@
 import ListPage from '@/components/shared/list-page/list-page';
 import { purchaseInvoices } from '@/data/purchases';
 import type { PurchaseInvoice } from '@/types/purchases';
-import type { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef, Row } from '@tanstack/react-table';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const PurchaseInvoicesPage = () => {
+  const router = useRouter();
   const [data] = useState<PurchaseInvoice[]>(purchaseInvoices);
+
+  const redirectToEdit = (row: PurchaseInvoice): void => {
+    router.push(`/sales/invoices/add?invoiceId=${row.invoiceId}`);
+  };
 
   const columns: ColumnDef<PurchaseInvoice>[] = [
     {
       accessorKey: 'invoiceId',
       header: 'Invoice No',
-      cell: ({ row }) => <div>{row.getValue('invoiceId')}</div>
+      cell: ({ row }: { row: Row<PurchaseInvoice> }) => (
+        <button
+          type="button"
+          className="m-0 cursor-pointer border-none bg-transparent p-0 font-semibold"
+          onClick={() => redirectToEdit(row.original)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              redirectToEdit(row.original);
+            }
+          }}
+          tabIndex={0}
+          aria-label={`Edit Sales Invoice ${row.getValue('invoiceId')}`}
+          style={{ background: 'none', border: 'none' }}
+        >
+          {row.getValue('invoiceId')}
+        </button>
+      )
     },
     {
       accessorKey: 'supplierName',
@@ -23,7 +46,7 @@ const PurchaseInvoicesPage = () => {
     {
       accessorKey: 'date',
       header: 'Invoice Date',
-      cell: ({ row }: { row: any }) => {
+      cell: ({ row }: { row: Row<PurchaseInvoice> }) => {
         const date = row.getValue('date') as Date;
         return <div>{date.toLocaleDateString()}</div>;
       }
@@ -31,7 +54,7 @@ const PurchaseInvoicesPage = () => {
     {
       accessorKey: 'dueDate',
       header: 'Due Date',
-      cell: ({ row }: { row: any }) => {
+      cell: ({ row }: { row: Row<PurchaseInvoice> }) => {
         const date = row.getValue('dueDate') as Date;
         return <div>{date.toLocaleDateString()}</div>;
       }
@@ -39,7 +62,7 @@ const PurchaseInvoicesPage = () => {
     {
       accessorKey: 'status',
       header: () => <div className="text-center">Status</div>,
-      cell: ({ row }: { row: any }) => {
+      cell: ({ row }: { row: Row<PurchaseInvoice> }) => {
         const status = row.getValue('status') as string;
         return (
           <div className="text-center">
@@ -59,7 +82,7 @@ const PurchaseInvoicesPage = () => {
     {
       accessorKey: 'amount',
       header: () => <div className="text-right">Amount</div>,
-      cell: ({ row }: { row: any }) => {
+      cell: ({ row }: { row: Row<PurchaseInvoice> }) => {
         const amount = parseFloat(row.getValue('amount'));
         const formatted = new Intl.NumberFormat('id-ID').format(amount);
         return <div className="text-right">{formatted}</div>;
@@ -68,7 +91,7 @@ const PurchaseInvoicesPage = () => {
     {
       accessorKey: 'totalAmount',
       header: () => <div className="text-right">Total</div>,
-      cell: ({ row }: { row: any }) => {
+      cell: ({ row }: { row: Row<PurchaseInvoice> }) => {
         const amount = parseFloat(row.getValue('totalAmount'));
         const formatted = new Intl.NumberFormat('id-ID').format(amount);
         return <div className="text-right font-medium">{formatted}</div>;
@@ -85,6 +108,7 @@ const PurchaseInvoicesPage = () => {
       searchPlaceholder="Search supplier..."
       data={data}
       addLink="/purchases/invoices/add"
+      defaultSortableColumns={['invoiceId', 'supplierName', 'date', 'dueDate', 'status', 'amount', 'totalAmount']}
     />
   );
 };

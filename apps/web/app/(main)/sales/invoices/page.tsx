@@ -62,7 +62,7 @@ const SalesInvoicesPage = () => {
     {
       accessorKey: 'status',
       header: () => <div className="text-center">Status</div>,
-      cell: ({ row }: { row: any }) => {
+      cell: ({ row }: { row: Row<SalesInvoice> }) => {
         const status = row.getValue('status') as string;
         return (
           <div className="text-center">
@@ -82,8 +82,8 @@ const SalesInvoicesPage = () => {
     {
       accessorKey: 'amount',
       header: () => <div className="text-right">Amount</div>,
-      cell: ({ row }: { row: any }) => {
-        const amount = parseFloat(row.getValue('amount'));
+      cell: ({ row }: { row: Row<SalesInvoice> }) => {
+        const amount = row.getValue('amount') as number;
         const formatted = new Intl.NumberFormat('id-ID').format(amount);
         return <div className="text-right">{formatted}</div>;
       }
@@ -91,9 +91,9 @@ const SalesInvoicesPage = () => {
     {
       accessorKey: 'totalAmount',
       header: () => <div className="text-right">Total</div>,
-      cell: ({ row }: { row: any }) => {
-        const amount = parseFloat(row.getValue('totalAmount'));
-        const formatted = new Intl.NumberFormat('id-ID').format(amount);
+      cell: ({ row }: { row: Row<SalesInvoice> }) => {
+        const totalAmount = row.getValue('totalAmount') as number;
+        const formatted = new Intl.NumberFormat('id-ID').format(totalAmount);
         return <div className="text-right font-medium">{formatted}</div>;
       }
     }

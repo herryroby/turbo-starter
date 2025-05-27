@@ -2,6 +2,7 @@
 
 import { Button } from '@repo/ui/components/button';
 import { DataTable } from '@repo/ui/components/data-table';
+import { CustomColumnDef } from '@repo/ui/components/data-table/data-table';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,14 +11,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@repo/ui/components/dropdown-menu';
-import type { ColumnDef } from '@tanstack/react-table';
 import { FilePlus, MoreVertical } from 'lucide-react';
 import Link from 'next/link';
 
 interface ListPageProps<TData extends object> {
   pageTitle: string;
   subPageTitle?: string;
-  columns: ColumnDef<TData>[];
+  columns: CustomColumnDef<TData, unknown>[];
   filterColumn: string;
   searchPlaceholder: string;
   defaultSortableColumns?: string[];
@@ -35,7 +35,7 @@ function ListPage<TData extends object>({
   data,
   addLink
 }: ListPageProps<TData>) {
-  const tableColumns: ColumnDef<TData>[] = [
+  const tableColumns: CustomColumnDef<TData, unknown>[] = [
     {
       id: 'more',
       cell: () => (

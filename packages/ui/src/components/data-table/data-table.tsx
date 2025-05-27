@@ -2,7 +2,6 @@
 
 import { useDebounce } from '@repo/ui/hooks/use-debounce';
 import {
-  ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
@@ -19,7 +18,8 @@ import {
   type Cell,
   type Header,
   type Table as ReactTableType,
-  type Row
+  type Row,
+  type ColumnDef as TanStackColumnDef
 } from '@tanstack/react-table';
 import { saveAs } from 'file-saver';
 import * as React from 'react';
@@ -34,16 +34,13 @@ import { DataTableFooter } from './data-table-footer';
 import { DataTablePagination } from './data-table-pagination';
 import { DataTableToolbar } from './data-table-toolbar';
 
-// Augment ColumnDef to include headerAlign
-declare module '@tanstack/react-table' {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface ColumnDef<TData extends object, TValue = unknown> {
-    headerAlign?: 'left' | 'center' | 'right';
-  }
-}
+// Define a custom ColumnDef that extends TanStack's ColumnDef
+export type CustomColumnDef<TData extends object, TValue = unknown> = TanStackColumnDef<TData, TValue> & {
+  headerAlign?: 'left' | 'center' | 'right';
+};
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+interface DataTableProps<TData extends object, TValue> {
+  columns: CustomColumnDef<TData, TValue>[];
   data: TData[];
   filterColumn?: string;
   searchPlaceholder?: string;
@@ -61,7 +58,7 @@ interface DataTableProps<TData, TValue> {
   filename?: string;
 }
 
-export const DataTable = <TData extends object, TValue>({
+export const DataTable = <TData extends object, TValue = unknown>({
   columns,
   data,
   filterColumn,
@@ -81,13 +78,15 @@ export const DataTable = <TData extends object, TValue>({
   const debouncedGlobalFilter = useDebounce(globalFilter, 300);
 
   // Create a new array with the selection column at the beginning
-  const columnsWithSelection: ColumnDef<TData, any>[] = React.useMemo(
+  const columnsWithSelection: CustomColumnDef<TData, unknown>[] = React.useMemo(
     () => [
       {
         id: 'select',
         header: ({ table: headerTable }: { table: ReactTableType<TData> }) => (
           <Checkbox
-            checked={headerTable.getIsAllPageRowsSelected()}
+            checked={
+              headerTable.getIsAllPageRowsSelected() || (headerTable.getIsSomePageRowsSelected() && 'indeterminate')
+            }
             onCheckedChange={(value) => headerTable.toggleAllPageRowsSelected(!!value)}
             aria-label="Select all"
             className="translate-y-[2px]"
@@ -103,15 +102,15 @@ export const DataTable = <TData extends object, TValue>({
         ),
         enableSorting: false,
         enableHiding: false
-      },
-      ...columns
+      } as CustomColumnDef<TData, unknown>,
+      ...(columns as CustomColumnDef<TData, unknown>[])
     ],
     [columns]
   );
 
   const table = useReactTable({
     data,
-    columns: columnsWithSelection,
+    columns: columnsWithSelection as TanStackColumnDef<TData, unknown>[],
     state: {
       sorting,
       columnFilters,
@@ -155,8 +154,7 @@ export const DataTable = <TData extends object, TValue>({
         const rowData: Record<string, unknown> = {};
 
         // Get each original property directly (ignoring table columns)
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const originalData = row.original as any;
+        const originalData = row.original as Record<string, unknown>;
 
         // Directly iterate over all object properties
         Object.keys(originalData).forEach((key) => {
@@ -213,8 +211,7 @@ export const DataTable = <TData extends object, TValue>({
         const rowData: Record<string, unknown> = {};
 
         // Get each original property directly (ignoring table columns)
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const originalData = row.original as any;
+        const originalData = row.original as Record<string, unknown>;
 
         // Directly iterate over all object properties
         Object.keys(originalData).forEach((key) => {
@@ -253,7 +250,7 @@ export const DataTable = <TData extends object, TValue>({
     (text: string): React.ReactNode => {
       if (!debouncedGlobalFilter || typeof text !== 'string') return text;
 
-      const regex = new RegExp(`(${debouncedGlobalFilter})`, 'gi');
+      const regex = new RegExp(`(${debouncedGlobalFilter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
       const parts = text.split(regex);
 
       if (parts.length <= 1) return text;
@@ -315,13 +312,14 @@ export const DataTable = <TData extends object, TValue>({
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header: Header<TData, unknown>) => {
-                  const columnDef = header.column.columnDef as ColumnDef<TData, unknown>;
+                  const columnDef = header.column.columnDef as CustomColumnDef<TData, unknown>;
                   const isSortable =
                     columnDef.enableSorting !== false &&
                     (columnDef.enableSorting === true ||
-                      (columnDef.accessorKey &&
-                        typeof columnDef.accessorKey === 'string' &&
-                        defaultSortableColumns.includes(columnDef.accessorKey as string)));
+                      ('accessorKey' in header.column.columnDef &&
+                        header.column.columnDef.accessorKey &&
+                        typeof header.column.columnDef.accessorKey === 'string' &&
+                        defaultSortableColumns.includes(header.column.columnDef.accessorKey as string)));
 
                   const headerAlignment = columnDef.headerAlign || 'left';
                   const textAlignClass =
@@ -389,13 +387,15 @@ export const DataTable = <TData extends object, TValue>({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell colSpan={columnsWithSelection.length} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
-          {totals && <DataTableFooter columns={columns} data={data} totals={totals} />}
+          {totals && (
+            <DataTableFooter columns={columns as TanStackColumnDef<TData, unknown>[]} data={data} totals={totals} />
+          )}
         </Table>
       </div>
       <DataTablePagination table={table} />
