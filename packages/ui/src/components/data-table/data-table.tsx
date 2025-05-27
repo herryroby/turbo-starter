@@ -18,6 +18,7 @@ import {
   useReactTable,
   type Cell,
   type Header,
+  type Table as ReactTableType,
   type Row
 } from '@tanstack/react-table';
 import { saveAs } from 'file-saver';
@@ -28,10 +29,18 @@ import * as XLSX from 'xlsx';
 import { Button } from '@repo/ui/components/button';
 import { Checkbox } from '@repo/ui/components/checkbox';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@repo/ui/components/table';
-import { ArrowUpDown } from 'lucide-react';
+import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react';
 import { DataTableFooter } from './data-table-footer';
 import { DataTablePagination } from './data-table-pagination';
 import { DataTableToolbar } from './data-table-toolbar';
+
+// Augment ColumnDef to include headerAlign
+declare module '@tanstack/react-table' {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface ColumnDef<TData extends object, TValue = unknown> {
+    headerAlign?: 'left' | 'center' | 'right';
+  }
+}
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -72,11 +81,11 @@ export const DataTable = <TData extends object, TValue>({
   const debouncedGlobalFilter = useDebounce(globalFilter, 300);
 
   // Create a new array with the selection column at the beginning
-  const columnsWithSelection = React.useMemo(
+  const columnsWithSelection: ColumnDef<TData, any>[] = React.useMemo(
     () => [
       {
         id: 'select',
-        header: ({ table: headerTable }) => (
+        header: ({ table: headerTable }: { table: ReactTableType<TData> }) => (
           <Checkbox
             checked={headerTable.getIsAllPageRowsSelected()}
             onCheckedChange={(value) => headerTable.toggleAllPageRowsSelected(!!value)}
@@ -84,7 +93,7 @@ export const DataTable = <TData extends object, TValue>({
             className="translate-y-[2px]"
           />
         ),
-        cell: ({ row }) => (
+        cell: ({ row }: { row: Row<TData> }) => (
           <Checkbox
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -306,25 +315,58 @@ export const DataTable = <TData extends object, TValue>({
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header: Header<TData, unknown>) => {
-                  const columnDef = header.column.columnDef as ColumnDef<TData, unknown> & { accessorKey?: string };
+                  const columnDef = header.column.columnDef as ColumnDef<TData, unknown>;
                   const isSortable =
                     columnDef.enableSorting !== false &&
                     (columnDef.enableSorting === true ||
-                      (columnDef.accessorKey && defaultSortableColumns.includes(columnDef.accessorKey)));
+                      (columnDef.accessorKey &&
+                        typeof columnDef.accessorKey === 'string' &&
+                        defaultSortableColumns.includes(columnDef.accessorKey as string)));
+
+                  const headerAlignment = columnDef.headerAlign || 'left';
+                  const textAlignClass =
+                    headerAlignment === 'center'
+                      ? 'justify-center'
+                      : headerAlignment === 'right'
+                        ? 'justify-end'
+                        : 'justify-start';
+
+                  const columnIndex = columnsWithSelection.findIndex((col) => col.id === header.column.id);
+                  const isFirstDataColumn = columnIndex === 1;
 
                   return (
-                    <TableHead key={header.id} className="text-neutral-800 dark:text-neutral-200">
-                      {header.isPlaceholder ? null : isSortable ? (
-                        <Button
-                          variant="ghost"
-                          onClick={() => header.column.toggleSorting(header.column.getIsSorted() === 'asc')}
-                        >
-                          {flexRender(header.column.columnDef.header, header.getContext())}
-                          <ArrowUpDown className="ml-2 size-4" />
-                        </Button>
-                      ) : (
-                        flexRender(header.column.columnDef.header, header.getContext())
-                      )}
+                    <TableHead key={header.id} className="h-12 px-0 py-2 text-neutral-800 dark:text-neutral-200">
+                      <div className="flex">
+                        {header.column.id !== 'select' && !isFirstDataColumn && (
+                          <div className="mr-3 h-6 border-l border-neutral-300 dark:border-neutral-700" />
+                        )}
+                        {header.isPlaceholder ? null : isSortable ? (
+                          <Button
+                            variant="ghost"
+                            onClick={() => header.column.toggleSorting(header.column.getIsSorted() === 'asc')}
+                            className={`flex h-auto min-w-0 flex-1 p-0 hover:bg-transparent ${textAlignClass} `}
+                          >
+                            <span
+                              className={`flex-grow ${headerAlignment === 'center' ? 'text-center' : headerAlignment === 'right' ? 'text-right' : 'text-left'}`}
+                            >
+                              {flexRender(header.column.columnDef.header, header.getContext())}
+                            </span>
+                            {header.column.getIsSorted() === 'asc' ? (
+                              <ArrowUp className="ml-2 size-4" />
+                            ) : header.column.getIsSorted() === 'desc' ? (
+                              <ArrowDown className="ml-2 size-4" />
+                            ) : (
+                              <ChevronsUpDown className="ml-2 size-4" />
+                            )}
+                          </Button>
+                        ) : (
+                          <div
+                            className={`flex-1 px-3 ${headerAlignment === 'center' ? 'text-center' : headerAlignment === 'right' ? 'text-right' : 'text-left'}`}
+                          >
+                            {flexRender(header.column.columnDef.header, header.getContext())}
+                          </div>
+                        )}
+                      </div>
                     </TableHead>
                   );
                 })}
@@ -336,7 +378,12 @@ export const DataTable = <TData extends object, TValue>({
               table.getRowModel().rows.map((row: Row<TData>) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell: Cell<TData, unknown>) => (
-                    <TableCell key={cell.id}>{renderCell(cell)}</TableCell>
+                    <TableCell
+                      key={cell.id}
+                      className={`${cell.column.id === 'select' ? 'px-3' : cell.column.id === 'more' ? 'p-0' : 'px-7'}`}
+                    >
+                      {renderCell(cell)}
+                    </TableCell>
                   ))}
                 </TableRow>
               ))

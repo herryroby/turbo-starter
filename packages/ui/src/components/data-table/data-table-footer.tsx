@@ -135,7 +135,7 @@ export function DataTableFooter<TData, TValue>({ columns, data, totals }: DataTa
 
             // Add the total cell
             cells.push(
-              <TableCell key={`total-${index}`} className="text-right font-medium">
+              <TableCell key={`total-${index}`} className="px-7 text-right font-medium">
                 {formatted}
               </TableCell>
             );
