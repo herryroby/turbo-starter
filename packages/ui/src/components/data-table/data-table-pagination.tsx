@@ -1,5 +1,8 @@
+'use client';
+
 import { Table } from '@tanstack/react-table';
 import { ChevronsLeft, ChevronsRight } from 'lucide-react';
+import * as React from 'react';
 
 import {
   Pagination,
@@ -44,7 +47,7 @@ export const DataTablePagination = <TData,>({ table }: DataTablePaginationProps<
     // Add ellipsis indicators
     const pagesWithEllipsis: (number | string)[] = [];
     for (let i = 0; i < uniquePages.length; i++) {
-      // Ensure we're not pushing undefined values
+      // Ensure we're not pushing empty values
       if (typeof uniquePages[i] !== 'undefined') {
         pagesWithEllipsis.push(uniquePages[i] as number);
       }
@@ -52,7 +55,7 @@ export const DataTablePagination = <TData,>({ table }: DataTablePaginationProps<
       // Add ellipsis if there's a gap
       const nextPage = uniquePages[i + 1];
       const currentPage = uniquePages[i];
-      if (typeof nextPage !== 'undefined' && typeof currentPage !== 'undefined' && nextPage - currentPage > 1) {
+      if (nextPage && currentPage && nextPage - currentPage > 1) {
         pagesWithEllipsis.push('ellipsis');
       }
     }

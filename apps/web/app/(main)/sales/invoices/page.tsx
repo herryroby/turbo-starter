@@ -3,17 +3,40 @@
 import ListPage from '@/components/shared/list-page/list-page';
 import { salesInvoices } from '@/data/sales';
 import type { SalesInvoice } from '@/types/sales';
-import type { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef, Row } from '@tanstack/react-table';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const SalesInvoicesPage = () => {
+  const router = useRouter();
   const [data] = useState<SalesInvoice[]>(salesInvoices);
+
+  const redirectToEdit = (row: SalesInvoice): void => {
+    router.push(`/sales/invoices/add?invoiceId=${row.invoiceId}`);
+  };
 
   const columns: ColumnDef<SalesInvoice>[] = [
     {
       accessorKey: 'invoiceId',
       header: 'Invoice No',
-      cell: ({ row }) => <div>{row.getValue('invoiceId')}</div>
+      cell: ({ row }: { row: Row<SalesInvoice> }) => (
+        <button
+          type="button"
+          className="m-0 cursor-pointer border-none bg-transparent p-0 font-semibold"
+          onClick={() => redirectToEdit(row.original)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              redirectToEdit(row.original);
+            }
+          }}
+          tabIndex={0}
+          aria-label={`Edit Sales Invoice ${row.getValue('invoiceId')}`}
+          style={{ background: 'none', border: 'none' }}
+        >
+          {row.getValue('invoiceId')}
+        </button>
+      )
     },
     {
       accessorKey: 'customerName',
@@ -85,6 +108,7 @@ const SalesInvoicesPage = () => {
       searchPlaceholder="Search customer..."
       data={data}
       addLink="/sales/invoices/add"
+      defaultSortableColumns={['invoiceId', 'customerName', 'date', 'dueDate', 'status', 'amount', 'totalAmount']}
     />
   );
 };

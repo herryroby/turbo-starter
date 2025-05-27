@@ -1,7 +1,6 @@
 'use client';
 
 import { Button } from '@repo/ui/components/button';
-import { Checkbox } from '@repo/ui/components/checkbox';
 import { DataTable } from '@repo/ui/components/data-table';
 import {
   DropdownMenu,
@@ -15,46 +14,28 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { FilePlus, MoreVertical } from 'lucide-react';
 import Link from 'next/link';
 
-interface ListPageProps<TData> {
+interface ListPageProps<TData extends object> {
   pageTitle: string;
   subPageTitle?: string;
   columns: ColumnDef<TData>[];
   filterColumn: string;
   searchPlaceholder: string;
+  defaultSortableColumns?: string[];
   data: TData[];
   addLink?: string;
 }
 
-function ListPage<TData>({
+function ListPage<TData extends object>({
   pageTitle,
   subPageTitle,
   columns,
   filterColumn,
   searchPlaceholder,
+  defaultSortableColumns,
   data,
   addLink
 }: ListPageProps<TData>) {
   const tableColumns: ColumnDef<TData>[] = [
-    {
-      id: 'select',
-      header: ({ table }) => (
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && undefined)}
-          onCheckedChange={(checked) => table.toggleAllPageRowsSelected(!!checked)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(checked) => row.toggleSelected(!!checked)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false
-    },
-    ...columns,
     {
       id: 'more',
       cell: () => (
@@ -77,7 +58,8 @@ function ListPage<TData>({
       ),
       enableSorting: false,
       enableHiding: false
-    }
+    },
+    ...columns
   ];
 
   return (
@@ -103,6 +85,7 @@ function ListPage<TData>({
           totals={{ columns: [{ id: 'amount' }, { id: 'totalAmount' }] }}
           filterColumn={filterColumn}
           searchPlaceholder={searchPlaceholder}
+          defaultSortableColumns={defaultSortableColumns}
         />
       </div>
     </>

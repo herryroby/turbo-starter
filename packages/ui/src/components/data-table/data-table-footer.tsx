@@ -48,15 +48,15 @@ export function DataTableFooter<TData, TValue>({ columns, data, totals }: DataTa
             const colIndex = columnMap.get(totalCol.id);
             if (colIndex === undefined) continue;
 
-            const column = columns[colIndex];
-            if (!column) continue;
+            const columnDef = columns[colIndex];
+            if (!columnDef) continue;
 
             // Get the accessor key to extract data
             let accessorKey = '';
-            if ('accessorKey' in column && typeof column.accessorKey === 'string') {
-              accessorKey = column.accessorKey;
-            } else if ('id' in column && typeof column.id === 'string') {
-              accessorKey = column.id;
+            if ('accessorKey' in columnDef && typeof columnDef.accessorKey === 'string') {
+              accessorKey = columnDef.accessorKey;
+            } else if ('id' in columnDef && typeof columnDef.id === 'string') {
+              accessorKey = columnDef.id;
             }
 
             if (!accessorKey) continue;
@@ -82,7 +82,9 @@ export function DataTableFooter<TData, TValue>({ columns, data, totals }: DataTa
             // Format the total value
             const formatted = totalCol.formatter ? totalCol.formatter(sum) : new Intl.NumberFormat('id-ID').format(sum);
 
-            totalColumns.push({ index: colIndex, total: sum, formatted });
+            const displayIndex = colIndex + 1;
+
+            totalColumns.push({ index: displayIndex, total: sum, formatted });
           }
 
           // Sort by column index to maintain table order
@@ -101,22 +103,23 @@ export function DataTableFooter<TData, TValue>({ columns, data, totals }: DataTa
             return cells;
           }
 
-          // The first column with a total
-          const firstTotalIndex = Math.min(...totalIndices);
+          // The first column with a total (after potential shift)
+          const firstTotalDisplayIndex = Math.min(...totalIndices);
 
           // Add the "Total" label cell
-          if (firstTotalIndex > 0) {
+          if (firstTotalDisplayIndex > 0) {
             cells.push(
-              <TableCell key="total-label" colSpan={firstTotalIndex}>
+              <TableCell key="total-label" colSpan={firstTotalDisplayIndex}>
                 {totals.label || 'Total'}
               </TableCell>
             );
-          } else {
-            cells.push(<TableCell key="total-label">{totals.label || 'Total'}</TableCell>);
           }
 
-          // Track the last processed column index
-          let currentIndex = firstTotalIndex;
+          // Track the current column up to which cells have been rendered.
+          let currentIndex = firstTotalDisplayIndex > 0 ? firstTotalDisplayIndex : 0;
+          if (firstTotalDisplayIndex === 0 && cells.length > 0) {
+            currentIndex = 0;
+          }
 
           // Process each total column and add spacers between them
           for (let i = 0; i < totalColumns.length; i++) {
@@ -127,9 +130,7 @@ export function DataTableFooter<TData, TValue>({ columns, data, totals }: DataTa
 
             // Add spacer if needed
             if (index > currentIndex) {
-              cells.push(
-                <TableCell key={`spacer-${currentIndex}-${index}`} colSpan={index - currentIndex}></TableCell>
-              );
+              cells.push(<TableCell key={`spacer-${currentIndex}-${index}`} colSpan={index - currentIndex} />);
             }
 
             // Add the total cell
@@ -149,7 +150,7 @@ export function DataTableFooter<TData, TValue>({ columns, data, totals }: DataTa
                 key="final-spacer"
                 colSpan={columns.length - currentIndex}
                 className="bg-neutral-50 dark:bg-neutral-800"
-              ></TableCell>
+              />
             );
           }
 
