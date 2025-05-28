@@ -12,6 +12,14 @@
       }
     ]
   },
-  "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts", "next.config.js", ".next/types/**/*.ts"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "next-env.d.ts",
+    "next.config.js",
+    ".next/types/**/*.ts",
+    "../../packages/ui/src/components/back-button.tsx",
+    "../../packages/ui/src/components/select-plus.tsx"
+  ],
   "exclude": ["node_modules"]
 }

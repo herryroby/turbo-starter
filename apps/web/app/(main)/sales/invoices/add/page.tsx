@@ -1,6 +1,6 @@
 'use client';
 
-import { BackButton } from '@/components/shared/back-button/back-button';
+import { BackButton } from '@repo/ui/components/back-button';
 import SalesInvoiceForm from '../components/invoice.fm';
 
 const AddInvoicePage = () => {
@@ -8,7 +8,7 @@ const AddInvoicePage = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Add Invoice</h1>
+          <h1 className="text-3xl font-medium">Add Invoice</h1>
         </div>
         <BackButton link="/sales/invoices" />
       </div>

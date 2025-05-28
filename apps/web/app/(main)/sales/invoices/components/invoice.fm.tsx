@@ -1,5 +1,7 @@
 'use client';
 
+import { SelectPlus } from '@/components/common';
+import { customers } from '@/data/customers';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/components/button';
 import { Input } from '@repo/ui/components/input';
@@ -153,7 +155,7 @@ const SalesInvoiceForm = () => {
     console.log('Products:', products);
 
     // Here you would typically send the data to your API
-    alert('Tagihan berhasil disimpan!');
+    alert('Invoice saved!');
   };
 
   // Format number as currency
@@ -169,26 +171,43 @@ const SalesInvoiceForm = () => {
             <label htmlFor="customerName" className="mb-1 block text-sm">
               <span className="text-red-500">*</span> Customer
             </label>
-            <Select
-              onValueChange={(value) => form.setValue('customerName', value)}
-              defaultValue={form.watch('customerName')}
-            >
-              <SelectTrigger id="customerName" className="w-full">
-                <SelectValue placeholder="Select customer" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Konopelski Inc">Konopelski Inc</SelectItem>
-                <SelectItem value="Bashirian - Homenick">Bashirian - Homenick</SelectItem>
-                <SelectItem value="Kuhic - Kuhic">Kuhic - Kuhic</SelectItem>
-                <SelectItem value="Dickens, Wiza and Beatty">Dickens, Wiza and Beatty</SelectItem>
-                <SelectItem value="Treutel Inc">Treutel Inc</SelectItem>
-                <SelectItem value="Lynch Group">Lynch Group</SelectItem>
-                <SelectItem value="Denesik - Yost">Denesik - Yost</SelectItem>
-                <SelectItem value="Hoppe Group">Hoppe Group</SelectItem>
-                <SelectItem value="Gerlach, Kreiger and Russel">Gerlach, Kreiger and Russel</SelectItem>
-                <SelectItem value="Smitham, Hane and Hickle">Smitham, Hane and Hickle</SelectItem>
-              </SelectContent>
-            </Select>
+            <SelectPlus
+              data={customers}
+              value={form.watch('customerName')}
+              onChange={(value) => form.setValue('customerName', value)}
+              getOptionLabel={(item) => item.name}
+              getOptionValue={(item) => item.customerId}
+              placeholder="Select customer"
+              width="100%"
+              addButtonLabel="Add customer"
+              renderModal={(close) => (
+                <div className="p-4">
+                  <h3 className="mb-4 text-lg font-medium">Add New Customer</h3>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      // Handle new customer creation here
+                      close();
+                    }}
+                  >
+                    <div className="space-y-4">
+                      <div>
+                        <label htmlFor="newCustomerName" className="mb-1 block text-sm">
+                          Customer Name
+                        </label>
+                        <Input id="newCustomerName" placeholder="Enter customer name" />
+                      </div>
+                      <div className="flex justify-end gap-2">
+                        <Button type="button" variant="outline" onClick={close}>
+                          Cancel
+                        </Button>
+                        <Button type="submit">Save</Button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              )}
+            />
             {form.formState.errors.customerName && (
               <p className="mt-1 text-xs text-red-500">{form.formState.errors.customerName.message}</p>
             )}
@@ -563,7 +582,7 @@ const SalesInvoiceForm = () => {
 
         {/* Submit Button */}
         <div className="flex justify-end">
-          <Button type="submit" className="w-full bg-blue-600 text-white hover:bg-blue-700 md:w-1/3">
+          <Button type="submit" className="w-full md:w-1/3">
             <SaveIcon size={16} /> Save
           </Button>
         </div>
