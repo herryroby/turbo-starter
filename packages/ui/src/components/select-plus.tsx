@@ -1,3 +1,5 @@
+'use client';
+
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@repo/ui/components/dialog';
 import { cn } from '@repo/ui/lib/utils';
 import { Plus, Search } from 'lucide-react';
@@ -13,7 +15,7 @@ interface SelectPlusProps<T> {
   width?: string;
   height?: string;
   addButtonLabel?: string;
-  renderModal: (close: () => void) => React.ReactNode;
+  renderModal?: (close: () => void) => React.ReactNode;
 }
 
 export const SelectPlus = <T,>({
@@ -46,7 +48,7 @@ export const SelectPlus = <T,>({
     <div className="relative">
       <div
         className={cn(
-          'flex h-8 items-center rounded-md border bg-white px-2 py-1 hover:border-blue-500 dark:bg-neutral-900',
+          'data-[placeholder]:text-muted-foreground flex h-8 items-center rounded-md border bg-white px-3 py-1 hover:border-blue-500 dark:bg-neutral-900',
           isFocused || isOpen ? 'border-blue-500' : 'border-input',
           'cursor-text'
         )}
@@ -59,11 +61,11 @@ export const SelectPlus = <T,>({
         <span className={cn('flex-1 truncate text-gray-900', !value && 'text-gray-400')}>
           {value ? getOptionLabel(data.find((item) => getOptionValue(item) === value) as T) : placeholder}
         </span>
-        {isOpen ? (
-          <Search className="ml-2 size-4 text-gray-400" />
+        {isOpen && addButtonLabel ? (
+          <Search className="ml-2 size-3 text-gray-400" />
         ) : (
           <svg
-            className="ml-2 size-4 text-gray-400"
+            className="ml-2 size-3 text-gray-400"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
@@ -80,7 +82,7 @@ export const SelectPlus = <T,>({
         >
           <div className="sticky top-0 z-10 bg-white px-2 py-2 dark:bg-neutral-900">
             <div className="border-input flex items-center rounded-md border px-2">
-              <Search className="size-4 text-gray-400" />
+              <Search className="size-3 text-gray-400" />
               <input
                 ref={inputRef}
                 className="border-input ml-2 h-7 flex-1 bg-white p-1 focus:outline-none dark:bg-neutral-900"
@@ -93,12 +95,12 @@ export const SelectPlus = <T,>({
             </div>
           </div>
           <ul className="max-h-56 overflow-y-auto py-1">
-            {filteredData.length === 0 && <li className="px-4 py-2 text-gray-400">No results</li>}
+            {filteredData.length === 0 && <li className="mx-1 rounded-sm px-4 py-2 text-gray-400">No results</li>}
             {filteredData.map((item) => (
               <li
                 key={getOptionValue(item)}
                 className={cn(
-                  'cursor-pointer px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800',
+                  'mx-1 cursor-pointer rounded-sm px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800',
                   value === getOptionValue(item) && 'bg-blue-100 font-medium text-blue-700'
                 )}
                 onClick={() => {
@@ -112,30 +114,34 @@ export const SelectPlus = <T,>({
               </li>
             ))}
           </ul>
-          <div className="h-10 border-t px-4 py-2">
-            <button
-              type="button"
-              className="flex w-full cursor-pointer items-center gap-2 text-neutral-400 hover:text-blue-700"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsModalOpen(true);
-                setIsOpen(false);
-              }}
-              data-testid="select-add-btn"
-            >
-              <Plus className="size-4" /> {addButtonLabel}
-            </button>
-          </div>
+          {addButtonLabel && (
+            <div className="h-10 border-t px-4 py-2">
+              <button
+                type="button"
+                className="flex w-full cursor-pointer items-center gap-2 text-neutral-400 hover:text-blue-700"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsModalOpen(true);
+                  setIsOpen(false);
+                }}
+                data-testid="select-add-btn"
+              >
+                <Plus className="size-4" /> {addButtonLabel}
+              </button>
+            </div>
+          )}
         </div>
       )}
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-lg">
-          <DialogHeader>
-            <DialogTitle>Add Contact</DialogTitle>
-          </DialogHeader>
-          {renderModal(() => setIsModalOpen(false))}
-        </DialogContent>
-      </Dialog>
+      {renderModal && (
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogContent className="max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Add {addButtonLabel}</DialogTitle>
+            </DialogHeader>
+            {renderModal(() => setIsModalOpen(false))}
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };

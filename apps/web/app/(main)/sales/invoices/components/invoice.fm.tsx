@@ -4,7 +4,6 @@ import { customers } from '@/data/customers';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/components/button';
 import { Input } from '@repo/ui/components/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui/components/select';
 import { SelectPlus } from '@repo/ui/components/select-plus';
 import { ChevronDown, ChevronUp, SaveIcon, Trash2 } from 'lucide-react';
 import { useState } from 'react';
@@ -175,10 +174,9 @@ const SalesInvoiceForm = () => {
               data={customers}
               value={form.watch('customerName')}
               onChange={(value) => form.setValue('customerName', value)}
-              getOptionLabel={(item) => item.name}
-              getOptionValue={(item) => item.customerId}
+              getOptionLabel={(item) => item?.name ?? ''}
+              getOptionValue={(item) => item?.customerId ?? ''}
               placeholder="Select customer"
-              width="100%"
               addButtonLabel="Add customer"
               renderModal={(close) => (
                 <div className="p-4">
@@ -237,16 +235,18 @@ const SalesInvoiceForm = () => {
             <label htmlFor="warehouse" className="mb-1 block text-sm">
               Warehouse
             </label>
-            <Select onValueChange={(value) => form.setValue('warehouse', value)} defaultValue={form.watch('warehouse')}>
-              <SelectTrigger id="warehouse" className="w-full">
-                <SelectValue placeholder="Select warehouse" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Unassigned">Unassigned</SelectItem>
-                <SelectItem value="Main">Main</SelectItem>
-                <SelectItem value="Sub">Sub</SelectItem>
-              </SelectContent>
-            </Select>
+            <SelectPlus
+              data={[
+                { warehouseId: '1', name: 'Unassigned' },
+                { warehouseId: '2', name: 'Main' },
+                { warehouseId: '3', name: 'Sub' }
+              ]}
+              value={form.watch('warehouse')}
+              onChange={(value) => form.setValue('warehouse', value)}
+              getOptionLabel={(item) => item?.name ?? ''}
+              getOptionValue={(item) => item?.warehouseId ?? ''}
+              placeholder="Select warehouse"
+            />
           </div>
         </div>
 
@@ -270,20 +270,19 @@ const SalesInvoiceForm = () => {
             <label htmlFor="termOfPayment" className="mb-1 block text-sm">
               Term of Payment
             </label>
-            <Select
-              onValueChange={(value) => form.setValue('termOfPayment', value)}
-              defaultValue={form.watch('termOfPayment')}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select term of payment" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Net30">Net 30</SelectItem>
-                <SelectItem value="Net15">Net 15</SelectItem>
-                <SelectItem value="Net7">Net 7</SelectItem>
-                <SelectItem value="COD">Cash On Delivery</SelectItem>
-              </SelectContent>
-            </Select>
+            <SelectPlus
+              data={[
+                { termOfPaymentId: '1', name: 'Net 30' },
+                { termOfPaymentId: '2', name: 'Net 15' },
+                { termOfPaymentId: '3', name: 'Net 7' },
+                { termOfPaymentId: '4', name: 'Cash On Delivery' }
+              ]}
+              value={form.watch('termOfPayment')}
+              onChange={(value) => form.setValue('termOfPayment', value)}
+              getOptionLabel={(item) => item?.name ?? ''}
+              getOptionValue={(item) => item?.termOfPaymentId ?? ''}
+              placeholder="Select term of payment"
+            />
           </div>
 
           <div>
