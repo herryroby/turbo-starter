@@ -93,7 +93,7 @@ const AccordionMenuItem = ({ item }: { item: MenuItem }) => {
     return (
       <Link
         href={item.href || '#'}
-        className="text-muted-foreground hover:bg-muted flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors duration-200"
+        className="hover:bg-muted flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors duration-200"
       >
         {item.icon}
         <span>{item.name}</span>
@@ -105,7 +105,7 @@ const AccordionMenuItem = ({ item }: { item: MenuItem }) => {
     <div>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="text-muted-foreground hover:bg-muted flex w-full cursor-pointer items-center justify-between rounded-md px-3 py-2 text-sm transition-colors duration-200"
+        className="hover:bg-muted flex w-full cursor-pointer items-center justify-between rounded-md px-3 py-2 text-sm transition-colors duration-200"
       >
         <div className="flex items-center gap-2">
           {item.icon}
@@ -119,7 +119,7 @@ const AccordionMenuItem = ({ item }: { item: MenuItem }) => {
             <Link
               key={index}
               href={subItem.href || '#'}
-              className="text-muted-foreground hover:bg-muted flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors duration-200"
+              className="hover:bg-muted flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors duration-200"
             >
               {subItem.icon}
               <span>{subItem.name}</span>

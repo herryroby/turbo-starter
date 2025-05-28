@@ -67,7 +67,7 @@ function ListPage<TData extends object>({
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="mb-1 text-3xl font-bold">{pageTitle}</h1>
+            <h1 className="mb-1 text-3xl font-medium">{pageTitle}</h1>
             <p className="text-neutral-500 dark:text-neutral-400">{subPageTitle}</p>
           </div>
           {addLink && (
