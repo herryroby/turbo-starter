@@ -1,6 +1,6 @@
 'use client';
 
-import { BackButton } from '@repo/ui/components/back-button';
+import { BackButton } from '@/components/common';
 import SalesInvoiceForm from '../components/invoice.fm';
 
 const AddInvoicePage = () => {

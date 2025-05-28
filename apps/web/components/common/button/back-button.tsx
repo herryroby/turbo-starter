@@ -1,5 +1,3 @@
-'use client';
-
 import { Button } from '@repo/ui/components/button';
 import { ArrowLeftIcon } from 'lucide-react';
 import Link from 'next/link';

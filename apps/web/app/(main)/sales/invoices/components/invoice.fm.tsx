@@ -1,11 +1,11 @@
 'use client';
 
-import { SelectPlus } from '@/components/common';
 import { customers } from '@/data/customers';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/components/button';
 import { Input } from '@repo/ui/components/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui/components/select';
+import { SelectPlus } from '@repo/ui/components/select-plus';
 import { ChevronDown, ChevronUp, SaveIcon, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';

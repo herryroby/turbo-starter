@@ -7,6 +7,6 @@
       "@repo/ui/*": ["./src/*"]
     }
   },
-  "include": ["src", "src/components/select-plus.tsx"],
+  "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }
