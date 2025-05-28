@@ -13,7 +13,7 @@ import {
   PaginationNext,
   PaginationPrevious
 } from '@repo/ui/components/pagination';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui/components/select';
+import { Select } from '@repo/ui/components/select';
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -76,22 +76,23 @@ export const DataTablePagination = <TData,>({ table }: DataTablePaginationProps<
         <div className="flex min-w-[200px] items-center space-x-2">
           <p className="text-sm font-medium">Rows per page</p>
           <Select
+            className="h-8 w-[70px] cursor-pointer"
+            contentClassName="text-center"
+            data={[
+              { pageSize: 10, name: '10' },
+              { pageSize: 20, name: '20' },
+              { pageSize: 30, name: '30' },
+              { pageSize: 40, name: '40' },
+              { pageSize: 50, name: '50' }
+            ]}
             value={`${table.getState().pagination.pageSize}`}
-            onValueChange={(value) => {
+            onChange={(value) => {
               table.setPageSize(Number(value));
             }}
-          >
-            <SelectTrigger className="h-8 w-[70px] cursor-pointer">
-              <SelectValue placeholder={table.getState().pagination.pageSize} />
-            </SelectTrigger>
-            <SelectContent side="top">
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
-                  {pageSize}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            getOptionLabel={(item) => item?.name ?? ''}
+            getOptionValue={(item) => item?.pageSize.toString() ?? ''}
+            disableFilter
+          ></Select>
         </div>
 
         <Pagination>

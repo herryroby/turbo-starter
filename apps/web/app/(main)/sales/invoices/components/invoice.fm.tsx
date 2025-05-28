@@ -4,7 +4,7 @@ import { customers } from '@/data/customers';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/components/button';
 import { Input } from '@repo/ui/components/input';
-import { SelectPlus } from '@repo/ui/components/select-plus';
+import { Select } from '@repo/ui/components/select';
 import { ChevronDown, ChevronUp, SaveIcon, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -81,7 +81,7 @@ const SalesInvoiceForm = () => {
   ]);
 
   // State for collapsible sections
-  const [isInfoPengirimanOpen, setIsInfoPengirimanOpen] = useState(false);
+  const [isDeliveryInfoOpen, setIsDeliveryInfoOpen] = useState(false);
   const [isAttachmentOpen, setIsAttachmentOpen] = useState(false);
   const [isPaymentConnectOpen, setIsPaymentConnectOpen] = useState(false);
 
@@ -170,7 +170,7 @@ const SalesInvoiceForm = () => {
             <label htmlFor="customerName" className="mb-1 block text-sm">
               <span className="text-red-500">*</span> Customer
             </label>
-            <SelectPlus
+            <Select
               data={customers}
               value={form.watch('customerName')}
               onChange={(value) => form.setValue('customerName', value)}
@@ -235,7 +235,7 @@ const SalesInvoiceForm = () => {
             <label htmlFor="warehouse" className="mb-1 block text-sm">
               Warehouse
             </label>
-            <SelectPlus
+            <Select
               data={[
                 { warehouseId: '1', name: 'Unassigned' },
                 { warehouseId: '2', name: 'Main' },
@@ -270,7 +270,7 @@ const SalesInvoiceForm = () => {
             <label htmlFor="termOfPayment" className="mb-1 block text-sm">
               Term of Payment
             </label>
-            <SelectPlus
+            <Select
               data={[
                 { termOfPaymentId: '1', name: 'Net 30' },
                 { termOfPaymentId: '2', name: 'Net 15' },
@@ -320,13 +320,13 @@ const SalesInvoiceForm = () => {
         <button
           type="button"
           className="flex w-full items-center justify-between text-sm font-medium"
-          onClick={() => setIsInfoPengirimanOpen(!isInfoPengirimanOpen)}
+          onClick={() => setIsDeliveryInfoOpen(!isDeliveryInfoOpen)}
         >
           <span>Shipping Information</span>
-          {isInfoPengirimanOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          {isDeliveryInfoOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
         </button>
 
-        {isInfoPengirimanOpen && (
+        {isDeliveryInfoOpen && (
           <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
             <div>
               <label htmlFor="shippingDate" className="mb-1 block text-sm">
