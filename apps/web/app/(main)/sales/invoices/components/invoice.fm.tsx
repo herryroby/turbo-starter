@@ -81,6 +81,7 @@ const SalesInvoiceForm = () => {
   ]);
 
   // State for collapsible sections
+  const [isSalesPersonInfoOpen, setIsSalesPersonInfoOpen] = useState(false);
   const [isDeliveryInfoOpen, setIsDeliveryInfoOpen] = useState(false);
   const [isAttachmentOpen, setIsAttachmentOpen] = useState(false);
   const [isPaymentConnectOpen, setIsPaymentConnectOpen] = useState(false);
@@ -164,8 +165,8 @@ const SalesInvoiceForm = () => {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="space-y-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div>
           <div>
             <label htmlFor="customerName" className="mb-1 block text-sm">
               <span className="text-red-500">*</span> Customer
@@ -210,47 +211,9 @@ const SalesInvoiceForm = () => {
               <p className="mt-1 text-xs text-red-500">{form.formState.errors.customerName.message}</p>
             )}
           </div>
-
-          <div>
-            <label htmlFor="transactionDate" className="mb-1 block text-sm">
-              <span className="text-red-500">*</span> Transaction Date
-            </label>
-            <Input id="transactionDate" type="date" {...form.register('transactionDate')} className="w-full" />
-            {form.formState.errors.transactionDate && (
-              <p className="mt-1 text-xs text-red-500">{form.formState.errors.transactionDate.message}</p>
-            )}
-          </div>
-
-          <div>
-            <label htmlFor="dueDate" className="mb-1 block text-sm">
-              <span className="text-red-500">*</span> Due Date
-            </label>
-            <Input id="dueDate" type="date" {...form.register('dueDate')} className="w-full" />
-            {form.formState.errors.dueDate && (
-              <p className="mt-1 text-xs text-red-500">{form.formState.errors.dueDate.message}</p>
-            )}
-          </div>
-
-          <div>
-            <label htmlFor="warehouse" className="mb-1 block text-sm">
-              Warehouse
-            </label>
-            <Select
-              data={[
-                { warehouseId: '1', name: 'Unassigned' },
-                { warehouseId: '2', name: 'Main' },
-                { warehouseId: '3', name: 'Sub' }
-              ]}
-              value={form.watch('warehouse')}
-              onChange={(value) => form.setValue('warehouse', value)}
-              getOptionLabel={(item) => item?.name ?? ''}
-              getOptionValue={(item) => item?.warehouseId ?? ''}
-              placeholder="Select warehouse"
-            />
-          </div>
         </div>
 
-        <div className="space-y-4">
+        <div>
           <div>
             <label htmlFor="salesInvoiceId" className="mb-1 block text-sm">
               <span className="text-red-500">*</span> Invoice No
@@ -265,65 +228,125 @@ const SalesInvoiceForm = () => {
               <p className="mt-1 text-xs text-red-500">{form.formState.errors.salesInvoiceId.message}</p>
             )}
           </div>
-
-          <div>
-            <label htmlFor="termOfPayment" className="mb-1 block text-sm">
-              Term of Payment
-            </label>
-            <Select
-              data={[
-                { termOfPaymentId: '1', name: 'Net 30' },
-                { termOfPaymentId: '2', name: 'Net 15' },
-                { termOfPaymentId: '3', name: 'Net 7' },
-                { termOfPaymentId: '4', name: 'Cash On Delivery' }
-              ]}
-              value={form.watch('termOfPayment')}
-              onChange={(value) => form.setValue('termOfPayment', value)}
-              getOptionLabel={(item) => item?.name ?? ''}
-              getOptionValue={(item) => item?.termOfPaymentId ?? ''}
-              placeholder="Select term of payment"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="reference" className="mb-1 block text-sm">
-              Reference
-            </label>
-            <Input id="reference" {...form.register('reference')} placeholder="Reference" className="w-full" />
-          </div>
-
-          <div>
-            <label htmlFor="tag" className="mb-1 block text-sm">
-              Tag
-            </label>
-            <Input id="tag" {...form.register('tag')} placeholder="Tag" className="w-full" />
-          </div>
         </div>
       </div>
 
-      <div className="border-t border-gray-200 pt-4">
-        <h3 className="mb-4 text-sm font-medium">Sales Person</h3>
-        <div className="mb-4">
-          <label htmlFor="salesmanName" className="mb-1 block text-sm">
-            Sales Person
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div>
+          <label htmlFor="transactionDate" className="mb-1 block text-sm">
+            <span className="text-red-500">*</span> Transaction Date
           </label>
-          <Input
-            id="salesmanName"
-            {...form.register('salesmanName')}
-            placeholder="Select sales person"
-            className="w-full md:w-1/2"
+          <Input id="transactionDate" type="date" {...form.register('transactionDate')} className="w-full" />
+          {form.formState.errors.transactionDate && (
+            <p className="mt-1 text-xs text-red-500">{form.formState.errors.transactionDate.message}</p>
+          )}
+        </div>
+
+        <div>
+          <label htmlFor="dueDate" className="mb-1 block text-sm">
+            <span className="text-red-500">*</span> Due Date
+          </label>
+          <Input id="dueDate" type="date" {...form.register('dueDate')} className="w-full" />
+          {form.formState.errors.dueDate && (
+            <p className="mt-1 text-xs text-red-500">{form.formState.errors.dueDate.message}</p>
+          )}
+        </div>
+
+        <div>
+          <label htmlFor="termOfPayment" className="mb-1 block text-sm">
+            Term of Payment
+          </label>
+          <Select
+            data={[
+              { termOfPaymentId: '1', name: 'Net 30' },
+              { termOfPaymentId: '2', name: 'Net 15' },
+              { termOfPaymentId: '3', name: 'Net 7' },
+              { termOfPaymentId: '4', name: 'Cash On Delivery' }
+            ]}
+            value={form.watch('termOfPayment')}
+            onChange={(value) => form.setValue('termOfPayment', value)}
+            getOptionLabel={(item) => item?.name ?? ''}
+            getOptionValue={(item) => item?.termOfPaymentId ?? ''}
+            placeholder="Select term of payment"
           />
+        </div>
+
+        <div>
+          <label htmlFor="warehouse" className="mb-1 block text-sm">
+            <span className="text-red-500">*</span> Warehouse
+          </label>
+          <Select
+            data={[
+              { warehouseId: '1', name: 'Unassigned' },
+              { warehouseId: '2', name: 'Main' },
+              { warehouseId: '3', name: 'Sub' }
+            ]}
+            value={form.watch('warehouse')}
+            onChange={(value) => form.setValue('warehouse', value)}
+            getOptionLabel={(item) => item?.name ?? ''}
+            getOptionValue={(item) => item?.warehouseId ?? ''}
+            placeholder="Select warehouse"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="reference" className="mb-1 block text-sm">
+            Reference
+          </label>
+          <Input id="reference" {...form.register('reference')} placeholder="Reference" className="w-full" />
+        </div>
+
+        <div>
+          <label htmlFor="tag" className="mb-1 block text-sm">
+            Tag
+          </label>
+          <Input id="tag" {...form.register('tag')} placeholder="Tag" className="w-full" />
         </div>
       </div>
 
       <div className="border-t border-gray-200 pt-4">
         <button
           type="button"
-          className="flex w-full items-center justify-between text-sm font-medium"
+          className="flex w-full cursor-pointer items-center justify-between text-sm font-medium"
+          onClick={() => setIsSalesPersonInfoOpen(!isSalesPersonInfoOpen)}
+        >
+          <span className="text-primary">Sales Person Information</span>
+          {isSalesPersonInfoOpen ? (
+            <ChevronUp size={16} className="text-primary" />
+          ) : (
+            <ChevronDown size={16} className="text-primary" />
+          )}
+        </button>
+
+        {isSalesPersonInfoOpen && (
+          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div>
+              <label htmlFor="salesmanName" className="mb-1 block text-sm">
+                Sales Person
+              </label>
+              <Input
+                id="salesmanName"
+                {...form.register('salesmanName')}
+                placeholder="Select sales person"
+                className="w-full"
+              />
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="border-t border-gray-200 pt-4">
+        <button
+          type="button"
+          className="flex w-full cursor-pointer items-center justify-between text-sm font-medium"
           onClick={() => setIsDeliveryInfoOpen(!isDeliveryInfoOpen)}
         >
-          <span>Shipping Information</span>
-          {isDeliveryInfoOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          <span className="text-primary">Shipping Information</span>
+          {isDeliveryInfoOpen ? (
+            <ChevronUp size={16} className="text-primary" />
+          ) : (
+            <ChevronDown size={16} className="text-primary" />
+          )}
         </button>
 
         {isDeliveryInfoOpen && (
