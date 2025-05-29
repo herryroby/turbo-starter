@@ -48,7 +48,7 @@ const SalesInvoicesPage = () => {
       header: 'Invoice Date',
       cell: ({ row }) => {
         const date = row.getValue('date') as Date;
-        return <div>{date.toLocaleDateString()}</div>;
+        return <div>{date.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' })}</div>;
       }
     },
     {
@@ -56,7 +56,7 @@ const SalesInvoicesPage = () => {
       header: 'Due Date',
       cell: ({ row }) => {
         const date = row.getValue('dueDate') as Date;
-        return <div>{date.toLocaleDateString()}</div>;
+        return <div>{date.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' })}</div>;
       }
     },
     {

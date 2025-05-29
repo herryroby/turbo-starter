@@ -1,25 +1,28 @@
 'use client';
 
-import { customers } from '@/data/customers';
+import { suppliers } from '@/data/suppliers';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@repo/ui/components/accordion';
 import { Button } from '@repo/ui/components/button';
 import { Input } from '@repo/ui/components/input';
+import { Label } from '@repo/ui/components/label';
 import { Select } from '@repo/ui/components/select';
-import { ChevronDown, ChevronUp, SaveIcon, Trash2 } from 'lucide-react';
+import { Switch } from '@repo/ui/components/switch';
+import { SaveIcon, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 const invoiceFormSchema = z.object({
-  customerName: z.string().min(1, { message: 'Customer is required' }),
-  salesInvoiceId: z.string().min(1, { message: 'Invoice No is required' }),
+  supplierName: z.string().min(1, { message: 'Supplier is required' }),
+  purchaseInvoiceId: z.string().min(1, { message: 'Invoice No is required' }),
   transactionDate: z.string().min(1, { message: 'Transaction Date is required' }),
   dueDate: z.string().min(1, { message: 'Due Date is required' }),
   termOfPayment: z.string().optional(),
   warehouse: z.string().optional(),
   reference: z.string().optional(),
   tag: z.string().optional(),
-  salesmanName: z.string().optional(),
+  purchasePersonName: z.string().optional(),
   shippingDate: z.string().optional(),
   expedition: z.string().optional(),
   trackingNo: z.string().optional(),
@@ -29,7 +32,7 @@ const invoiceFormSchema = z.object({
   advancePayment: z.string().optional()
 });
 
-type InvoiceFormValues = z.infer<typeof invoiceFormSchema>;
+type PurchaseInvoiceformValues = z.infer<typeof invoiceFormSchema>;
 
 type Product = {
   productId: string;
@@ -43,19 +46,19 @@ type Product = {
   total: number;
 };
 
-const SalesInvoiceForm = () => {
-  const form = useForm<InvoiceFormValues>({
+const PurchaseInvoiceForm = () => {
+  const form = useForm<PurchaseInvoiceformValues>({
     resolver: zodResolver(invoiceFormSchema),
     defaultValues: {
-      customerName: '',
-      salesInvoiceId: '',
+      supplierName: '',
+      purchaseInvoiceId: '',
       transactionDate: new Date().toISOString().split('T')[0],
       dueDate: '',
       termOfPayment: 'Net 30',
       warehouse: '',
       reference: '',
       tag: '',
-      salesmanName: '',
+      purchasePersonName: '',
       shippingDate: '',
       expedition: '',
       trackingNo: '',
@@ -79,12 +82,6 @@ const SalesInvoiceForm = () => {
       total: 0
     }
   ]);
-
-  // State for collapsible sections
-  const [isSalesPersonInfoOpen, setIsSalesPersonInfoOpen] = useState(false);
-  const [isDeliveryInfoOpen, setIsDeliveryInfoOpen] = useState(false);
-  const [isAttachmentOpen, setIsAttachmentOpen] = useState(false);
-  const [isPaymentConnectOpen, setIsPaymentConnectOpen] = useState(false);
 
   // Calculate subtotal, tax, and total
   const calculateSubtotal = () => {
@@ -150,7 +147,7 @@ const SalesInvoiceForm = () => {
   };
 
   // Form submission
-  const onSubmit = (data: InvoiceFormValues) => {
+  const onSubmit = (data: PurchaseInvoiceformValues) => {
     console.log('Form data:', data);
     console.log('Products:', products);
 
@@ -160,7 +157,7 @@ const SalesInvoiceForm = () => {
 
   // Format number as currency
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('id-ID').format(value);
+    return new Intl.NumberFormat('en-US').format(value);
   };
 
   return (
@@ -168,20 +165,20 @@ const SalesInvoiceForm = () => {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
           <div>
-            <label htmlFor="customerName" className="mb-1 block text-sm">
-              <span className="text-red-500">*</span> Customer
+            <label htmlFor="supplierName" className="mb-1 block text-sm">
+              <span className="text-red-500">*</span> Supplier
             </label>
             <Select
-              data={customers}
-              value={form.watch('customerName')}
-              onChange={(value) => form.setValue('customerName', value)}
+              data={suppliers}
+              value={form.watch('supplierName')}
+              onChange={(value) => form.setValue('supplierName', value)}
               getOptionLabel={(item) => item?.name ?? ''}
-              getOptionValue={(item) => item?.customerId ?? ''}
-              placeholder="Select customer"
-              addButtonLabel="Add customer"
+              getOptionValue={(item) => item?.supplierId ?? ''}
+              placeholder="Select supplier"
+              addButtonLabel="Add supplier"
               renderModal={(close) => (
                 <div className="p-4">
-                  <h3 className="mb-4 text-lg font-medium">Add New Customer</h3>
+                  <h3 className="mb-4 text-lg font-medium">Add New Supplier</h3>
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
@@ -191,10 +188,10 @@ const SalesInvoiceForm = () => {
                   >
                     <div className="space-y-4">
                       <div>
-                        <label htmlFor="newCustomerName" className="mb-1 block text-sm">
-                          Customer Name
+                        <label htmlFor="newSupplierName" className="mb-1 block text-sm">
+                          Supplier Name
                         </label>
-                        <Input id="newCustomerName" placeholder="Enter customer name" />
+                        <Input id="newSupplierName" placeholder="Enter supplier name" />
                       </div>
                       <div className="flex justify-end gap-2">
                         <Button type="button" variant="outline" onClick={close}>
@@ -207,25 +204,25 @@ const SalesInvoiceForm = () => {
                 </div>
               )}
             />
-            {form.formState.errors.customerName && (
-              <p className="mt-1 text-xs text-red-500">{form.formState.errors.customerName.message}</p>
+            {form.formState.errors.supplierName && (
+              <p className="mt-1 text-xs text-red-500">{form.formState.errors.supplierName.message}</p>
             )}
           </div>
         </div>
 
         <div>
           <div>
-            <label htmlFor="salesInvoiceId" className="mb-1 block text-sm">
+            <label htmlFor="purchaseInvoiceId" className="mb-1 block text-sm">
               <span className="text-red-500">*</span> Invoice No
             </label>
             <Input
-              id="salesInvoiceId"
-              {...form.register('salesInvoiceId')}
+              id="purchaseInvoiceId"
+              {...form.register('purchaseInvoiceId')}
               placeholder="INV/00046"
               className="w-full"
             />
-            {form.formState.errors.salesInvoiceId && (
-              <p className="mt-1 text-xs text-red-500">{form.formState.errors.salesInvoiceId.message}</p>
+            {form.formState.errors.purchaseInvoiceId && (
+              <p className="mt-1 text-xs text-red-500">{form.formState.errors.purchaseInvoiceId.message}</p>
             )}
           </div>
         </div>
@@ -304,73 +301,55 @@ const SalesInvoiceForm = () => {
         </div>
       </div>
 
-      <div className="border-t border-gray-200 pt-4">
-        <button
-          type="button"
-          className="flex w-full cursor-pointer items-center justify-between text-sm font-medium"
-          onClick={() => setIsSalesPersonInfoOpen(!isSalesPersonInfoOpen)}
-        >
-          <span className="text-primary">Sales Person Information</span>
-          {isSalesPersonInfoOpen ? (
-            <ChevronUp size={16} className="text-primary" />
-          ) : (
-            <ChevronDown size={16} className="text-primary" />
-          )}
-        </button>
-
-        {isSalesPersonInfoOpen && (
-          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
-            <div>
-              <label htmlFor="salesmanName" className="mb-1 block text-sm">
-                Sales Person
-              </label>
-              <Input
-                id="salesmanName"
-                {...form.register('salesmanName')}
-                placeholder="Select sales person"
-                className="w-full"
-              />
-            </div>
-          </div>
-        )}
+      <div className="mb-0 border-t border-gray-200">
+        <Accordion type="multiple" className="w-full">
+          <AccordionItem value="shipping-info">
+            <AccordionTrigger className="text-primary cursor-pointer hover:no-underline">
+              Shipping Information
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                <div>
+                  <label htmlFor="shippingDate" className="mb-1 block text-sm">
+                    Shipping Date
+                  </label>
+                  <Input id="shippingDate" type="date" {...form.register('shippingDate')} className="w-full" />
+                </div>
+                <div>
+                  <label htmlFor="expedition" className="mb-1 block text-sm">
+                    Expedition
+                  </label>
+                  <Input id="expedition" {...form.register('expedition')} placeholder="Expedition" className="w-full" />
+                </div>
+                <div>
+                  <label htmlFor="trackingNo" className="mb-1 block text-sm">
+                    Tracking No
+                  </label>
+                  <Input
+                    id="trackingNo"
+                    {...form.register('trackingNo')}
+                    placeholder="Tracking No"
+                    className="w-full"
+                  />
+                </div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
 
       <div className="border-t border-gray-200 pt-4">
-        <button
-          type="button"
-          className="flex w-full cursor-pointer items-center justify-between text-sm font-medium"
-          onClick={() => setIsDeliveryInfoOpen(!isDeliveryInfoOpen)}
-        >
-          <span className="text-primary">Shipping Information</span>
-          {isDeliveryInfoOpen ? (
-            <ChevronUp size={16} className="text-primary" />
-          ) : (
-            <ChevronDown size={16} className="text-primary" />
-          )}
-        </button>
-
-        {isDeliveryInfoOpen && (
-          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
-            <div>
-              <label htmlFor="shippingDate" className="mb-1 block text-sm">
-                Shipping Date
-              </label>
-              <Input id="shippingDate" type="date" {...form.register('shippingDate')} className="w-full" />
-            </div>
-            <div>
-              <label htmlFor="expedition" className="mb-1 block text-sm">
-                Expedition
-              </label>
-              <Input id="expedition" {...form.register('expedition')} placeholder="Expedition" className="w-full" />
-            </div>
-            <div>
-              <label htmlFor="trackingNo" className="mb-1 block text-sm">
-                Tracking No
-              </label>
-              <Input id="trackingNo" {...form.register('trackingNo')} placeholder="Tracking No" className="w-full" />
-            </div>
+        <div className="flex w-full items-center justify-between">
+          <div className="max-w-xs flex-1">
+            <Input id="barcodeSku" placeholder="Scan Barcode/SKU" className="w-full" />
           </div>
-        )}
+          <div className="ml-4 flex h-10 items-center gap-2">
+            <Label htmlFor="priceIncludeTax" className="self-center text-sm font-normal">
+              Price include tax
+            </Label>
+            <Switch id="priceIncludeTax" />
+          </div>
+        </div>
       </div>
 
       <div className="border-t border-gray-200 pt-4">
@@ -477,140 +456,132 @@ const SalesInvoiceForm = () => {
         </Button>
       </div>
 
-      {/* Attachment Section */}
       <div className="border-t border-gray-200 pt-4">
-        <button
-          type="button"
-          className="flex w-full items-center justify-between text-sm font-medium"
-          onClick={() => setIsAttachmentOpen(!isAttachmentOpen)}
-        >
-          <span>Attachments</span>
-          {isAttachmentOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-        </button>
-
-        {isAttachmentOpen && (
-          <div className="mt-4">
-            <Input type="file" className="w-full" />
-          </div>
-        )}
-      </div>
-
-      {/* Payment Connect */}
-      <div className="border-t border-gray-200 pt-4">
-        <button
-          type="button"
-          className="flex w-full items-center justify-between text-sm font-medium"
-          onClick={() => setIsPaymentConnectOpen(!isPaymentConnectOpen)}
-        >
-          <span>Payment Connect</span>
-          {isPaymentConnectOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-        </button>
-
-        {isPaymentConnectOpen && (
-          <div className="mt-4">
-            <textarea
-              className="w-full rounded-md border border-gray-300 p-2"
-              rows={4}
-              placeholder="Payment connect details..."
-            />
-          </div>
-        )}
-      </div>
-
-      {/* Totals */}
-      <div className="border-t border-gray-200 pt-4">
-        <div className="flex flex-col items-end space-y-2">
-          <div className="flex w-full justify-between md:w-1/3">
-            <span className="text-sm">Sub Total</span>
-            <span>{formatCurrency(calculateSubtotal())}</span>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div>
+            <Accordion type="multiple" className="w-full">
+              <AccordionItem value="message">
+                <AccordionTrigger className="text-primary cursor-pointer hover:no-underline">Message</AccordionTrigger>
+                <AccordionContent>
+                  <div className="mt-4">
+                    <textarea
+                      className="w-full rounded-md border border-gray-300 p-2"
+                      rows={4}
+                      placeholder="Enter message..."
+                    />
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="attachments">
+                <AccordionTrigger className="text-primary cursor-pointer hover:no-underline">
+                  Attachments
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="mt-4">
+                    <Input type="file" className="w-full" />
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
 
-          <div className="flex w-full items-center justify-between md:w-1/3">
-            <label htmlFor="taxAmount" className="text-sm">
-              Tax
-            </label>
-            <div className="flex items-center">
-              <Input
-                id="taxAmount"
-                type="number"
-                min="0"
-                max="100"
-                {...form.register('taxAmount')}
-                className="w-20 text-right"
-              />
-              <span className="ml-1">%</span>
-              <span className="ml-2 w-24 text-right">{formatCurrency(calculateTax())}</span>
+          <div>
+            {/* Totals */}
+            <div>
+              <div className="flex w-full flex-col items-end space-y-2">
+                <div className="flex w-full justify-between">
+                  <span className="text-sm font-medium">Sub Total</span>
+                  <span className="text-sm font-medium">{formatCurrency(calculateSubtotal())}</span>
+                </div>
+
+                <div className="flex w-full items-center justify-between">
+                  <label htmlFor="taxAmount" className="text-sm">
+                    Tax
+                  </label>
+                  <div className="flex items-center">
+                    <Input
+                      id="taxAmount"
+                      type="number"
+                      min="0"
+                      max="100"
+                      {...form.register('taxAmount')}
+                      className="w-20 text-right"
+                    />
+                    <span className="ml-1">%</span>
+                    <span className="ml-2 w-24 text-right">{formatCurrency(calculateTax())}</span>
+                  </div>
+                </div>
+
+                <div className="flex w-full items-center justify-between">
+                  <label htmlFor="shippingCost" className="text-sm">
+                    Shipping Cost
+                  </label>
+                  <div className="flex items-center">
+                    <Input
+                      id="shippingCost"
+                      type="number"
+                      min="0"
+                      {...form.register('shippingCost')}
+                      className="w-32 text-right"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex w-full items-center justify-between">
+                  <label htmlFor="paymentDiscount" className="text-sm">
+                    Payment Discount
+                  </label>
+                  <div className="flex items-center">
+                    <Input
+                      id="paymentDiscount"
+                      type="number"
+                      min="0"
+                      {...form.register('paymentDiscount')}
+                      className="w-32 text-right"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex w-full justify-between">
+                  <span className="text-sm font-medium">Shipping Cost</span>
+                  <span className="text-sm font-medium">
+                    {formatCurrency(parseFloat(form.watch('shippingCost') || '0'))}
+                  </span>
+                </div>
+
+                <div className="flex w-full items-center justify-between">
+                  <label htmlFor="advancePayment" className="text-sm">
+                    Advance Payment
+                  </label>
+                  <div className="flex items-center">
+                    <Input
+                      id="advancePayment"
+                      type="number"
+                      min="0"
+                      {...form.register('advancePayment')}
+                      className="w-32 text-right"
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-5 flex w-full justify-between border-t border-gray-200 pt-2">
+                  <span className="font-medium">Total</span>
+                  <span className="font-medium">{formatCurrency(calculateTotal())}</span>
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <div className="flex w-full justify-end">
+                <Button type="submit" className="w-full">
+                  <SaveIcon size={16} /> Save
+                </Button>
+              </div>
             </div>
           </div>
-
-          <div className="flex w-full items-center justify-between md:w-1/3">
-            <label htmlFor="shippingCost" className="text-sm">
-              Shipping Cost
-            </label>
-            <div className="flex items-center">
-              <Input
-                id="shippingCost"
-                type="number"
-                min="0"
-                {...form.register('shippingCost')}
-                className="w-32 text-right"
-              />
-              <span className="ml-1">Rp</span>
-            </div>
-          </div>
-
-          <div className="flex w-full items-center justify-between md:w-1/3">
-            <label htmlFor="paymentDiscount" className="text-sm">
-              Payment Discount
-            </label>
-            <div className="flex items-center">
-              <Input
-                id="paymentDiscount"
-                type="number"
-                min="0"
-                {...form.register('paymentDiscount')}
-                className="w-32 text-right"
-              />
-              <span className="ml-1">Rp</span>
-            </div>
-          </div>
-
-          <div className="flex w-full justify-between md:w-1/3">
-            <span className="text-sm">Shipping Cost</span>
-            <span>{formatCurrency(parseFloat(form.watch('shippingCost') || '0'))}</span>
-          </div>
-
-          <div className="flex w-full items-center justify-between md:w-1/3">
-            <label htmlFor="advancePayment" className="text-sm">
-              Advance Payment
-            </label>
-            <div className="flex items-center">
-              <Input
-                id="advancePayment"
-                type="number"
-                min="0"
-                {...form.register('advancePayment')}
-                className="w-32 text-right"
-              />
-              <span className="ml-1">Rp</span>
-            </div>
-          </div>
-
-          <div className="mb-5 flex w-full justify-between border-t border-gray-200 pt-2 md:w-1/3">
-            <span className="font-medium">Total</span>
-            <span className="font-medium">{formatCurrency(calculateTotal())}</span>
-          </div>
-        </div>
-
-        {/* Submit Button */}
-        <div className="flex justify-end">
-          <Button type="submit" className="w-full md:w-1/3">
-            <SaveIcon size={16} /> Save
-          </Button>
         </div>
       </div>
     </form>
   );
 };
 
-export default SalesInvoiceForm;
+export default PurchaseInvoiceForm;
