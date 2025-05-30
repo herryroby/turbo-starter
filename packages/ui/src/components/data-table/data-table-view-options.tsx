@@ -58,7 +58,7 @@ export const DataTableViewOptions = <TData,>({ table }: DataTableViewOptionsProp
             return (
               <div
                 key={columnId}
-                className="flex cursor-pointer items-center space-x-4 rounded px-2 py-2 hover:bg-slate-50 dark:hover:bg-slate-900"
+                className="flex cursor-pointer items-center space-x-4 rounded px-2 py-2 hover:bg-neutral-50 dark:hover:bg-neutral-900"
                 onClick={() => column.toggleVisibility(!column.getIsVisible())}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {

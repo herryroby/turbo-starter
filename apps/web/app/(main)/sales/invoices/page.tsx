@@ -22,7 +22,7 @@ const SalesInvoicesPage = () => {
       cell: ({ row }: { row: Row<SalesInvoice> }) => (
         <button
           type="button"
-          className="m-0 cursor-pointer border-none bg-transparent p-0 font-semibold"
+          className="text-primary m-0 cursor-pointer border-none bg-transparent p-0"
           onClick={() => redirectToEdit(row.original)}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -60,6 +60,24 @@ const SalesInvoicesPage = () => {
       }
     },
     {
+      accessorKey: 'amount',
+      header: () => <div className="text-right">Amount</div>,
+      cell: ({ row }: { row: Row<SalesInvoice> }) => {
+        const amount = row.getValue('amount') as number;
+        const formatted = new Intl.NumberFormat('id-ID').format(amount);
+        return <div className="text-right">{formatted}</div>;
+      }
+    },
+    {
+      accessorKey: 'totalAmount',
+      header: () => <div className="text-right">Total</div>,
+      cell: ({ row }: { row: Row<SalesInvoice> }) => {
+        const totalAmount = row.getValue('totalAmount') as number;
+        const formatted = new Intl.NumberFormat('id-ID').format(totalAmount);
+        return <div className="text-right font-medium">{formatted}</div>;
+      }
+    },
+    {
       accessorKey: 'status',
       header: () => <div className="text-center">Status</div>,
       cell: ({ row }: { row: Row<SalesInvoice> }) => {
@@ -77,24 +95,6 @@ const SalesInvoicesPage = () => {
             </div>
           </div>
         );
-      }
-    },
-    {
-      accessorKey: 'amount',
-      header: () => <div className="text-right">Amount</div>,
-      cell: ({ row }: { row: Row<SalesInvoice> }) => {
-        const amount = row.getValue('amount') as number;
-        const formatted = new Intl.NumberFormat('id-ID').format(amount);
-        return <div className="text-right">{formatted}</div>;
-      }
-    },
-    {
-      accessorKey: 'totalAmount',
-      header: () => <div className="text-right">Total</div>,
-      cell: ({ row }: { row: Row<SalesInvoice> }) => {
-        const totalAmount = row.getValue('totalAmount') as number;
-        const formatted = new Intl.NumberFormat('id-ID').format(totalAmount);
-        return <div className="text-right font-medium">{formatted}</div>;
       }
     }
   ];

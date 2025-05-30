@@ -307,7 +307,7 @@ export const DataTable = <TData extends object, TValue = unknown>({
         onExportCSV={exportToCSV}
       />
       <div className="border-b border-l-0 border-r-0">
-        <Table>
+        <Table className="bg-neutral-50 dark:bg-neutral-800">
           <TableHeader className="bg-neutral-50 dark:bg-neutral-800">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -371,7 +371,7 @@ export const DataTable = <TData extends object, TValue = unknown>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className="dark:bg-card bg-white">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row: Row<TData>) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
