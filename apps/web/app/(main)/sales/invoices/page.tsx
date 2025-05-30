@@ -44,10 +44,10 @@ const SalesInvoicesPage = () => {
       cell: ({ row }) => <div className="max-w-[200px] truncate">{row.getValue('customerName')}</div>
     },
     {
-      accessorKey: 'date',
+      accessorKey: 'createdAt',
       header: 'Invoice Date',
       cell: ({ row }) => {
-        const date = row.getValue('date') as Date;
+        const date = row.getValue('createdAt') as Date;
         return <div>{date.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' })}</div>;
       }
     },
@@ -104,11 +104,12 @@ const SalesInvoicesPage = () => {
       pageTitle="Sales Invoices"
       subPageTitle="Manage all sales invoices"
       columns={columns}
+      data={data}
+      totals={{ columns: [{ id: 'amount' }, { id: 'totalAmount' }] }}
       filterColumn="customerName"
       searchPlaceholder="Search customer..."
-      data={data}
-      addLink="/sales/invoices/add"
       defaultSortableColumns={['invoiceId', 'customerName', 'date', 'dueDate', 'status', 'amount', 'totalAmount']}
+      addLink="/sales/invoices/add"
     />
   );
 };

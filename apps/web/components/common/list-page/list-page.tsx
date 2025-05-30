@@ -17,22 +17,26 @@ import Link from 'next/link';
 interface ListPageProps<TData extends object> {
   pageTitle: string;
   subPageTitle?: string;
+  data: TData[];
   columns: CustomColumnDef<TData, unknown>[];
+  totals?: {
+    columns: { id: string }[];
+  };
   filterColumn: string;
   searchPlaceholder: string;
   defaultSortableColumns?: string[];
-  data: TData[];
   addLink?: string;
 }
 
 function ListPage<TData extends object>({
   pageTitle,
   subPageTitle,
+  data,
   columns,
+  totals,
   filterColumn,
   searchPlaceholder,
   defaultSortableColumns,
-  data,
   addLink
 }: ListPageProps<TData>) {
   const tableColumns: CustomColumnDef<TData, unknown>[] = [
@@ -74,7 +78,7 @@ function ListPage<TData extends object>({
             <Link href={addLink}>
               <Button>
                 <FilePlus className="size-4" />
-                <span>Add {pageTitle}</span>
+                <span>Add {pageTitle.slice(0, -1)}</span>
               </Button>
             </Link>
           )}
@@ -82,7 +86,7 @@ function ListPage<TData extends object>({
         <DataTable
           columns={tableColumns}
           data={data}
-          totals={{ columns: [{ id: 'amount' }, { id: 'totalAmount' }] }}
+          totals={totals}
           filterColumn={filterColumn}
           searchPlaceholder={searchPlaceholder}
           defaultSortableColumns={defaultSortableColumns}

@@ -3,7 +3,7 @@
 import { BackButton } from '@/components/common';
 import PurchaseInvoiceForm from '../components/purchase-invoice.fm';
 
-const AddInvoicePage = () => {
+const AddPurchaseInvoicePage = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -20,4 +20,4 @@ const AddInvoicePage = () => {
   );
 };
 
-export default AddInvoicePage;
+export default AddPurchaseInvoicePage;

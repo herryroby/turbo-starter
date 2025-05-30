@@ -4,6 +4,7 @@ import { Header } from '@/components/header/header';
 import { SidebarProvider, useSidebar } from '@/components/providers/sidebar-provider';
 import { Sidebar } from '@/components/sidebar/sidebar';
 import { Card, CardContent } from '@repo/ui/components/card';
+import { Toaster } from '@repo/ui/components/sonner';
 import { cn } from '@repo/ui/lib/utils';
 import { ReactNode } from 'react';
 
@@ -39,6 +40,7 @@ const MainLayoutContent = ({ children }: { children: ReactNode }) => {
             </Card>
           </div>
         </main>
+        <Toaster />
       </div>
     </div>
   );

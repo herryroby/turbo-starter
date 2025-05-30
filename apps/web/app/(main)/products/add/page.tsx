@@ -1,23 +1,23 @@
 'use client';
 
 import { BackButton } from '@/components/common';
-import SalesInvoiceForm from '../components/sales-invoice.fm';
+import ProductForm from '../components/product.fm';
 
-const AddSalesInvoicePage = () => {
+const AddProductPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-medium">Add Sales Invoice</h1>
+          <h1 className="text-3xl font-medium">Add Product</h1>
         </div>
-        <BackButton link="/sales/invoices" />
+        <BackButton link="/products" />
       </div>
 
       <div className="rounded-lg border border-neutral-200 bg-white p-6 dark:border-neutral-800 dark:bg-neutral-900">
-        <SalesInvoiceForm />
+        <ProductForm />
       </div>
     </div>
   );
 };
 
-export default AddSalesInvoicePage;
+export default AddProductPage;

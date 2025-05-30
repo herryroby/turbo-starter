@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-const invoiceFormSchema = z.object({
+const salesInvoiceFormSchema = z.object({
   customerName: z.string().min(1, { message: 'Customer is required' }),
   salesInvoiceId: z.string().min(1, { message: 'Invoice No is required' }),
   transactionDate: z.string().min(1, { message: 'Transaction Date is required' }),
@@ -32,7 +32,7 @@ const invoiceFormSchema = z.object({
   advancePayment: z.string().optional()
 });
 
-type SalesInvoiceFormValues = z.infer<typeof invoiceFormSchema>;
+type SalesInvoiceFormValues = z.infer<typeof salesInvoiceFormSchema>;
 
 type Product = {
   productId: string;
@@ -48,7 +48,7 @@ type Product = {
 
 const SalesInvoiceForm = () => {
   const form = useForm<SalesInvoiceFormValues>({
-    resolver: zodResolver(invoiceFormSchema),
+    resolver: zodResolver(salesInvoiceFormSchema),
     defaultValues: {
       customerName: '',
       salesInvoiceId: '',

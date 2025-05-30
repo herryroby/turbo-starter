@@ -8,4 +8,7 @@ export interface Customer {
   country: string;
   phone: string;
   email: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }

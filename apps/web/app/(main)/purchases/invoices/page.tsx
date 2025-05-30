@@ -22,7 +22,7 @@ const PurchaseInvoicesPage = () => {
       cell: ({ row }: { row: Row<PurchaseInvoice> }) => (
         <button
           type="button"
-          className="m-0 cursor-pointer border-none bg-transparent p-0 font-semibold"
+          className="text-primary m-0 cursor-pointer border-none bg-transparent p-0"
           onClick={() => redirectToEdit(row.original)}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -44,10 +44,10 @@ const PurchaseInvoicesPage = () => {
       cell: ({ row }) => <div className="max-w-[200px] truncate">{row.getValue('supplierName')}</div>
     },
     {
-      accessorKey: 'date',
+      accessorKey: 'createdAt',
       header: 'Invoice Date',
       cell: ({ row }: { row: Row<PurchaseInvoice> }) => {
-        const date = row.getValue('date') as Date;
+        const date = row.getValue('createdAt') as Date;
         return <div>{date.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' })}</div>;
       }
     },
@@ -104,11 +104,12 @@ const PurchaseInvoicesPage = () => {
       pageTitle="Purchase Invoices"
       subPageTitle="Manage all purchase invoices"
       columns={columns}
+      data={data}
+      totals={{ columns: [{ id: 'amount' }, { id: 'totalAmount' }] }}
       filterColumn="supplierName"
       searchPlaceholder="Search supplier..."
-      data={data}
-      addLink="/purchases/invoices/add"
       defaultSortableColumns={['invoiceId', 'supplierName', 'date', 'dueDate', 'status', 'amount', 'totalAmount']}
+      addLink="/purchases/invoices/add"
     />
   );
 };

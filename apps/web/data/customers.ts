@@ -14,7 +14,10 @@ const createCustomer = (nums: number) => {
       zip: faker.location.zipCode(),
       country: faker.location.country(),
       phone: faker.phone.number(),
-      email: faker.internet.email()
+      email: faker.internet.email(),
+      isActive: faker.datatype.boolean(),
+      createdAt: faker.date.past(),
+      updatedAt: faker.date.recent()
     });
   }
   return customer;

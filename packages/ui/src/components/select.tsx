@@ -1,6 +1,6 @@
 'use client';
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@repo/ui/components/dialog';
+import { Dialog, DialogContent, DialogHeader } from '@repo/ui/components/dialog';
 import { cn } from '@repo/ui/lib/utils';
 import { Plus, Search } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
@@ -162,9 +162,7 @@ export const Select = <T,>({
       {renderModal && (
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogContent className="max-w-lg">
-            <DialogHeader>
-              <DialogTitle>Add {addButtonLabel}</DialogTitle>
-            </DialogHeader>
+            <DialogHeader>{/* <DialogTitle>Add {addButtonLabel}</DialogTitle> */}</DialogHeader>
             {renderModal(() => setIsModalOpen(false))}
           </DialogContent>
         </Dialog>
