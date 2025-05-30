@@ -1,4 +1,5 @@
 import { ClientProvider } from '@/components/providers/client-provider';
+import { ClerkProvider } from '@clerk/nextjs';
 import '@repo/ui/globals.css';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
@@ -25,12 +26,13 @@ const RootLayout = ({
   children: ReactNode;
 }>) => {
   return (
-    <html lang="en" suppressHydrationWarning className="light">
-      <head />
-      <body className={`${geistSans.variable} ${geistMono.variable} overflow-hidden`}>
-        <ClientProvider>{children}</ClientProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning className="light">
+        <body className={`${geistSans.variable} ${geistMono.variable} overflow-hidden`}>
+          <ClientProvider>{children}</ClientProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 };
 

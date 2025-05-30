@@ -1,7 +1,7 @@
 'use client';
 
-import { UserDropdown } from '@/components/header/user-dropdown';
 import { useSidebar } from '@/components/providers/sidebar-provider';
+import { SignedIn, UserButton } from '@clerk/nextjs';
 import { Button } from '@repo/ui/components/button';
 import { ThemeToggle } from '@repo/ui/components/theme-toggle';
 import { Bell, Menu, MessageCircle } from 'lucide-react';
@@ -18,14 +18,16 @@ export function Header() {
       </div>
 
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon">
-          <Bell className="size-5" />
-        </Button>
-        <Button variant="ghost" size="icon">
-          <MessageCircle className="size-5" />
-        </Button>
-        <ThemeToggle />
-        <UserDropdown />
+        <SignedIn>
+          <Button variant="ghost" size="icon">
+            <Bell className="size-5" />
+          </Button>
+          <Button variant="ghost" size="icon">
+            <MessageCircle className="size-5" />
+          </Button>
+          <ThemeToggle />
+          <UserButton afterSignOutUrl="/sign-in" />
+        </SignedIn>
       </div>
     </header>
   );

@@ -12,6 +12,8 @@
     "refresh": "rm -rf node_modules .next"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.20.2",
+    "@clerk/types": "^4.59.3",
     "@hookform/resolvers": "^5.0.1",
     "@repo/ui": "workspace:*",
     "@tanstack/react-table": "^8.21.3",

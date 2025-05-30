@@ -12,14 +12,6 @@ interface MainLayoutProps {
   children: ReactNode;
 }
 
-const MainLayout = ({ children }: MainLayoutProps) => {
-  return (
-    <SidebarProvider>
-      <MainLayoutContent>{children}</MainLayoutContent>
-    </SidebarProvider>
-  );
-};
-
 const MainLayoutContent = ({ children }: { children: ReactNode }) => {
   const { isOpen } = useSidebar();
 
@@ -43,6 +35,14 @@ const MainLayoutContent = ({ children }: { children: ReactNode }) => {
         <Toaster />
       </div>
     </div>
+  );
+};
+
+const MainLayout = ({ children }: MainLayoutProps) => {
+  return (
+    <SidebarProvider>
+      <MainLayoutContent>{children}</MainLayoutContent>
+    </SidebarProvider>
   );
 };
 
