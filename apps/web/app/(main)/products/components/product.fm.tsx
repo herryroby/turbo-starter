@@ -27,18 +27,6 @@ const productFormSchema = z.object({
 
 type ProductFormValues = z.infer<typeof productFormSchema>;
 
-type Product = {
-  productId: string;
-  name: string;
-  description: string;
-  quantity: number;
-  unit: string;
-  price: number;
-  discount: number;
-  taxRate: number;
-  total: number;
-};
-
 const ProductForm = () => {
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
