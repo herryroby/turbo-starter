@@ -13,6 +13,8 @@ export default clerkMiddleware(async (auth, request) => {
       return NextResponse.redirect(signInUrl);
     }
   }
+
+  return NextResponse.next();
 });
 
 export const config = {
