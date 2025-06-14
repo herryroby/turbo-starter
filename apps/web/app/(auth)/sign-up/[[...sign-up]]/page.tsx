@@ -29,7 +29,6 @@ const SignUpPage = () => {
             footerActionLink: 'text-primary hover:text-primary/90'
           }
         }}
-        afterSignUpUrl="/dashboard"
         signInUrl="/sign-in"
       />
     </div>

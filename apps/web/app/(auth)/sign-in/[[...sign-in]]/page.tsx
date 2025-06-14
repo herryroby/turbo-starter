@@ -36,7 +36,6 @@ const SignInPage = () => {
                     footerActionLink: 'text-blue-700 hover:text-blue-800'
                   }
                 }}
-                afterSignInUrl="/dashboard"
                 signUpUrl="/sign-up"
               />
             </CardContent>
