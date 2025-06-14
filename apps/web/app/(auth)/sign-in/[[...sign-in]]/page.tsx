@@ -8,7 +8,7 @@ const SignInPage = () => {
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-neutral-200">
       <div className="flex w-full max-w-4xl overflow-hidden rounded-2xl bg-white/90 shadow-xl">
-        {/* Left: Welcome Section */}
+        {/* Left: Logo Section */}
         <div className="relative flex w-1/2 flex-col justify-center bg-gradient-to-br from-blue-800 to-blue-400 p-10 text-white">
           <div className="flex flex-col items-center justify-center"></div>
           <div className="dark:hidden">

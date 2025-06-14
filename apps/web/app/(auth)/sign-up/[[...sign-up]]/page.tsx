@@ -8,7 +8,7 @@ const SignUpPage = () => {
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-neutral-200">
       <div className="flex w-full max-w-4xl overflow-hidden rounded-2xl bg-white/90 shadow-xl">
-        {/* Left: Welcome Section */}
+        {/* Left: Logo Section */}
         <div className="relative flex w-1/2 flex-col justify-center bg-gradient-to-br from-blue-800 to-blue-400 p-10 text-white">
           <div className="flex flex-col items-center justify-center"></div>
           <div className="dark:hidden">
@@ -18,7 +18,7 @@ const SignUpPage = () => {
             <Image src="/logo-dark.webp" alt="Qubix Logo" fill className="rounded-sm object-contain" priority />
           </div>
         </div>
-        {/* Right: Sign In Form */}
+        {/* Right: Sign Up Form */}
         <div className="flex w-3/5 flex-col items-center justify-center p-9 pl-10">
           <Card className="w-full border-none bg-transparent p-0 shadow-none">
             <CardContent className="p-0">
