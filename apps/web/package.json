@@ -1,11 +1,14 @@
 {
   "name": "web",
-  "version": "0.1.0",
-  "type": "module",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
   "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "dotenv -e ../../.env.local -- next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint --max-warnings 0",
     "check-types": "tsc --noEmit",

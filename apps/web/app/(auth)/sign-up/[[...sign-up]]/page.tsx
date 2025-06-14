@@ -12,7 +12,7 @@ const SignUpPage = () => {
             <Image src="/logo.webp" alt="Qubix Logo" fill className="rounded-sm object-contain" priority />
           </div>
           <div className="hidden dark:block">
-            <Image src="/logo-dark.png" alt="Qubix Logo" fill className="rounded-sm object-contain" priority />
+            <Image src="/logo-dark.webp" alt="Qubix Logo" fill className="rounded-sm object-contain" priority />
           </div>
         </div>
       </div>

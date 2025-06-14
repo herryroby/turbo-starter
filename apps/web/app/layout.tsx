@@ -26,7 +26,7 @@ const RootLayout = ({
   children: ReactNode;
 }>) => {
   return (
-    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+    <ClerkProvider afterSignOutUrl="/sign-in">
       <html lang="en" suppressHydrationWarning className="light">
         <body className={`${geistSans.variable} ${geistMono.variable} overflow-hidden`}>
           <ClientProvider>{children}</ClientProvider>

@@ -26,7 +26,7 @@ export function Header() {
             <MessageCircle className="size-5" />
           </Button>
           <ThemeToggle />
-          <UserButton afterSignOutUrl="/sign-in" />
+          <UserButton />
         </SignedIn>
       </div>
     </header>
