@@ -3,10 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui/components/ca
 import React from 'react';
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-interface CashCardProps {
-  // Extend with props if needed
-}
-
 const data = [
   { name: 'Dec', value: 20000000 },
   { name: 'Jan', value: 21000000 },
@@ -16,7 +12,7 @@ const data = [
   { name: 'May', value: 21000000 }
 ];
 
-export const CashCard: React.FC<CashCardProps> = () => {
+export const CashCard: React.FC = () => {
   return (
     <Card className="h-full">
       <CardHeader>
