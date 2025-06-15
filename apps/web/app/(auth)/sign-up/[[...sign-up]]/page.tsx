@@ -1,7 +1,7 @@
 'use client';
 
 import { SignUp } from '@clerk/nextjs';
-import { Card, CardContent } from '@repo/ui/components/card';
+import { Card, CardContent } from '@repo/ui';
 import Image from 'next/image';
 
 const SignUpPage = () => {

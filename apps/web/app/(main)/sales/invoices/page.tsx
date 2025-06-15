@@ -1,6 +1,6 @@
 'use client';
 
-import ListPage from '@/components/common/list-page/list-page';
+import ListPage from '@/components/shared/list-page';
 import { salesInvoices } from '@/data/sales';
 import type { SalesInvoice } from '@/types/sales';
 import type { ColumnDef, Row } from '@tanstack/react-table';

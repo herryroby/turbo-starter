@@ -1,5 +1,5 @@
 {
-  "name": "@qubix/web",
+  "name": "web",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -18,7 +18,7 @@
     "@clerk/nextjs": "^6.20.2",
     "@clerk/types": "^4.59.3",
     "@hookform/resolvers": "^5.0.1",
-    "@qubix/ui": "workspace:*",
+    "@repo/ui": "workspace:*",
     "@tanstack/react-table": "^8.21.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -37,8 +37,8 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.7.0",
-    "@qubix/eslint-config": "workspace:*",
-    "@qubix/typescript-config": "workspace:*",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "@tailwindcss/postcss": "^4.1.4",
     "@types/node": "^22.14.0",
     "@types/react": "19.1.0",

@@ -1,3 +1,6 @@
+'use client';
+
+import { Button } from '@repo/ui';
 import {
   AccountWatchlistCard,
   BankAccountCard,
@@ -11,8 +14,7 @@ import {
   ReceivablePayableCard,
   SalesCard,
   TotalCashInOutCard
-} from '@/components/dashboard';
-import { Button } from '@repo/ui/components/button';
+} from './_components';
 
 const DashboardPage = (): React.ReactElement => {
   return (

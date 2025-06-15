@@ -1,7 +1,7 @@
 'use client';
 
-import { BackButton } from '@/components/common';
-import PurchaseInvoiceForm from '../components/purchase-invoice.fm';
+import { BackButton } from '@/components/composite/back-button';
+import PurchaseInvoiceForm from '../_components/purchase-invoice.fm';
 
 const AddPurchaseInvoicePage = () => {
   return (

@@ -1,7 +1,7 @@
 'use client';
 
-import { BackButton } from '@/components/common';
-import ProductForm from '../components/product.fm';
+import { BackButton } from '@/components/composite/back-button';
+import ProductForm from '../_components/product.fm';
 
 const AddProductPage = () => {
   return (

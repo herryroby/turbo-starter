@@ -1,11 +1,9 @@
 'use client';
 
-import { Header } from '@/components/header/header';
+import { Header } from '@/components/layout/header/header';
+import { Sidebar } from '@/components/layout/sidebar';
 import { SidebarProvider, useSidebar } from '@/components/providers/sidebar-provider';
-import { Sidebar } from '@/components/sidebar/sidebar';
-import { Card, CardContent } from '@repo/ui/components/card';
-import { Toaster } from '@repo/ui/components/sonner';
-import { cn } from '@repo/ui/lib/utils';
+import { Card, CardContent, cn, Toaster } from '@repo/ui';
 import { ReactNode } from 'react';
 
 interface MainLayoutProps {

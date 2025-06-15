@@ -1,7 +1,7 @@
 'use client';
 
-import { BackButton } from '@/components/common';
-import SalesInvoiceForm from '../components/sales-invoice.fm';
+import { BackButton } from '@/components/composite/back-button';
+import SalesInvoiceForm from '../_components/sales-invoice.fm';
 
 const AddSalesInvoicePage = () => {
   return (
