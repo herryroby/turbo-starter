@@ -4,7 +4,6 @@
   "private": true,
   "exports": {
     "./components/*": "./src/components/*.tsx",
-    "./components/data-table": "./src/components/data-table/index.tsx",
     "./hooks/*": "./src/hooks/*.ts",
     "./lib/*": "./src/lib/*.ts",
     "./postcss.config": "./postcss.config.mjs",
