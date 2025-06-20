@@ -5,11 +5,14 @@ node_modules
 .pnp
 .pnp.js
 
-# Local env files
+# env files
 .env
 .env.local
+.env.development
 .env.development.local
+.env.test
 .env.test.local
+.env.production
 .env.production.local
 
 # Testing
@@ -26,6 +29,9 @@ coverage
 out/
 build
 dist
+
+# MCP
+/.cursor/mcp.json
 
 
 # Debug
