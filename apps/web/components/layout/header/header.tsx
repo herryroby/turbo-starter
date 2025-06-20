@@ -1,9 +1,9 @@
 'use client';
 
+import { UserDropdown } from '@/components/layout/header/user-dropdown';
 import { useSidebar } from '@/components/providers/sidebar-provider';
 import { Button } from '@repo/ui/components/ui/button';
 import { Bell, Menu, MessageCircle } from 'lucide-react';
-import LogoutButton from '@/components/auth/logout-button';
 
 export function Header() {
   const { toggle } = useSidebar();
@@ -23,7 +23,7 @@ export function Header() {
         <Button variant="ghost" size="icon">
           <MessageCircle className="size-5" />
         </Button>
-        <LogoutButton />
+        <UserDropdown />
       </div>
     </header>
   );

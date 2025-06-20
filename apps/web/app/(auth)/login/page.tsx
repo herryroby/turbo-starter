@@ -5,8 +5,8 @@ import { createClient } from '@/lib/supabase/client';
 import { Button } from '@repo/ui/components/ui/button';
 import { Input } from '@repo/ui/components/ui/input';
 import { Label } from '@repo/ui/components/ui/label';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -20,7 +20,7 @@ export default function LoginPage() {
     setError(null);
     const { error } = await supabase.auth.signInWithPassword({
       email,
-      password,
+      password
     });
 
     if (error) {
@@ -35,19 +35,21 @@ export default function LoginPage() {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${location.origin}/auth/callback`,
-      },
+        redirectTo: `${location.origin}/auth/callback`
+      }
     });
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-center">Login</h1>
-        {error && <p className="text-red-500 text-center">{error}</p>}
+    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+      <div className="w-full max-w-md space-y-6 rounded-lg bg-white p-8 shadow-md">
+        <h1 className="text-center text-2xl font-bold">Login</h1>
+        {error && <p className="text-center text-red-500">{error}</p>}
         <div className="space-y-4">
           <div>
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="mb-1 block text-sm">
+              Email
+            </Label>
             <Input
               id="email"
               type="email"
@@ -57,7 +59,9 @@ export default function LoginPage() {
             />
           </div>
           <div>
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password" className="mb-1 block text-sm">
+              Password
+            </Label>
             <Input
               id="password"
               type="password"
@@ -67,15 +71,15 @@ export default function LoginPage() {
             />
           </div>
         </div>
-        <Button onClick={handleLogin} className="w-full">Login</Button>
+        <Button onClick={handleLogin} className="w-full">
+          Login
+        </Button>
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="px-2 bg-white text-muted-foreground">
-              Or continue with
-            </span>
+            <span className="text-muted-foreground bg-white px-2">Or continue with</span>
           </div>
         </div>
         <Button variant="outline" onClick={handleGoogleLogin} className="w-full">

@@ -1,5 +1,6 @@
 'use client';
 
+import { createClient } from '@/lib/supabase/client';
 import {
   Avatar,
   AvatarFallback,
@@ -11,9 +12,18 @@ import {
   DropdownMenuTrigger
 } from '@repo/ui';
 import { LogOut, Settings, User } from 'lucide-react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export function UserDropdown() {
+    const router = useRouter();
+    const supabase = createClient();
+
+    const handleLogout = async () => {
+      await supabase.auth.signOut();
+      router.push('/login');
+      router.refresh(); // Ensure the session state is cleared on the client
+    };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -40,12 +50,10 @@ export function UserDropdown() {
           <span>Settings</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator className="mx-1 my-1 h-px bg-neutral-200 dark:bg-neutral-700" />
-        <Link href="/auth">
-          <DropdownMenuItem className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm text-red-500 hover:bg-neutral-100 dark:hover:bg-neutral-700">
-            <LogOut className="h-4 w-4" />
-            <span>Logout</span>
-          </DropdownMenuItem>
-        </Link>
+        <DropdownMenuItem className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm text-red-500 hover:bg-neutral-100 dark:hover:bg-neutral-700" onClick={handleLogout}>
+          <LogOut className="h-4 w-4" />
+          <span>Logout</span>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
