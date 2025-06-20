@@ -1,7 +1,7 @@
 'use client';
 
 import { useSidebar } from '@/components/providers/sidebar-provider';
-import { cn } from '@repo/ui';
+import { cn } from '@repo/ui/lib/utils';
 import {
   BarChart,
   ChevronDown,

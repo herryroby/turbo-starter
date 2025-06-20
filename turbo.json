@@ -1,5 +1,6 @@
 {
   "$schema": "https://turborepo.com/schema.json",
+  "globalEnv": ["REDIS_URL"],
   "ui": "tui",
   "tasks": {
     "build": {

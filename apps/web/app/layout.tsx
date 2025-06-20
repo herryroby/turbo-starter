@@ -1,9 +1,8 @@
-import { ClientProvider } from '@/components/providers/client-provider';
-import { ClerkProvider } from '@clerk/nextjs';
 import '@repo/ui/globals.css';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { ReactNode } from 'react';
+import { GqlProvider } from '@/components/providers/apollo-provider';
 import './globals.css';
 
 const geistSans = localFont({
@@ -16,23 +15,17 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Qubix',
-  description: 'Modern Financial Management Platform'
+  title: 'Qubix - Enterprise SaaS',
+  description: 'Next-gen enterprise resource planning.',
 };
 
-const RootLayout = ({
-  children
-}: Readonly<{
-  children: ReactNode;
-}>) => {
+const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <ClerkProvider afterSignOutUrl="/sign-in">
-      <html lang="en" suppressHydrationWarning className="light">
-        <body className={`${geistSans.variable} ${geistMono.variable} overflow-hidden`}>
-          <ClientProvider>{children}</ClientProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en" suppressHydrationWarning className="light">
+      <body className={`${geistSans.variable} ${geistMono.variable} overflow-hidden`}>
+        <GqlProvider>{children}</GqlProvider>
+      </body>
+    </html>
   );
 };
 

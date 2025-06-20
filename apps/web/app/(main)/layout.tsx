@@ -3,7 +3,9 @@
 import { Header } from '@/components/layout/header/header';
 import { Sidebar } from '@/components/layout/sidebar';
 import { SidebarProvider, useSidebar } from '@/components/providers/sidebar-provider';
-import { Card, CardContent, cn, Toaster } from '@repo/ui';
+import { Card, CardContent } from '@repo/ui/components/ui/card';
+import { Toaster } from '@repo/ui/components/ui/sonner';
+import { cn } from '@repo/ui/lib/utils';
 import { ReactNode } from 'react';
 
 interface MainLayoutProps {

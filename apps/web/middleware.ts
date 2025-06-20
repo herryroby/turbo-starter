@@ -1,31 +1,43 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
-import { NextResponse } from 'next/server';
+// apps/web/middleware.ts
+// This middleware is responsible for session management and route protection.
 
-const isPublicRoute = createRouteMatcher(['/', '/sign-in(.*)', '/sign-up(.*)']);
-const isAuthRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)']);
+import { type NextRequest } from 'next/server';
+import { updateSession } from '@/lib/supabase/middleware';
 
-export default clerkMiddleware(async (auth, request) => {
-  const { userId } = await auth();
+const protectedRoutes = ['/dashboard']; // Add any other routes you want to protect
+const publicOnlyRoutes = ['/login', '/signup']; // Routes accessible only when logged out
 
-  // If the user is logged in and visits an auth route, redirect them to the dashboard.
-  if (userId && isAuthRoute(request)) {
-    const dashboardUrl = new URL('/dashboard', request.url);
-    return NextResponse.redirect(dashboardUrl);
+export async function middleware(request: NextRequest) {
+  const { supabase, response } = await updateSession(request);
+
+  // Get the current user session
+  const { data: { session } } = await supabase.auth.getSession();
+
+  const { pathname } = request.nextUrl;
+
+  // Redirect to login if user is not authenticated and accessing a protected route
+  if (!session && protectedRoutes.some(path => pathname.startsWith(path))) {
+    return Response.redirect(new URL('/login', request.url));
   }
 
-  // If the user is not logged in and visits a protected route, redirect them to sign-in.
-  if (!userId && !isPublicRoute(request)) {
-    const signInUrl = new URL('/sign-in', request.url);
-    signInUrl.searchParams.set('redirect_url', request.url);
-    return NextResponse.redirect(signInUrl);
+  // Redirect to dashboard if user is authenticated and accessing a public-only route
+  if (session && publicOnlyRoutes.some(path => pathname.startsWith(path))) {
+    return Response.redirect(new URL('/dashboard', request.url));
   }
 
-  return NextResponse.next();
-});
+  // Continue the request chain
+  return response;
+}
 
 export const config = {
   matcher: [
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    '/(api|trpc)(.*)'
-  ]
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * Feel free to modify this pattern to include more paths.
+     */
+    '/((?!_next/static|_next/image|favicon.ico|.*\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
 };
