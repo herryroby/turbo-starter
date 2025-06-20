@@ -6,13 +6,14 @@ import { setContext } from '@apollo/client/link/context';
 // IMPORTANT: We use the server-only Supabase client here.
 import { createClient } from '@/lib/supabase/server';
 
+
 const httpLink = createHttpLink({
   uri: process.env.NEXT_PUBLIC_SUPABASE_GRAPHQL_URL!,
 });
 
 const authLink = setContext(async (_, { headers }) => {
   // This uses the server-side getSession which reads the auth cookie.
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { session } } = await supabase.auth.getSession();
   const token = session?.access_token;
 

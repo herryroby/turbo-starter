@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
+
 import { createServerApolloClient } from '@/lib/graphql/server-client';
 import { GET_TODOS_QUERY } from '@/lib/graphql/queries';
 import { GetTodosQueryData } from '@/types/graphql';
@@ -9,7 +10,7 @@ import { TaskList } from './task-list';
 import type { ComponentProps } from 'react';
 
 export default async function DashboardPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user }, error: authError } = await supabase.auth.getUser();
 
   if (authError || !user) {
