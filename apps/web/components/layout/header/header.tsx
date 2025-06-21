@@ -1,6 +1,6 @@
 'use client';
 
-import { UserDropdown } from '@/components/layout/header/user-dropdown';
+import { UserButton } from '@/components/layout/header/user-button';
 import { useSidebar } from '@/components/providers/sidebar-provider';
 import { Button } from '@repo/ui/components/ui/button';
 import { Bell, Menu, MessageCircle } from 'lucide-react';
@@ -23,7 +23,7 @@ export function Header() {
         <Button variant="ghost" size="icon">
           <MessageCircle className="size-5" />
         </Button>
-        <UserDropdown />
+        <UserButton />
       </div>
     </header>
   );

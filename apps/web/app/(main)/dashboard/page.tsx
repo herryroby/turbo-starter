@@ -3,15 +3,18 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 
-import { createServerApolloClient } from '@/lib/graphql/server-client';
 import { GET_TODOS_QUERY } from '@/lib/graphql/queries';
+import { createServerApolloClient } from '@/lib/graphql/server-client';
 import { GetTodosQueryData } from '@/types/graphql';
-import { TaskList } from './task-list';
 import type { ComponentProps } from 'react';
+import { TaskList } from './task-list';
 
 export default async function DashboardPage() {
   const supabase = await createClient();
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error: authError
+  } = await supabase.auth.getUser();
 
   if (authError || !user) {
     redirect('/login');
@@ -24,7 +27,7 @@ export default async function DashboardPage() {
   try {
     // This query is executed on the server and is now strongly typed.
     const { data: gqlData } = await apolloClient.query<GetTodosQueryData>({
-      query: GET_TODOS_QUERY,
+      query: GET_TODOS_QUERY
     });
     initialTodos = gqlData?.todosCollection?.edges.map((edge) => edge.node) || [];
   } catch (error) {
@@ -34,11 +37,11 @@ export default async function DashboardPage() {
 
   return (
     <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-2">
-            <h1 className="text-3xl font-bold">Welcome, {user.email}</h1>
-            <p className="text-neutral-500 dark:text-neutral-400">Here are your tasks:</p>
-        </div>
-      
+      <div className="flex flex-col gap-2">
+        <h1 className="text-3xl font-bold">Welcome, {user.user_metadata.full_name}</h1>
+        <p className="text-neutral-500 dark:text-neutral-400">Here are your tasks:</p>
+      </div>
+
       {/* Render the Client Component with server-fetched initial data */}
       <TaskList initialTodos={initialTodos} />
     </div>
