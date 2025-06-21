@@ -1,9 +1,9 @@
 export interface ProductCategory {
-  categoryId: string;
+  id: string;
   name: string;
-  isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  is_active: boolean | null;
+  created_at: string;
+  updated_at: string | null;
 }
 
 export interface Product {

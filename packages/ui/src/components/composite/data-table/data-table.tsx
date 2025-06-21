@@ -56,6 +56,7 @@ interface DataTableProps<TData extends object, TValue> {
   enableGlobalFilter?: boolean;
   globalFilterPlaceholder?: string;
   filename?: string;
+  pageCount?: number;
 }
 
 export const DataTable = <TData extends object, TValue = unknown>({
@@ -68,7 +69,8 @@ export const DataTable = <TData extends object, TValue = unknown>({
   error,
   enableGlobalFilter = false,
   globalFilterPlaceholder = 'Search all columns...',
-  filename = 'data-export'
+  filename = 'data-export',
+  pageCount
 }: DataTableProps<TData, TValue>): React.ReactElement => {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -111,6 +113,7 @@ export const DataTable = <TData extends object, TValue = unknown>({
   const table = useReactTable({
     data,
     columns: columnsWithSelection as TanStackColumnDef<TData, unknown>[],
+    pageCount: pageCount ?? -1,
     state: {
       sorting,
       columnFilters,
@@ -118,6 +121,7 @@ export const DataTable = <TData extends object, TValue = unknown>({
       rowSelection,
       globalFilter: debouncedGlobalFilter
     },
+    manualPagination: true,
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,

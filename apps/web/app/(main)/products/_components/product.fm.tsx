@@ -1,273 +1,180 @@
 'use client';
 
-import { productCategory, products } from '@/data/products';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { FormState, saveProduct } from '@/app/(main)/products/actions';
+import { ProductCategory } from '@/types/products';
 import { Button, Input, Select, Textarea } from '@repo/ui';
 import { SaveIcon } from 'lucide-react';
-import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
-import * as z from 'zod';
 
-const productFormSchema = z.object({
-  productId: z.string().min(1, { message: 'Product ID is required' }),
-  name: z.string().min(1, { message: 'Product name is required' }),
-  description: z.string().optional(),
-  categoryId: z.string().min(1, { message: 'Category is required' }),
-  unitOfMeasureId: z.string().min(1, { message: 'Unit of measure is required' }),
-  purchasePrice: z.string().min(1, { message: 'Purchase price is required' }),
-  sellingPrice: z.string().min(1, { message: 'Selling price is required' }),
-  quantity: z.string().min(1, { message: 'Quantity is required' }),
-  isActive: z.boolean().optional(),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().optional()
-});
+interface ProductFormProps {
+  categories: ProductCategory[];
+}
 
-type ProductFormValues = z.infer<typeof productFormSchema>;
+// The SubmitButton component is a helper to manage the pending state of the form submission.
+const SubmitButton = () => {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" disabled={pending} className="w-full">
+      <SaveIcon size={16} /> {pending ? 'Saving...' : 'Save'}
+    </Button>
+  );
+};
 
-const ProductForm = () => {
-  const form = useForm<ProductFormValues>({
-    resolver: zodResolver(productFormSchema),
-    defaultValues: {
-      productId: '',
-      name: '',
-      description: '',
-      categoryId: '',
-      unitOfMeasureId: '1',
-      purchasePrice: '',
-      sellingPrice: '',
-      quantity: '',
-      isActive: true,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+const ProductForm = ({ categories }: ProductFormProps) => {
+  const router = useRouter();
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedUnit, setSelectedUnit] = useState<string>('');
+
+  // useActionState is a React Hook that provides state management for Server Actions.
+  // It returns the current state of the form and a dispatch function to call the action.
+  const initialState: FormState = { message: '', errors: {}, success: false };
+  const [state, dispatch] = useFormState(saveProduct, initialState);
+
+  // Handle form submission
+  const handleSubmit = (formData: FormData) => {
+    // Add hidden inputs for category and unit
+    if (selectedCategory) {
+      formData.append('categoryId', selectedCategory);
     }
-  });
-
-  // Form submission
-  const onSubmit = (data: ProductFormValues) => {
-    console.log('Form data:', data);
-    console.log('Products:', products);
-
-    // Here you would typically send the data to your API
-    toast('Product saved!');
+    if (selectedUnit) {
+      formData.append('unitOfMeasureId', selectedUnit);
+    }
+    // Add isActive as true by default
+    formData.append('isActive', 'true');
+    return dispatch(formData);
   };
 
+  // useEffect hook to show a toast notification when the form submission is successful.
+  useEffect(() => {
+    if (state.success) {
+      toast.success(state.message);
+      router.push('/products'); // Redirect to the product list page on success.
+    }
+    if (!state.success && state.message) {
+      toast.error(state.message);
+    }
+  }, [state, router]);
+
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+    <form action={handleSubmit} className="space-y-6">
       <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+        {/* Category Selection */}
         <div>
           <label htmlFor="categoryId" className="mb-1 block text-sm">
             <span className="text-red-500">*</span> Category
           </label>
           <Select
-            data={productCategory}
-            value={form.watch('categoryId')}
-            onChange={(value) => form.setValue('categoryId', value)}
+            data={categories}
+            value={selectedCategory}
+            onChange={(value) => {
+              setSelectedCategory(value);
+            }}
             getOptionLabel={(item) => item?.name ?? ''}
-            getOptionValue={(item) => item?.categoryId ?? ''}
+            getOptionValue={(item) => item?.id ?? ''}
             placeholder="Select category"
-            addButtonLabel="Add category"
-            renderModal={(close) => (
-              <div className="p-4">
-                <h3 className="mb-4 text-lg font-medium">Add New Category</h3>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    // Handle new customer creation here
-                    close();
-                  }}
-                >
-                  <div className="space-y-4">
-                    <div>
-                      <label htmlFor="newCategoryId" className="mb-1 block text-sm">
-                        Category ID
-                      </label>
-                      <Input id="newCategoryId" placeholder="Enter category ID" />
-                    </div>
-                    <div className="flex justify-end gap-2">
-                      <Button type="button" variant="outline" onClick={close}>
-                        Cancel
-                      </Button>
-                      <Button type="submit">Save</Button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            )}
           />
-          {form.formState.errors.categoryId && (
-            <p className="mt-1 text-xs text-red-500">{form.formState.errors.categoryId.message}</p>
+          {state.errors?.category_id && (
+            <p className="mt-1 text-xs text-red-500">{state.errors.category_id[0]}</p>
           )}
         </div>
 
+        {/* Unit of Measure Selection */}
         <div>
           <label htmlFor="unitOfMeasureId" className="mb-1 block text-sm">
             <span className="text-red-500">*</span> Unit
           </label>
           <Select
             data={[
-              { unitOfMeasureId: '1', name: 'pcs' },
-              { unitOfMeasureId: '2', name: 'kg' },
-              { unitOfMeasureId: '3', name: 'g' },
-              { unitOfMeasureId: '4', name: 'l' }
+              { id: 'unit', name: 'Unit' },
+              { id: 'kg', name: 'Kilogram' },
+              { id: 'gram', name: 'Gram' },
+              { id: 'liter', name: 'Liter' },
+              { id: 'ml', name: 'Mililiter' }
             ]}
-            value={form.watch('unitOfMeasureId')}
-            onChange={(value) => form.setValue('unitOfMeasureId', value)}
+            value={selectedUnit}
+            onChange={(value) => {
+              setSelectedUnit(value);
+            }}
             getOptionLabel={(item) => item?.name ?? ''}
-            getOptionValue={(item) => item?.unitOfMeasureId ?? ''}
-            addButtonLabel="Add unit"
-            renderModal={(close) => (
-              <div className="p-4">
-                <h3 className="mb-4 text-lg font-medium">Add New Unit</h3>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    // Handle new customer creation here
-                    close();
-                  }}
-                >
-                  <div className="space-y-4">
-                    <div>
-                      <label htmlFor="newUnitId" className="mb-1 block text-sm">
-                        Unit ID
-                      </label>
-                      <Input id="newUnitId" placeholder="Enter unit ID" />
-                    </div>
-                    <div className="flex justify-end gap-2">
-                      <Button type="button" variant="outline" onClick={close}>
-                        Cancel
-                      </Button>
-                      <Button type="submit">Save</Button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            )}
+            getOptionValue={(item) => item?.id ?? ''}
+            placeholder="Select unit of measure"
           />
-          {form.formState.errors.unitOfMeasureId && (
-            <p className="mt-1 text-xs text-red-500">{form.formState.errors.unitOfMeasureId.message}</p>
+          {state.errors?.unit_of_measure_id && (
+            <p className="mt-1 text-xs text-red-500">{state.errors.unit_of_measure_id[0]}</p>
           )}
-        </div>
-
-        <div>
-          <label htmlFor="productName" className="mb-1 block text-sm">
-            <span className="text-red-500">*</span> Product Name
-          </label>
-          <Select
-            data={products}
-            value={form.watch('name')}
-            onChange={(value) => form.setValue('name', value)}
-            getOptionLabel={(item) => item?.name ?? ''}
-            getOptionValue={(item) => item?.productId ?? ''}
-            placeholder="Select product"
-            addButtonLabel="Add product"
-            renderModal={(close) => (
-              <div className="p-4">
-                <h3 className="mb-4 text-lg font-medium">Add New Product</h3>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    // Handle new customer creation here
-                    close();
-                  }}
-                >
-                  <div className="space-y-4">
-                    <div>
-                      <label htmlFor="newProductName" className="mb-1 block text-sm">
-                        Product Name
-                      </label>
-                      <Input id="newProductName" placeholder="Enter product name" />
-                    </div>
-                    <div className="flex justify-end gap-2">
-                      <Button type="button" variant="outline" onClick={close}>
-                        Cancel
-                      </Button>
-                      <Button type="submit">Save</Button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            )}
-          />
-          {form.formState.errors.name && (
-            <p className="mt-1 text-xs text-red-500">{form.formState.errors.name.message}</p>
-          )}
-        </div>
-
-        <div>
-          <div>
-            <label htmlFor="productId" className="mb-1 block text-sm">
-              <span className="text-red-500">*</span> Code/SKU
-            </label>
-            <Input id="productId" {...form.register('productId')} placeholder="Enter product ID" className="w-full" />
-            {form.formState.errors.productId && (
-              <p className="mt-1 text-xs text-red-500">{form.formState.errors.productId.message}</p>
-            )}
-          </div>
         </div>
       </div>
 
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {/* Product Name Input */}
+        <div>
+          <label htmlFor="name" className="mb-1 block text-sm">
+            <span className="text-red-500">*</span> Product Name
+          </label>
+          <Input name="name" id="name" placeholder="Enter product name" />
+          {state.errors?.name && <p className="mt-1 text-xs text-red-500">{state.errors.name[0]}</p>}
+        </div>
+
+        {/* Product Code/SKU Input */}
+        <div>
+          <label htmlFor="code" className="mb-1 block text-sm">
+            <span className="text-red-500">*</span> Code/SKU
+          </label>
+          <Input name="code" id="code" placeholder="Enter product code or SKU" />
+          {state.errors?.code && <p className="mt-1 text-xs text-red-500">{state.errors.code[0]}</p>}
+        </div>
+      </div>
+
+      {/* Description Textarea */}
       <div>
         <label htmlFor="description" className="mb-1 block text-sm">
-          <span className="text-red-500">*</span> Description
+          Description
         </label>
-        <Textarea id="description" {...form.register('description')} placeholder="Description" className="h-16" />
-        {form.formState.errors.description && (
-          <p className="mt-1 text-xs text-red-500">{form.formState.errors.description.message}</p>
+        <Textarea name="description" id="description" placeholder="Enter product description" className="h-16" />
+        {state.errors?.description && (
+          <p className="mt-1 text-xs text-red-500">{state.errors.description[0]}</p>
         )}
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        {/* Quantity Input */}
         <div>
           <label htmlFor="quantity" className="mb-1 block text-sm">
             <span className="text-red-500">*</span> Quantity
           </label>
-          <Input id="quantity" {...form.register('quantity')} placeholder="Quantity" className="w-full" />
+          <Input name="quantity" id="quantity" type="number" min="0" placeholder="0" />
+          {state.errors?.quantity && <p className="mt-1 text-xs text-red-500">{state.errors.quantity[0]}</p>}
         </div>
 
+        {/* Purchase Price Input */}
         <div>
           <label htmlFor="purchasePrice" className="mb-1 block text-sm">
             <span className="text-red-500">*</span> Purchase Price
           </label>
-          <Select
-            data={[
-              { purchasePriceId: '1', name: '1000' },
-              { purchasePriceId: '2', name: '2000' },
-              { purchasePriceId: '3', name: '3000' },
-              { purchasePriceId: '4', name: '4000' },
-              { purchasePriceId: '5', name: '5000' },
-              { purchasePriceId: '6', name: '6000' },
-              { purchasePriceId: '7', name: '7000' },
-              { purchasePriceId: '8', name: '8000' },
-              { purchasePriceId: '9', name: '9000' },
-              { purchasePriceId: '10', name: '10000' }
-            ]}
-            value={form.watch('purchasePrice')}
-            onChange={(value) => form.setValue('purchasePrice', value)}
-            getOptionLabel={(item) => item?.name ?? ''}
-            getOptionValue={(item) => item?.purchasePriceId ?? ''}
-            placeholder="Select purchase price"
-          />
+          <Input name="purchase_price" id="purchasePrice" type="number" step="0.01" placeholder="0.00" />
+          {state.errors?.purchase_price && (
+            <p className="mt-1 text-xs text-red-500">{state.errors.purchase_price[0]}</p>
+          )}
         </div>
 
+        {/* Selling Price Input */}
         <div>
           <label htmlFor="sellingPrice" className="mb-1 block text-sm">
             <span className="text-red-500">*</span> Selling Price
           </label>
-          <Input id="sellingPrice" {...form.register('sellingPrice')} placeholder="Selling Price" className="w-full" />
+          <Input name="selling_price" id="sellingPrice" type="number" step="0.01" placeholder="0.00" />
+          {state.errors?.selling_price && (
+            <p className="mt-1 text-xs text-red-500">{state.errors.selling_price[0]}</p>
+          )}
         </div>
       </div>
 
       <div className="border-t border-gray-200 pt-4">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div></div>
-          <div className="flex justify-end">
-            {/* Submit Button */}
-            <div className="flex w-full justify-end">
-              <Button type="submit" className="w-full">
-                <SaveIcon size={16} /> Save
-              </Button>
-            </div>
-          </div>
+        <div className="flex justify-end">
+          <SubmitButton />
         </div>
       </div>
     </form>

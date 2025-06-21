@@ -49,6 +49,7 @@
     "@types/react-dom": "19.1.1",
     "eslint": "^9.25.0",
     "postcss": "^8.5.3",
+    "supabase-cli": "^0.0.21",
     "tailwindcss": "^4.1.4",
     "typescript": "5.8.2"
   }

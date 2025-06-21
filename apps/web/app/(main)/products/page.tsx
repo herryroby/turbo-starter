@@ -1,131 +1,109 @@
-'use client';
+// /apps/web/app/(main)/products/page.tsx
+
+// This is a Server Component, which is the default in the Next.js App Router.
+// Server Components are great for fetching data because they run on the server and can directly access databases
+// or other server-side resources without exposing sensitive information to the client.
+// This approach reduces the amount of JavaScript sent to the browser, improving initial page load performance.
 
 import ListPage from '@/components/shared/list-page';
-import { products } from '@/data/products';
-import type { Product } from '@/types/products';
-import type { ColumnDef, Row } from '@tanstack/react-table';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { createClient } from '@/lib/supabase/server';
+import { Product } from '@/types/products';
+import { columns } from './columns';
 
-const ProductsPage = () => {
-  const router = useRouter();
-  const [data] = useState<Product[]>(products);
+// Force the page to be dynamic and allow streaming
+export const dynamic = 'force-dynamic';
 
-  const redirectToEdit = (row: Product): void => {
-    router.push(`/products/add?productId=${row.productId}`);
+interface ProductsPageProps {
+  searchParams: {
+    [key: string]: string | string[] | undefined;
   };
+}
 
-  const columns: ColumnDef<Product>[] = [
-    {
-      accessorKey: 'name',
-      header: 'Product Name',
-      cell: ({ row }: { row: Row<Product> }) => (
-        <button
-          type="button"
-          className="text-primary m-0 cursor-pointer border-none bg-transparent p-0"
-          onClick={() => redirectToEdit(row.original)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              redirectToEdit(row.original);
-            }
-          }}
-          tabIndex={0}
-          aria-label={`Edit Product ${row.getValue('name')}`}
-          style={{ background: 'none', border: 'none' }}
-        >
-          {row.getValue('name')}
-        </button>
-      )
-    },
-    {
-      accessorKey: 'productId',
-      header: 'Code/SKU',
-      cell: ({ row }) => <div className="max-w-[200px] truncate">{row.getValue('productId')}</div>
-    },
-    {
-      accessorKey: 'categoryName',
-      header: 'Category',
-      cell: ({ row }: { row: Row<Product> }) => {
-        const categoryName = row.getValue('categoryName') as string;
-        return <div>{categoryName}</div>;
-      }
-    },
-    {
-      accessorKey: 'unitOfMeasureName',
-      header: 'Unit',
-      cell: ({ row }: { row: Row<Product> }) => {
-        const unitOfMeasureName = row.getValue('unitOfMeasureName') as string;
-        return <div>{unitOfMeasureName}</div>;
-      }
-    },
-    {
-      accessorKey: 'purchasePrice',
-      header: () => <div className="text-right">Purchase Price</div>,
-      cell: ({ row }: { row: Row<Product> }) => {
-        const amount = parseFloat(row.getValue('purchasePrice'));
-        const formatted = new Intl.NumberFormat('id-ID').format(amount);
-        return <div className="text-right">{formatted}</div>;
-      }
-    },
-    {
-      accessorKey: 'sellingPrice',
-      header: () => <div className="text-right">Selling Price</div>,
-      cell: ({ row }: { row: Row<Product> }) => {
-        const amount = parseFloat(row.getValue('sellingPrice'));
-        const formatted = new Intl.NumberFormat('id-ID').format(amount);
-        return <div className="text-right font-medium">{formatted}</div>;
-      }
-    },
-    {
-      accessorKey: 'quantity',
-      header: () => <div className="text-right">Quantity</div>,
-      cell: ({ row }: { row: Row<Product> }) => {
-        const quantity = row.getValue('quantity') as number;
-        return <div className="text-right">{quantity}</div>;
-      }
-    },
-    {
-      accessorKey: 'isActive',
-      header: () => <div className="text-center">Status</div>,
-      cell: ({ row }: { row: Row<Product> }) => {
-        const isActive = row.getValue('isActive') as boolean;
-        return (
-          <div className="text-center">
-            <div
-              className={`inline-flex rounded-md px-2 py-1 text-center text-xs font-medium ${
-                isActive
-                  ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-                  : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
-              }`}
-            >
-              {isActive ? 'Active' : 'Inactive'}
-            </div>
-          </div>
-        );
-      }
-    }
-  ];
+// Define a type for the data returned from the Supabase query
+type ProductFromDB = {
+  product_id: string;
+  code: string | null;
+  name: string;
+  description: string | null;
+  category_id: string | null;
+  unit_of_measure?: string; // Made optional to handle cases where it might be missing
+  is_active: boolean | null;
+  is_purchased: boolean | null;
+  is_sold: boolean | null;
+  purchase_price: number | null;
+  selling_price: number | null;
+  quantity: number | null;
+  reorder_point: number | null;
+  reorder_quantity: number | null;
+  created_at: string | null;
+  updated_at: string | null;
+  product_categories: {
+    name: string;
+  } | null;
+};
+
+const ProductsPage = async ({ searchParams }: ProductsPageProps) => {
+  const supabase = await createClient();
+  
+  // Access searchParams directly without destructuring in the function parameters
+  const page = searchParams?.page ? Number(searchParams.page) : 1;
+  const pageSize = searchParams?.pageSize ? Number(searchParams.pageSize) : 10;
+
+  const { data, error, count } = await supabase
+    .from('products')
+    .select(`
+      *,
+      product_categories!inner(name)
+    `, { 
+      count: 'exact' 
+    })
+    .range((page - 1) * pageSize, page * pageSize - 1);
+
+  if (error) {
+    console.error('Error fetching products:', error);
+    return <div>Error loading products.</div>;
+  }
+
+  // Calculate the total number of pages
+  const pageCount = count ? Math.ceil(count / pageSize) : 0;
+
+  // Map the data from the database to the Product type used in the UI
+  const products: Product[] = (data || []).map((p: ProductFromDB) => ({
+    productId: p.product_id,
+    code: p.code || '',
+    name: p.name,
+    description: p.description || '',
+    categoryId: p.category_id || '',
+    unitOfMeasure: p.unit_of_measure || 'unit', // Default to 'unit' if not provided
+    unitOfMeasureId: p.unit_of_measure || 'unit', // Default to 'unit' if not provided
+    unitOfMeasureName: p.unit_of_measure || 'unit', // Default to 'unit' if not provided
+    categoryName: p.product_categories?.name || 'N/A',
+    isActive: p.is_active ?? true,
+    isPurchased: p.is_purchased ?? false,
+    isSold: p.is_sold ?? false,
+    purchasePrice: p.purchase_price || 0,
+    sellingPrice: p.selling_price || 0,
+    quantity: p.quantity || 0,
+    reorderPoint: p.reorder_point || 0,
+    reorderQuantity: p.reorder_quantity || 0,
+    // Default values for missing fields
+    purchaseAccountId: '',
+    purchaseTaxId: '',
+    sellingAccountId: '',
+    sellingTaxId: '',
+    createdAt: p.created_at ? new Date(p.created_at) : new Date(),
+    updatedAt: p.updated_at ? new Date(p.updated_at) : new Date(),
+  }));
 
   return (
     <ListPage
       pageTitle="Products"
-      subPageTitle="Manage all products"
-      columns={columns}
-      filterColumn="name"
-      searchPlaceholder="Search product..."
-      data={data}
       addLink="/products/add"
-      defaultSortableColumns={[
-        'productId',
-        'name',
-        'categoryName',
-        'unitOfMeasureName',
-        'purchasePrice',
-        'sellingPrice',
-        'quantity',
-        'isActive'
-      ]}
+      columns={columns}
+      data={products}
+      filterColumn="name"
+      searchPlaceholder="Search for products..."
+      pageCount={pageCount} // Pass pageCount to the ListPage component
     />
   );
 };

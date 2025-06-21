@@ -2,6 +2,7 @@
 
 import { Table } from '@tanstack/react-table';
 import { ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import * as React from 'react';
 
 import {
@@ -20,39 +21,59 @@ interface DataTablePaginationProps<TData> {
 }
 
 export const DataTablePagination = <TData,>({ table }: DataTablePaginationProps<TData>): React.ReactElement => {
-  // Calculate page numbers to display
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const createQueryString = React.useCallback(
+    (params: Record<string, string | number | null>) => {
+      const newSearchParams = new URLSearchParams(searchParams?.toString());
+      for (const [key, value] of Object.entries(params)) {
+        if (value === null) {
+          newSearchParams.delete(key);
+        } else {
+          newSearchParams.set(key, String(value));
+        }
+      }
+      return newSearchParams.toString();
+    },
+    [searchParams]
+  );
+
+  const handlePageChange = (pageIndex: number): void => {
+    router.push(`${pathname}?${createQueryString({ page: pageIndex < 0 ? 1 : pageIndex + 1 })}`, {
+      scroll: false
+    });
+  };
+
+  const handlePageSizeChange = (pageSize: number): void => {
+    router.push(`${pathname}?${createQueryString({ pageSize, page: 1 })}`, {
+      scroll: false
+    });
+  };
+
   const basePage = table.getState().pagination.pageIndex + 1;
   const totalPages = table.getPageCount();
 
-  // Generate page numbers to display
   const generatePagination = (): (number | string)[] => {
-    // If there are 7 or fewer pages, show all
     if (totalPages <= 7) {
       return Array.from({ length: totalPages || 0 }, (_, i) => i + 1);
     }
 
-    // Always include first and last page
     const basePages = [1, totalPages];
-
-    // Add current page and pages around it
     const startPages = basePage <= 3 ? [2, 3, 4] : [];
     const endPages = basePage >= totalPages - 2 ? [totalPages - 3, totalPages - 2, totalPages - 1] : [];
     const middlePages = basePage > 3 && basePage < totalPages - 2 ? [basePage - 1, basePage, basePage + 1] : [];
 
-    // Combine all page numbers and remove duplicates
     const uniquePages = [...new Set([...basePages, ...startPages, ...middlePages, ...endPages])].sort(
       (a, b) => a - b
     ) as number[];
 
-    // Add ellipsis indicators
     const pagesWithEllipsis: (number | string)[] = [];
     for (let i = 0; i < uniquePages.length; i++) {
-      // Ensure we're not pushing empty values
       if (typeof uniquePages[i] !== 'undefined') {
         pagesWithEllipsis.push(uniquePages[i] as number);
       }
-
-      // Add ellipsis if there's a gap
       const nextPage = uniquePages[i + 1];
       const currentPage = uniquePages[i];
       if (nextPage && currentPage && nextPage - currentPage > 1) {
@@ -86,22 +107,19 @@ export const DataTablePagination = <TData,>({ table }: DataTablePaginationProps<
               { pageSize: 50, name: '50' }
             ]}
             value={`${table.getState().pagination.pageSize}`}
-            onChange={(value) => {
-              table.setPageSize(Number(value));
-            }}
+            onChange={(value) => handlePageSizeChange(Number(value))}
             getOptionLabel={(item) => item?.name ?? ''}
             getOptionValue={(item) => item?.pageSize.toString() ?? ''}
             disableFilter
-          ></Select>
+          />
         </div>
 
         <Pagination>
           <PaginationContent>
-            {/* First page button */}
             <PaginationItem className="hidden sm:inline-flex">
               <PaginationLink
                 size="icon"
-                onClick={!table.getCanPreviousPage() ? undefined : () => table.setPageIndex(0)}
+                onClick={!table.getCanPreviousPage() ? undefined : () => handlePageChange(0)}
                 aria-label="First page"
                 aria-disabled={!table.getCanPreviousPage()}
                 tabIndex={!table.getCanPreviousPage() ? -1 : 0}
@@ -111,10 +129,9 @@ export const DataTablePagination = <TData,>({ table }: DataTablePaginationProps<
               </PaginationLink>
             </PaginationItem>
 
-            {/* Previous page button */}
             <PaginationItem>
               <PaginationPrevious
-                onClick={!table.getCanPreviousPage() ? undefined : () => table.previousPage()}
+                onClick={!table.getCanPreviousPage() ? undefined : () => handlePageChange(table.getState().pagination.pageIndex - 1)}
                 aria-label="Previous page"
                 aria-disabled={!table.getCanPreviousPage()}
                 tabIndex={!table.getCanPreviousPage() ? -1 : 0}
@@ -123,7 +140,6 @@ export const DataTablePagination = <TData,>({ table }: DataTablePaginationProps<
               />
             </PaginationItem>
 
-            {/* Page numbers */}
             {pages.map((page, i) => {
               if (page === 'ellipsis') {
                 return (
@@ -137,7 +153,7 @@ export const DataTablePagination = <TData,>({ table }: DataTablePaginationProps<
                 <PaginationItem key={`page-${page}-${i}`} className="hidden cursor-pointer sm:inline-flex">
                   <PaginationLink
                     isActive={page === basePage}
-                    onClick={() => table.setPageIndex(typeof page === 'number' ? page - 1 : 0)}
+                    onClick={() => handlePageChange(typeof page === 'number' ? page - 1 : 0)}
                     size="default"
                   >
                     {page}
@@ -146,10 +162,9 @@ export const DataTablePagination = <TData,>({ table }: DataTablePaginationProps<
               );
             })}
 
-            {/* Next page button */}
             <PaginationItem>
               <PaginationNext
-                onClick={!table.getCanNextPage() ? undefined : () => table.nextPage()}
+                onClick={!table.getCanNextPage() ? undefined : () => handlePageChange(table.getState().pagination.pageIndex + 1)}
                 aria-label="Next page"
                 aria-disabled={!table.getCanNextPage()}
                 tabIndex={!table.getCanNextPage() ? -1 : 0}
@@ -158,11 +173,10 @@ export const DataTablePagination = <TData,>({ table }: DataTablePaginationProps<
               />
             </PaginationItem>
 
-            {/* Last page button */}
             <PaginationItem className="hidden sm:inline-flex">
               <PaginationLink
                 size="icon"
-                onClick={!table.getCanNextPage() ? undefined : () => table.setPageIndex(table.getPageCount() - 1)}
+                onClick={!table.getCanNextPage() ? undefined : () => handlePageChange(table.getPageCount() - 1)}
                 aria-label="Last page"
                 aria-disabled={!table.getCanNextPage()}
                 tabIndex={!table.getCanNextPage() ? -1 : 0}

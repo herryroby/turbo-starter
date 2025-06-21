@@ -26,6 +26,7 @@ interface ListPageProps<TData extends object> {
   searchPlaceholder: string;
   defaultSortableColumns?: string[];
   addLink?: string;
+  pageCount?: number;
 }
 
 function ListPage<TData extends object>({
@@ -37,7 +38,8 @@ function ListPage<TData extends object>({
   filterColumn,
   searchPlaceholder,
   defaultSortableColumns,
-  addLink
+  addLink,
+  pageCount
 }: ListPageProps<TData>) {
   const tableColumns: CustomColumnDef<TData, unknown>[] = [
     {
@@ -90,6 +92,7 @@ function ListPage<TData extends object>({
           filterColumn={filterColumn}
           searchPlaceholder={searchPlaceholder}
           defaultSortableColumns={defaultSortableColumns}
+          pageCount={pageCount}
         />
       </div>
     </>
