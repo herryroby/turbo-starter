@@ -17,7 +17,7 @@ import type { JSX } from 'react';
 export const UserButton = (): JSX.Element => {
   const router = useRouter();
   const supabase = createClient();
-  const user = useCurrentUser();
+  const { user } = useCurrentUser();
 
   const handleLogout = async (): Promise<void> => {
     await supabase.auth.signOut();

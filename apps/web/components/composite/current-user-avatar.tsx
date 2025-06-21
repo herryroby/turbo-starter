@@ -5,10 +5,10 @@ import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui';
 import * as React from 'react';
 
 export const CurrentUserAvatar = React.forwardRef<
-  React.ElementRef<typeof Avatar>,
-  React.ComponentPropsWithoutRef<typeof Avatar>
+  React.ComponentRef<typeof Avatar>,
+  React.ComponentProps<typeof Avatar>
 >((props, ref) => {
-  const user = useCurrentUser();
+  const { user } = useCurrentUser();
   const initials =
     user?.name
       ?.split(' ')
@@ -18,16 +18,10 @@ export const CurrentUserAvatar = React.forwardRef<
 
   return (
     <Avatar ref={ref} {...props}>
-      {user?.image && (
-        <AvatarImage
-          src={user.image}
-          alt={user.name || 'User Avatar'}
-          referrerPolicy="no-referrer"
-        />
-      )}
+      {user?.image && <AvatarImage src={user.image} alt={user.name || 'User Avatar'} referrerPolicy="no-referrer" />}
       <AvatarFallback>{initials}</AvatarFallback>
     </Avatar>
   );
 });
 
-CurrentUserAvatar.displayName = 'Current User Avatar';
+CurrentUserAvatar.displayName = 'CurrentUserAvatar';
