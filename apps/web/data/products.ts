@@ -35,38 +35,38 @@ export const products: Product[] = createProduct(100);
 
 export const productCategory: ProductCategory[] = [
   {
-    categoryId: '1',
+    id: '1',
     name: 'Electronics',
-    isActive: true,
-    createdAt: faker.date.past(),
-    updatedAt: faker.date.recent()
+    is_active: true,
+    created_at: faker.date.past().toISOString(),
+    updated_at: faker.date.recent().toISOString()
   },
   {
-    categoryId: '2',
+    id: '2',
     name: 'Food',
-    isActive: true,
-    createdAt: faker.date.past(),
-    updatedAt: faker.date.recent()
+    is_active: true,
+    created_at: faker.date.past().toISOString(),
+    updated_at: faker.date.recent().toISOString()
   },
   {
-    categoryId: '3',
+    id: '3',
     name: 'Clothing',
-    isActive: true,
-    createdAt: faker.date.past(),
-    updatedAt: faker.date.recent()
+    is_active: true,
+    created_at: faker.date.past().toISOString(),
+    updated_at: faker.date.recent().toISOString()
   },
   {
-    categoryId: '4',
+    id: '4',
     name: 'Furniture',
-    isActive: true,
-    createdAt: faker.date.past(),
-    updatedAt: faker.date.recent()
+    is_active: true,
+    created_at: faker.date.past().toISOString(),
+    updated_at: faker.date.recent().toISOString()
   },
   {
-    categoryId: '5',
+    id: '5',
     name: 'Other',
-    isActive: true,
-    createdAt: faker.date.past(),
-    updatedAt: faker.date.recent()
+    is_active: true,
+    created_at: faker.date.past().toISOString(),
+    updated_at: faker.date.recent().toISOString()
   }
 ];
