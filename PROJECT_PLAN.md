@@ -54,7 +54,7 @@ This plan adheres to the user-defined rules, emphasizing:
 
 ---
 
-### Phase 2: Data & GraphQL Layer (Completed)
+### Phase 2: Data & GraphQL Layer (100% Completed)
 
 **Objective:** Define the data structure, implement security policies, and set up the GraphQL API layer for data fetching and mutations.
 
@@ -62,18 +62,29 @@ This plan adheres to the user-defined rules, emphasizing:
 
 - ✅ **Switched to Supabase Cloud:** Shifted the entire workflow from a local Docker setup to a dedicated Supabase Cloud project, resolving numerous environment inconsistencies.
 - ✅ **Unified Database Schema:** Consolidated all individual migration files into a single, comprehensive bootstrap script (`001-cloud-bootstrap.sql`) in `supabase/migrations/`. This script successfully set up all required tables, functions, and policies in the cloud.
-- ✅ **Robust Row-Level Security (RLS):** Implemented and verified multi-tenancy RLS policies, ensuring users can only access data within their own tenant.
+- ✅ **Robust Row-Level Security (RLS):** Implemented and verified multi-tenancy RLS policies. **Crucially, corrected a faulty `SELECT` policy on the `profiles` table and added a trigger (`handle_new_user`) to auto-populate profiles, resolving the final data access issue.**
 - ✅ **Secure GraphQL Introspection:** Configured the correct permissions (`GRANT USAGE`, `GRANT SELECT`) and a restrictive RLS policy (`USING (false)`) for the `anon` role. This allows GraphQL Codegen to securely introspect the schema without exposing any data.
 - ✅ **Successful GraphQL Codegen:** After resolving schema, permission, and query issues, the `pnpm gen:graphql` command executed successfully. The typed hooks, including `useProfilesCollectionQuery`, are now correctly generated.
-- ✅ **Build Error Resolved:** The successful codegen has resolved the critical build error "Export useProfilesCollectionQuery doesn't exist in target module".
+- ✅ **Stable Apollo Client Integration:** Successfully integrated Apollo Client with Next.js 15 (App Router & Turbopack) after resolving complex runtime and build errors. The setup now correctly uses `@apollo/client-integration-nextjs` for stable client-side data fetching.
+- ✅ **Build & Runtime Errors Resolved:** The successful codegen and stable Apollo setup have resolved all critical build and runtime errors, enabling a smooth development workflow.
 
 ---
 
-### Phase 3: Core ERP Modules (Next Phase)
+### Phase 3: Core ERP Modules (In Progress)
 
 **Objective:** Begin development of the core ERP features, starting with a basic dashboard to display user and tenant information.
 
-**Rules Applied:** `Next.js`, `React`, `TypeScript`, `Tailwind CSS`, `Shadcn UI`, `TanStack Query`
+**Summary of Achievements:**
+
+- ✅ **User Profile Component:** Created the first dashboard component (`user-profile.tsx`) which successfully fetches and displays the logged-in user's profile data via GraphQL, validating the entire data layer stack.
+
+**Next Steps:**
+
+- Build out the main dashboard layout.
+- Implement components for tenant management.
+- Add functionality for product and category display.
+
+**Rules Applied:** `Next.js`, `React`, `TypeScript`, `Tailwind CSS`, `Shadcn UI`, `TanStack Query`, `Apollo Client`
 
 **Step-by-Step Plan:**
 
