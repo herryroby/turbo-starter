@@ -8,8 +8,16 @@ import { NextResponse } from 'next/server';
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
-  // if "next" is in param, use it as the redirect URL
-  const next = searchParams.get('next') ?? '/';
+  const nextRaw = searchParams.get('next');
+  let next = '/dashboard';
+  if (nextRaw) {
+    try {
+      const decoded = decodeURIComponent(nextRaw);
+      next = decoded.startsWith('/') ? decoded : `/${decoded}`;
+    } catch {
+      // keep default /dashboard
+    }
+  }
 
   if (code) {
     const supabase = await createClient();

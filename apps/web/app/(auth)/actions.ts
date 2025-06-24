@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { headers } from 'next/headers';
+import { headers, cookies } from 'next/headers';
 
 import { createClient } from '@/lib/supabase/server';
 import { z } from 'zod';
@@ -20,8 +20,20 @@ export const login = async (values: z.infer<typeof LoginSchema>): Promise<LoginR
     return { error: 'Could not authenticate user. Please check your credentials.' };
   }
 
+  // Determine redirect target from "next" param if it exists
+  const referer = (await headers()).get('referer');
+  const redirectTo = (() => {
+    if (!referer) return '/dashboard';
+    try {
+      const url = new URL(referer);
+      return url.searchParams.get('next') ?? '/dashboard';
+    } catch {
+      return '/dashboard';
+    }
+  })();
+
   revalidatePath('/', 'layout');
-  redirect('/dashboard');
+  redirect(redirectTo);
 };
 
 // --- SIGNUP ACTION ---
@@ -45,10 +57,19 @@ export const signup = async (values: z.infer<typeof SignupSchema>): Promise<Sign
     return { error: 'Could not sign up user. Please try again.' };
   }
 
+  const referer = (await headers()).get('referer');
+  const redirectTo = (() => {
+    if (!referer) return '/dashboard';
+    try {
+      const url = new URL(referer);
+      return url.searchParams.get('next') ?? '/dashboard';
+    } catch {
+      return '/dashboard';
+    }
+  })();
+
   revalidatePath('/', 'layout');
-  // You might want to redirect to a 'please verify your email' page
-  // or directly to the dashboard if email verification is disabled.
-  redirect('/dashboard');
+  redirect(redirectTo);
 };
 
 // --- OAUTH LOGIN (GOOGLE) ---
@@ -57,10 +78,33 @@ export const loginWithGoogle = async () => {
   const headersList = await headers();
   const origin = headersList.get('origin');
 
+  // Extract `next` query param from referer (login page URL)
+  const referer = headersList.get('referer');
+  let nextParam = '';
+  if (referer) {
+    try {
+      const url = new URL(referer);
+      const n = url.searchParams.get('next');
+      if (n) nextParam = n;
+    } catch {
+      // ignore parsing errors
+    }
+  }
+
+  // Persist intended path in a short-lived cookie so callback can read it
+  if (nextParam) {
+    const cookieStore = await cookies();
+    cookieStore.set('next_path', nextParam, {
+      path: '/',
+      maxAge: 600, // 10 minutes
+      sameSite: 'lax',
+    });
+  }
+
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${origin}/auth/callback`
+      redirectTo: `${origin}/auth/callback${nextParam ? `?next=${encodeURIComponent(nextParam)}` : ''}`
     }
   });
 

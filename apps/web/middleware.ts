@@ -4,8 +4,11 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { type NextRequest, NextResponse } from 'next/server';
 
-const protectedRoutes = ['/dashboard']; // Add any other routes you want to protect
-const publicOnlyRoutes = ['/login', '/signup']; // Routes accessible only when logged out
+// Routes accessible without authentication
+// Routes accessible without authentication (e.g., login, signup, OAuth callback)
+const publicRoutes = ['/login', '/signup', '/register', '/auth'];
+// Routes that should NOT be accessible when authenticated (login & signup pages only)
+const publicOnlyRoutes = ['/login', '/signup', '/register'];
 
 export async function middleware(request: NextRequest) {
   // This response object will be used to pass cookies to the browser.
@@ -43,15 +46,19 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  // Redirect to login if user is not authenticated and accessing a protected route.
-  if (!session && protectedRoutes.some(path => pathname.startsWith(path))) {
+  // Redirect to login if user is not authenticated and the route is NOT public.
+  if (!session && !publicRoutes.some(path => pathname.startsWith(path))) {
     const redirectUrl = new URL('/login', request.url);
-    redirectUrl.searchParams.set('redirect_to', pathname); // Optional: redirect back after login
+    redirectUrl.searchParams.set('next', pathname);
     return Response.redirect(redirectUrl);
   }
 
-  // Redirect to dashboard if user is authenticated and accessing a public-only route.
+  // If user is authenticated and hits a public-only route, honour "next" param first.
   if (session && publicOnlyRoutes.some(path => pathname.startsWith(path))) {
+    const nextParam = request.nextUrl.searchParams.get('next');
+    if (nextParam) {
+      return Response.redirect(new URL(nextParam, request.url));
+    }
     return Response.redirect(new URL('/dashboard', request.url));
   }
 
