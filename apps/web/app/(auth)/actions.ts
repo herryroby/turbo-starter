@@ -104,7 +104,8 @@ export const loginWithGoogle = async () => {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${origin}/auth/callback${nextParam ? `?next=${encodeURIComponent(nextParam)}` : ''}`
+      // Rely solely on the cookie for the redirect path
+      redirectTo: `${origin}/auth/callback`
     }
   });
 
