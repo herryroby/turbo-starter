@@ -1,18 +1,14 @@
 // apps/web/lib/apollo/client.ts
 'use client';
 
-import { ApolloLink, HttpLink } from '@apollo/client';
-import {
-  NextSSRApolloClient,
-  NextSSRInMemoryCache,
-  SSRMultipartLink
-} from '@apollo/experimental-nextjs-app-support/ssr';
-import { setContext } from '@apollo/client/link/context';
 import { createClient } from '@/lib/supabase/client';
+import { ApolloLink, HttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache } from '@apollo/client-integration-nextjs';
+import { setContext } from '@apollo/client/link/context';
 
 // This function creates a new Apollo Client for client-side rendering.
 // It's exported for use in the ApolloWrapper.
-export const makeClient = () => {
+export const makeClient = (): ApolloClient<any> => {
   const httpLink = new HttpLink({
     // The Supabase GraphQL endpoint is exposed here
     uri: process.env.NEXT_PUBLIC_SUPABASE_GRAPHQL_URL,
@@ -38,20 +34,11 @@ export const makeClient = () => {
     };
   });
 
-  // The link chain is different for server and client.
-  const link =
-    typeof window === 'undefined'
-      ? ApolloLink.from([
-          new SSRMultipartLink({
-            stripDefer: true
-          }),
-          authLink,
-          httpLink
-        ])
-      : ApolloLink.from([authLink, httpLink]);
+  // This is a client-only file, so we can directly create the link chain.
+  const link = ApolloLink.from([authLink, httpLink]);
 
-  return new NextSSRApolloClient({
-    cache: new NextSSRInMemoryCache(),
+  return new ApolloClient({
+    cache: new InMemoryCache(),
     link
   });
 };

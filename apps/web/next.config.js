@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+
   webpack: (config) => {
     // Ignore the critical dependency warning for @supabase/realtime-js
     config.ignoreWarnings = [

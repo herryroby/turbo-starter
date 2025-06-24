@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@apollo/client-integration-nextjs':
+        specifier: ^0.12.2
+        version: 0.12.2(@apollo/client@3.13.8(@types/react@19.1.0)(graphql-ws@6.0.5(graphql@16.11.0)(ws@8.18.2))(graphql@16.11.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/react@19.1.0)(graphql@16.11.0)(next@15.3.4(@babel/core@7.27.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@hookform/resolvers':
         specifier: ^5.0.1
         version: 5.1.1(react-hook-form@7.58.1(react@19.1.0))
@@ -33,6 +36,9 @@ importers:
       '@graphql-codegen/typescript-react-apollo':
         specifier: ^4.3.3
         version: 4.3.3(graphql@16.11.0)
+      '@graphql-typed-document-node/core':
+        specifier: ^3.2.0
+        version: 3.2.0(graphql@16.11.0)
       '@types/node':
         specifier: ^22.15.32
         version: 22.15.32
@@ -6345,7 +6351,7 @@ snapshots:
   '@graphql-tools/optimize@2.0.0(graphql@16.11.0)':
     dependencies:
       graphql: 16.11.0
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   '@graphql-tools/prisma-loader@8.0.17(@types/node@22.15.32)(graphql@16.11.0)':
     dependencies:
@@ -6391,7 +6397,7 @@ snapshots:
       '@ardatan/relay-compiler': 12.0.3(graphql@16.11.0)
       '@graphql-tools/utils': 10.8.6(graphql@16.11.0)
       graphql: 16.11.0
-      tslib: 2.6.3
+      tslib: 2.8.1
     transitivePeerDependencies:
       - encoding
 

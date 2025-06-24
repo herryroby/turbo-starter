@@ -1,13 +1,10 @@
 // apps/web/lib/apollo/server.ts
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
-import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rsc';
 import { createClient } from '@/lib/supabase/server';
+import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
+import { cache } from 'react';
 
-// This creates a singleton Apollo Client for use in Server Components.
-export const { getClient } = registerApolloClient(async () => {
-  // The createClient function is self-contained and gets cookies internally.
+export const getClient = cache(async () => {
   const supabase = await createClient();
-
   const {
     data: { session }
   } = await supabase.auth.getSession();
