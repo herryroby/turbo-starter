@@ -4,7 +4,7 @@ import { useProfilesCollectionQuery } from '@/lib/graphql/generated/graphql';
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui';
 
 export const UserProfile = () => {
-  const { data, loading, error } = useProfilesCollectionQuery();
+  const { data, loading, error } = useProfilesCollectionQuery({ fetchPolicy: 'network-only' });
 
   if (loading) {
     return <div>Loading profile...</div>;

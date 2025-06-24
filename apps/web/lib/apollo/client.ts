@@ -2,13 +2,13 @@
 'use client';
 
 import { createClient } from '@/lib/supabase/client';
-import { ApolloLink, HttpLink } from '@apollo/client';
+import { ApolloLink, HttpLink, NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient, InMemoryCache } from '@apollo/client-integration-nextjs';
 import { setContext } from '@apollo/client/link/context';
 
 // This function creates a new Apollo Client for client-side rendering.
 // It's exported for use in the ApolloWrapper.
-export const makeClient = (): ApolloClient<any> => {
+export const makeClient = (): ApolloClient<NormalizedCacheObject> => {
   const httpLink = new HttpLink({
     // The Supabase GraphQL endpoint is exposed here
     uri: process.env.NEXT_PUBLIC_SUPABASE_GRAPHQL_URL,

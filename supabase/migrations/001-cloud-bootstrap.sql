@@ -78,9 +78,34 @@ $$;
 -- Enable Row Level Security on the profiles table.
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
--- RLS Policy: Allow users to view profiles only within their own tenant.
-CREATE POLICY "Allow tenant members to view profiles" ON public.profiles
-FOR SELECT TO authenticated USING (public.get_tenant_id() = tenant_id);
+-- RLS Policy: Allow authenticated users to view their own profile.
+CREATE POLICY "Allow users to view their own profile" ON public.profiles
+FOR SELECT TO authenticated USING (auth.uid() = id);
+
+-- ==============================================================================
+-- Function: handle_new_user
+-- Description: Trigger function to automatically create a profile for a new user.
+-- ==============================================================================
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer set search_path = public
+as $$
+begin
+  insert into public.profiles (id, full_name)
+  values (new.id, new.raw_user_meta_data->>'full_name');
+  return new;
+end;
+$$;
+
+-- ==============================================================================
+-- Trigger: on_auth_user_created
+-- Description: Fires after a new user is inserted into auth.users.
+-- ==============================================================================
+create or replace trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure public.handle_new_user();
+
 
 -- RLS Policy: Allow users to insert profiles only into their own tenant.
 CREATE POLICY "Allow tenant members to insert profiles" ON public.profiles
