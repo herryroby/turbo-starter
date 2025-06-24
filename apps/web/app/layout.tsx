@@ -2,7 +2,7 @@ import '@repo/ui/globals.css';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { ReactNode } from 'react';
-import { GqlProvider } from '@/components/providers/apollo-provider';
+import { ApolloWrapper } from '@/lib/apollo/ApolloWrapper';
 import './globals.css';
 
 const geistSans = localFont({
@@ -23,7 +23,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en" suppressHydrationWarning className="light">
       <body className={`${geistSans.variable} ${geistMono.variable} overflow-hidden`}>
-        <GqlProvider>{children}</GqlProvider>
+        <ApolloWrapper>{children}</ApolloWrapper>
       </body>
     </html>
   );

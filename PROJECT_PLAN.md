@@ -30,7 +30,7 @@ This plan adheres to the user-defined rules, emphasizing:
 
 ## 3. Phased Implementation Roadmap
 
-### Phase 1: Foundation & Authentication (95% Complete)
+### Phase 1: Foundation & Authentication (Complete, with pending redirect fix)
 
 **Objective:** Establish a secure and robust authentication system with route protection.
 
@@ -49,43 +49,46 @@ This plan adheres to the user-defined rules, emphasizing:
 
 **Remaining Task (To be completed at the start of Phase 2):**
 
-- 🚧 **Fix OAuth Redirect (In Progress):** The redirect after Google login does not respect the `next` parameter.
-  - **Solution:** Relying **only** on a short-lived cookie (`next_path`) to pass the redirect path through the OAuth flow. The `loginWithGoogle` action sets the cookie, and the `/auth/callback` route reads it. This avoids issues with URL query parameters being stripped by providers.
+- ⏸️ **Fix OAuth Redirect (On Hold):** The redirect after Google login does not respect the `next` parameter.
+  - **Note:** This issue is parked after multiple attempts. The core authentication flow is functional. This will be revisited in Phase 4 or if it becomes a critical blocker.
 
 ---
 
-### Phase 2: Data & GraphQL Layer (Current Phase)
+### Phase 2: Data & GraphQL Layer (Completed)
 
 **Objective:** Define the data structure, implement security policies, and set up the GraphQL API layer for data fetching and mutations.
 
-**Rules Applied:** `GraphQL`, `Apollo`, `Supabase`, `RLS`, `Database Design`, `Codegen`
+**Summary of Achievements:**
+
+- ✅ **Switched to Supabase Cloud:** Shifted the entire workflow from a local Docker setup to a dedicated Supabase Cloud project, resolving numerous environment inconsistencies.
+- ✅ **Unified Database Schema:** Consolidated all individual migration files into a single, comprehensive bootstrap script (`001-cloud-bootstrap.sql`) in `supabase/migrations/`. This script successfully set up all required tables, functions, and policies in the cloud.
+- ✅ **Robust Row-Level Security (RLS):** Implemented and verified multi-tenancy RLS policies, ensuring users can only access data within their own tenant.
+- ✅ **Secure GraphQL Introspection:** Configured the correct permissions (`GRANT USAGE`, `GRANT SELECT`) and a restrictive RLS policy (`USING (false)`) for the `anon` role. This allows GraphQL Codegen to securely introspect the schema without exposing any data.
+- ✅ **Successful GraphQL Codegen:** After resolving schema, permission, and query issues, the `pnpm gen:graphql` command executed successfully. The typed hooks, including `useProfilesCollectionQuery`, are now correctly generated.
+- ✅ **Build Error Resolved:** The successful codegen has resolved the critical build error "Export useProfilesCollectionQuery doesn't exist in target module".
+
+---
+
+### Phase 3: Core ERP Modules (Next Phase)
+
+**Objective:** Begin development of the core ERP features, starting with a basic dashboard to display user and tenant information.
+
+**Rules Applied:** `Next.js`, `React`, `TypeScript`, `Tailwind CSS`, `Shadcn UI`, `TanStack Query`
 
 **Step-by-Step Plan:**
 
-1. **Database Schema (SQL):**
-   - Create initial SQL migration scripts in `supabase/migrations/`.
-   - Define core tables: `tenants`, `profiles` (extends `auth.users`), `roles`, `profile_roles`.
-   - Establish relationships (e.g., a profile belongs to one tenant).
-   - Each table must have a `tenant_id` column where applicable.
-2. **Row-Level Security (RLS):**
-   - Create a helper function in SQL `auth.get_tenant_id()` to extract `tenant_id` from the JWT.
-   - Apply RLS policies to all tenant-specific tables (e.g., `CREATE POLICY "Enable access for users based on tenant" ON invoices FOR ALL USING (tenant_id = auth.get_tenant_id());`).
-   - Enable RLS on all relevant tables.
-3. **GraphQL Setup (Apollo Client):**
-   - Install Apollo Client packages: `@apollo/client`, `@apollo/experimental-nextjs-app-support`.
-   - Create `apps/web/lib/apollo/` directory.
-   - **`client.ts`:** Configure Apollo Client for client-side use. Implement an auth link that dynamically gets the Supabase session token (`Authorization: Bearer <access_token>`).
-   - **`server.ts`:** Configure a separate, leaner client for server components (RSC).
-   - **`ApolloWrapper.tsx`:** Create a wrapper component to provide the Apollo Client context to the application, to be used in the root `layout.tsx`.
-4. **GraphQL Codegen:**
-   - Install `graphql-codegen` and required plugins.
-   - Create `codegen.ts` (or `.yml`) in the root directory.
-   - Configure it to introspect the Supabase GraphQL schema (`/graphql/v1`).
-   - Generate typed hooks and fragments into `apps/web/lib/graphql/generated/`.
-   - Add a `pnpm gen:graphql` script to `package.json`.
-5. **Cleanup & Initial Query:**
-   - Remove the placeholder `todosCollection` query causing errors.
-   - Create a sample server component (e.g., `app/dashboard/page.tsx`) that uses a generated hook to fetch data (e.g., `useGetProfileQuery`).
+1. **Dashboard UI Enhancement:**
+   - Enhance the `UserProfile` component to properly display the fetched user data (full name, email, etc.).
+   - Create a new component to display the current user's tenant information.
+   - Design a clean and simple dashboard layout using Shadcn UI components (`Card`, `Table`, etc.).
+2. **Product Management Module (Basic):**
+   - Create a new page for listing products (`/dashboard/products`).
+   - Use the generated GraphQL hooks to fetch and display a list of products from the `products` table.
+   - Implement a data table using TanStack React Table to display the product list with sorting and filtering capabilities.
+
+3. **Category Management Module (Basic):**
+   - Create a new page for listing product categories (`/dashboard/categories`).
+   - Fetch and display a list of categories.
 
 ---
 

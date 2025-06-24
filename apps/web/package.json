@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",
+    "@apollo/experimental-nextjs-app-support": "^0.12.2",
     "@hookform/resolvers": "^5.0.1",
     "@repo/ui": "workspace:*",
     "@supabase/ssr": "^0.6.1",
