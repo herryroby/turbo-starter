@@ -1,5 +1,5 @@
-export interface UnitOfMeasure {
-  unitOfMeasureId: string;
+export interface Unit {
+  id: string;
   name: string;
   isActive: boolean;
   createdAt: Date;
@@ -7,7 +7,7 @@ export interface UnitOfMeasure {
 }
 
 export interface Tax {
-  taxId: string;
+  id: string;
   name: string;
   rate: number;
   isActive: boolean;
