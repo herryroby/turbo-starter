@@ -1,17 +1,7 @@
 'use client';
 
-import {
-  Button,
-  CustomColumnDef,
-  DataTable,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@repo/ui';
-import { FilePlus, MoreVertical } from 'lucide-react';
+import { Button, CustomColumnDef, DataTable } from '@repo/ui';
+import { FilePlus } from 'lucide-react';
 import Link from 'next/link';
 
 interface ListPageProps<TData extends object> {
@@ -41,61 +31,32 @@ function ListPage<TData extends object>({
   addLink,
   pageCount
 }: ListPageProps<TData>) {
-  const tableColumns: CustomColumnDef<TData, unknown>[] = [
-    {
-      id: 'more',
-      cell: () => (
-        <div className="w-1">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant={'ghost'}>
-                <MoreVertical />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="" onCloseAutoFocus={(e) => e.preventDefault()}>
-              <DropdownMenuLabel className="">Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="">Copy</DropdownMenuItem>
-              <DropdownMenuItem>Paste</DropdownMenuItem>
-              <DropdownMenuItem>Cut</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      ),
-      enableSorting: false,
-      enableHiding: false
-    },
-    ...columns
-  ];
-
   return (
-    <>
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="mb-1 text-3xl font-medium">{pageTitle}</h1>
-            <p className="text-neutral-500 dark:text-neutral-400">{subPageTitle}</p>
-          </div>
-          {addLink && (
-            <Link href={addLink}>
-              <Button>
-                <FilePlus className="size-4" />
-                <span>Add {pageTitle.slice(0, -1)}</span>
-              </Button>
-            </Link>
-          )}
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="mb-1 text-3xl font-medium">{pageTitle}</h1>
+          <p className="text-neutral-500 dark:text-neutral-400">{subPageTitle}</p>
         </div>
-        <DataTable
-          columns={tableColumns}
-          data={data}
-          totals={totals}
-          filterColumn={filterColumn}
-          searchPlaceholder={searchPlaceholder}
-          defaultSortableColumns={defaultSortableColumns}
-          pageCount={pageCount}
-        />
+        {addLink && (
+          <Link href={addLink}>
+            <Button>
+              <FilePlus className="size-4" />
+              <span>Add {pageTitle.slice(0, -1)}</span>
+            </Button>
+          </Link>
+        )}
       </div>
-    </>
+      <DataTable
+        columns={columns}
+        data={data}
+        totals={totals}
+        filterColumn={filterColumn}
+        searchPlaceholder={searchPlaceholder}
+        defaultSortableColumns={defaultSortableColumns}
+        pageCount={pageCount}
+      />
+    </div>
   );
 }
 

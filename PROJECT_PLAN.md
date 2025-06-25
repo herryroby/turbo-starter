@@ -92,11 +92,21 @@ This plan adheres to the user-defined rules, emphasizing:
    - Enhance the `UserProfile` component to properly display the fetched user data (full name, email, etc.).
    - Create a new component to display the current user's tenant information.
    - Design a clean and simple dashboard layout using Shadcn UI components (`Card`, `Table`, etc.).
-2. **Product Management Module (Basic):**
-   - Create a new page for listing products (`/dashboard/products`).
-   - Use the generated GraphQL hooks to fetch and display a list of products from the `products` table.
-   - Implement a data table using TanStack React Table to display the product list with sorting and filtering capabilities.
-
+2. **Product Management Module:**
+   - Create a new page for listing products (`/products`) if doesn't exist. If it does, review the existing page and update it to match the new requirements.
+   - Use the types from `types/products.ts` to define the shape of the data or you can generated from the database using `pnpm gen:graphql`.
+   - Make the listing products page server side and SEO-friendly. Use Supabase server actions to fetch data.
+   - Use `Suspense` and `SuspenseList` to handle loading states.
+   - Use `<ListPage>` component to display the product list (check `products.ls.tsx` for reference).
+   - Review `products.ls.tsx` if the component has followed best practices and conventions. If the component has not followed best practices and conventions, update it to match the new requirements.
+   - List Page should have a search bar, pagination, sorting, and filtering capabilities.
+   - Create a new page for add new product (`/products/add`) if doesn't exist. If it does, review the existing page and update it to match the new requirements.
+   - Create a new page for edit product (`/products/[id]/edit`) if doesn't exist. If it does, review the existing page and update it to match the new requirements.
+   - Create a new page for view product (`/products/[id]/view`) if doesn't exist. If it does, review the existing page and update it to match the new requirements.
+   - Use `React Hook Form` and `Zod` to validate the form.
+   - If possible, merge `/products/add`, `/products/[id]/edit`, and `/products/[id]/view` into one page. When creating a new product, the page should be in edit mode. When viewing a product, the page should be in view mode, but have a button to edit the product and switch to edit mode.
+   - Use Client Components + useQuery/useMutation (Apollo or from generated hooks) with NextJS API Secure Proxy to handle data fetching and mutations for the product form.
+   - After submitting the form, redirect to the product list page.
 3. **Category Management Module (Basic):**
    - Create a new page for listing product categories (`/dashboard/categories`).
    - Fetch and display a list of categories.

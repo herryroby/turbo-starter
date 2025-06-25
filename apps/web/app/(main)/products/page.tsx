@@ -1,23 +1,23 @@
-'use client';
-
 import { Suspense } from 'react';
-import ProductsClient from './products-client';
+import ProductsList from './_components/products.ls';
 
 export const dynamic = 'force-dynamic';
 
 export default function ProductsPage() {
   return (
-    <Suspense fallback={
-      <div className="p-6">
-        <div className="h-10 w-64 bg-gray-200 rounded mb-6 animate-pulse"></div>
-        <div className="space-y-4">
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className="h-16 w-full bg-gray-100 rounded animate-pulse"></div>
-          ))}
+    <Suspense
+      fallback={
+        <div className="p-6">
+          <div className="mb-6 h-10 w-64 animate-pulse rounded bg-gray-200"></div>
+          <div className="space-y-4">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="h-16 w-full animate-pulse rounded bg-gray-100"></div>
+            ))}
+          </div>
         </div>
-      </div>
-    }>
-      <ProductsClient />
+      }
+    >
+      <ProductsList />
     </Suspense>
   );
 }
