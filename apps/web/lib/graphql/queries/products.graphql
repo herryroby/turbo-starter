@@ -1,0 +1,52 @@
+query ProductsCollection($first: Int, $after: Cursor, $before: Cursor, $last: Int, $orderBy: [productsOrderBy!], $filter: productsFilter) {
+  productsCollection(first: $first, after: $after, before: $before, last: $last, orderBy: $orderBy, filter: $filter) {
+    edges {
+      cursor
+      node {
+        id
+        sku
+        name
+        description
+        cost_price
+        selling_price
+        is_active
+        created_at
+        product_categories {
+          id
+          name
+        }
+        unit_of_measure {
+          id
+          name
+          symbol
+        }
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+  }
+}
+
+mutation CreateProduct($objects: [productsInsertInput!]!) {
+  insertIntoproductsCollection(objects: $objects) {
+    affectedCount
+    records {
+      id
+      name
+    }
+  }
+}
+
+mutation UpdateProduct($atMost: Int!, $filter: productsFilter, $set: productsUpdateInput!) {
+  updateproductsCollection(atMost: $atMost, filter: $filter, set: $set) {
+    affectedCount
+    records {
+      id
+      name
+    }
+  }
+}

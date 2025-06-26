@@ -8,7 +8,7 @@ To build a production-ready, multi-tenant Enterprise SaaS ERP application. The s
 
 - **Monorepo:** Turborepo with pnpm
 - **Frontend:** Next.js (App Router)
-- **Backend/BaaS:** Supabase (Auth, Database, Storage)
+- **Backend/BaaS:** Supabase Cloud (Auth, Database, Storage)
 - **API:** GraphQL (via Supabase's PostgREST/GraphQL layer)
 - **Styling:** Tailwind CSS + Shadcn UI
 - **State Management:** TanStack Query (React Query)
@@ -61,10 +61,10 @@ This plan adheres to the user-defined rules, emphasizing:
 **Summary of Achievements:**
 
 - ✅ **Switched to Supabase Cloud:** Shifted the entire workflow from a local Docker setup to a dedicated Supabase Cloud project, resolving numerous environment inconsistencies.
-- ✅ **Unified Database Schema:** Consolidated all individual migration files into a single, comprehensive bootstrap script (`001-cloud-bootstrap.sql`) in `supabase/migrations/`. This script successfully set up all required tables, functions, and policies in the cloud.
-- ✅ **Robust Row-Level Security (RLS):** Implemented and verified multi-tenancy RLS policies. **Crucially, corrected a faulty `SELECT` policy on the `profiles` table and added a trigger (`handle_new_user`) to auto-populate profiles, resolving the final data access issue.**
+- ✅ **Unified Database Schema:** Consolidated all individual migration files into a single, comprehensive bootstrap script (`001-bootstrap.sql`) in `supabase/migrations/`. This script successfully set up all required tables, functions, and policies in the cloud.
+- ✅ **Robust Row-Level Security (RLS):** Implemented and verified multi-tenancy RLS policies.
 - ✅ **Secure GraphQL Introspection:** Configured the correct permissions (`GRANT USAGE`, `GRANT SELECT`) and a restrictive RLS policy (`USING (false)`) for the `anon` role. This allows GraphQL Codegen to securely introspect the schema without exposing any data.
-- ✅ **Successful GraphQL Codegen:** After resolving schema, permission, and query issues, the `pnpm gen:graphql` command executed successfully. The typed hooks, including `useProfilesCollectionQuery`, are now correctly generated.
+- ✅ **Successful GraphQL Codegen:** After resolving schema, permission, and query issues, the `pnpm gen:graphql` command executed successfully.
 - ✅ **Stable Apollo Client Integration:** Successfully integrated Apollo Client with Next.js 15 (App Router & Turbopack) after resolving complex runtime and build errors. The setup now correctly uses `@apollo/client-integration-nextjs` for stable client-side data fetching.
 - ✅ **Build & Runtime Errors Resolved:** The successful codegen and stable Apollo setup have resolved all critical build and runtime errors, enabling a smooth development workflow.
 
@@ -74,42 +74,36 @@ This plan adheres to the user-defined rules, emphasizing:
 
 **Objective:** Begin development of the core ERP features, starting with a basic dashboard to display user and tenant information.
 
-**Summary of Achievements:**
-
-- ✅ **User Profile Component:** Created the first dashboard component (`user-profile.tsx`) which successfully fetches and displays the logged-in user's profile data via GraphQL, validating the entire data layer stack.
-
 **Next Steps:**
 
 - Build out the main dashboard layout.
-- Implement components for tenant management.
-- Add functionality for product and category display.
+- Implement components for user information & tenant management.
+- Create product management module.
 
 **Rules Applied:** `Next.js`, `React`, `TypeScript`, `Tailwind CSS`, `Shadcn UI`, `TanStack Query`, `Apollo Client`
 
 **Step-by-Step Plan:**
 
 1. **Dashboard UI Enhancement:**
-   - Enhance the `UserProfile` component to properly display the fetched user data (full name, email, etc.).
-   - Create a new component to display the current user's tenant information.
+   - Create a new component to display the current user and tenant information.
+   - Use Server Component and Server Data Fetching to make the page SEO-friendly.
    - Design a clean and simple dashboard layout using Shadcn UI components (`Card`, `Table`, etc.).
 2. **Product Management Module:**
-   - Create a new page for listing products (`/products`) if doesn't exist. If it does, review the existing page and update it to match the new requirements.
-   - Use the types from `types/products.ts` to define the shape of the data or you can generated from the database using `pnpm gen:graphql`.
-   - Make the listing products page server side and SEO-friendly. Use Supabase server actions to fetch data.
+   - Create a new page for listing products (`/apps/web/app/(main)/products/page.tsx`) if doesn't exist. If it does, review the existing page and update it to match the new requirements.
+   - Use the types that are generated from the database using `pnpm gen:graphql`.
+   - Make the listing products page server component, server data fetching, and SEO-friendly.
    - Use `Suspense` and `SuspenseList` to handle loading states.
+   - Naming convention for Client List Component (`products.ls.tsx`) and for Add Product Component (`products.fm.tsx`).
    - Use `<ListPage>` component to display the product list (check `products.ls.tsx` for reference).
-   - Review `products.ls.tsx` if the component has followed best practices and conventions. If the component has not followed best practices and conventions, update it to match the new requirements.
+   - Review `/apps/web/app/(main)/products/components/products.ls.tsx` if the component has followed best practices and conventions. If the component has not followed best practices and conventions, update it to match the new requirements.
    - List Page should have a search bar, pagination, sorting, and filtering capabilities.
-   - Create a new page for add new product (`/products/add`) if doesn't exist. If it does, review the existing page and update it to match the new requirements.
-   - Create a new page for edit product (`/products/[id]/edit`) if doesn't exist. If it does, review the existing page and update it to match the new requirements.
-   - Create a new page for view product (`/products/[id]/view`) if doesn't exist. If it does, review the existing page and update it to match the new requirements.
+   - Create a new page for add new product (`/apps/web/app/(main)/products/add`) if doesn't exist. If it does, review the existing page and update it to match the new requirements.
+   - Create a new page for edit product (`/apps/web/app/(main)/products/[id]/edit`) if doesn't exist. If it does, review the existing page and update it to match the new requirements.
+   - Create a new page for view product (`/apps/web/app/(main)/products/[id]/view`) if doesn't exist. If it does, review the existing page and update it to match the new requirements.
    - Use `React Hook Form` and `Zod` to validate the form.
-   - If possible, merge `/products/add`, `/products/[id]/edit`, and `/products/[id]/view` into one page. When creating a new product, the page should be in edit mode. When viewing a product, the page should be in view mode, but have a button to edit the product and switch to edit mode.
-   - Use Client Components + useQuery/useMutation (Apollo or from generated hooks) with NextJS API Secure Proxy to handle data fetching and mutations for the product form.
+   - If possible, merge `/apps/web/app/(main)/products/add`, `/apps/web/app/(main)/products/[id]/edit`, and `/apps/web/app/(main)/products/[id]/view` into one page. When creating a new product, the page should be in edit mode. When viewing a product, the page should be in view mode, but have a button to edit the product and switch to edit mode.
+   - Use Client Components + useQuery/useMutation (Apollo or from generated hooks) to handle data fetching and mutations for the product form.
    - After submitting the form, redirect to the product list page.
-3. **Category Management Module (Basic):**
-   - Create a new page for listing product categories (`/dashboard/categories`).
-   - Fetch and display a list of categories.
 
 ---
 

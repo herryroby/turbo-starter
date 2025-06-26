@@ -1,7 +1,7 @@
 'use client';
 
 import { CurrentUserAvatar } from '@/components/composite/current-user-avatar';
-import { useCurrentUser } from '@/hooks/use-current-user';
+import { useUser } from '@/hooks/use-user';
 import { createClient } from '@/lib/supabase/client';
 import {
   DropdownMenu,
@@ -17,7 +17,7 @@ import type { JSX } from 'react';
 export const UserButton = (): JSX.Element => {
   const router = useRouter();
   const supabase = createClient();
-  const { user } = useCurrentUser();
+  const { user } = useUser();
 
   const handleLogout = async (): Promise<void> => {
     await supabase.auth.signOut();

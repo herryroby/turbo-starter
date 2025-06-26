@@ -1,6 +1,6 @@
 'use client';
 
-import { useCurrentUser } from '@/hooks/use-current-user';
+import { useUser } from '@/hooks/use-user';
 import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui';
 import * as React from 'react';
 
@@ -8,7 +8,7 @@ export const CurrentUserAvatar = React.forwardRef<
   React.ComponentRef<typeof Avatar>,
   React.ComponentProps<typeof Avatar>
 >((props, ref) => {
-  const { user } = useCurrentUser();
+  const { user } = useUser();
   const initials =
     user?.name
       ?.split(' ')

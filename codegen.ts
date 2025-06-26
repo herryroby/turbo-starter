@@ -28,18 +28,14 @@ const config: CodegenConfig = {
   // Where to output the generated files
   generates: {
     'apps/web/lib/graphql/generated/graphql.ts': {
-      plugins: [
-        'typescript',
-        'typescript-operations',
-        'typescript-react-apollo'
-      ],
+      plugins: ['typescript', 'typescript-operations', 'typescript-react-apollo'],
       config: {
         withHooks: true
       }
     }
   },
   // Ignore introspection fields
-  ignoreNoDocuments: true
+  ignoreNoDocuments: false
 };
 
 export default config;

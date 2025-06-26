@@ -10,3 +10,4 @@ export { ProfitLossCard } from './profit-loss-card';
 export { ReceivablePayableCard } from './receivable-payable-card';
 export { SalesCard } from './sales-card';
 export { TotalCashInOutCard } from './total-cash-in-out-card';
+export { DashboardLayout } from './dashboard-layout';

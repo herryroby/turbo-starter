@@ -1,64 +1,29 @@
-'use client';
-
-import ListPage from '@/components/shared/list-page';
-import { Product } from '@/types/products';
+import { getClient } from '@/lib/apollo-client';
 import {
-  Button,
-  CustomColumnDef,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@repo/ui';
-import { MoreVertical } from 'lucide-react';
-import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+  ProductsCollectionDocument,
+  ProductsCollectionQuery,
+  ProductsCollectionQueryVariables
+} from '@/lib/graphql/generated/graphql';
+import { CustomColumnDef } from '@repo/ui';
+import { ProductClient } from './product-client';
+
+export type Product = NonNullable<ProductsCollectionQuery['productsCollection']>['edges'][0]['node'];
 
 const columns: CustomColumnDef<Product, unknown>[] = [
-  {
-    id: 'actions',
-    cell: ({ row }) => {
-      const product = row.original;
-
-      return (
-        <div className="w-1">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost">
-                <MoreVertical />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => navigator.clipboard.writeText(product.productId)}>
-                Copy product ID
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>View details</DropdownMenuItem>
-              <DropdownMenuItem>Edit product</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      );
-    },
-    enableSorting: false,
-    enableHiding: false
-  },
   {
     accessorKey: 'name',
     header: 'Name'
   },
   {
-    accessorKey: 'categoryName',
-    header: 'Category'
+    accessorKey: 'product_categories.name',
+    header: 'Category',
+    cell: ({ row }) => row.original.product_categories?.name
   },
   {
-    accessorKey: 'sellingPrice',
+    accessorKey: 'selling_price',
     header: 'Price',
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue('sellingPrice'));
+      const amount = row.original.selling_price ?? 0;
       const formatted = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD'
@@ -71,62 +36,45 @@ const columns: CustomColumnDef<Product, unknown>[] = [
     header: 'Quantity'
   },
   {
-    accessorKey: 'isActive',
-    header: 'Status'
+    accessorKey: 'is_active',
+    header: 'Status',
+    cell: ({ row }) => (row.original.is_active ? 'Active' : 'Inactive')
   }
 ];
 
-export default function ProductsList() {
-  const searchParams = useSearchParams();
-  const [products, setProducts] = useState<Product[]>([]);
-  const [pageCount, setPageCount] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+const ProductsList = async ({ searchParams }: { searchParams: Record<string, string> | null | undefined }) => {
+  const page = searchParams?.page ? Number(searchParams.page) : 1;
+  const pageSize = searchParams?.pageSize ? Number(searchParams.pageSize) : 10;
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setIsLoading(true);
-        const page = searchParams?.get('page') ? Number(searchParams.get('page')) : 1;
-        const pageSize = searchParams?.get('pageSize') ? Number(searchParams.get('pageSize')) : 10;
-
-        const response = await fetch(`/api/products?page=${page}&pageSize=${pageSize}`);
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch products');
-        }
-
-        const { data, count } = await response.json();
-        setProducts(data);
-        setPageCount(Math.ceil(count / pageSize));
-      } catch (err) {
-        console.error('Error fetching products:', err);
-        setError('Failed to load products');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [searchParams]);
-
-  if (isLoading) {
-    return <div>Loading products...</div>;
-  }
+  const client = getClient();
+  const { data, error } = await client.query<ProductsCollectionQuery, ProductsCollectionQueryVariables>({
+    query: ProductsCollectionDocument,
+    variables: {
+      first: pageSize
+    },
+    fetchPolicy: 'no-cache'
+  });
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>Error: {error.message}</div>;
   }
 
+  const products = data.productsCollection?.edges.map((edge) => edge.node) || [];
+  const pageCount = data.productsCollection?.pageInfo
+    ? Math.ceil((data.productsCollection.edges.length || 0) / pageSize)
+    : 0;
+
   return (
-    <ListPage
-      pageTitle="Products"
-      addLink="/products/add"
+    <ProductClient
       columns={columns}
       data={products}
+      pageCount={pageCount}
+      pageTitle="Products"
       filterColumn="name"
       searchPlaceholder="Search for products..."
-      pageCount={pageCount}
+      addLink="/products/add"
     />
   );
-}
+};
+
+export default ProductsList;

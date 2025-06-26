@@ -5,7 +5,7 @@ import type { User } from '@/types/user';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 import { useCallback, useEffect, useState } from 'react';
 
-interface UseCurrentUserReturn {
+interface UseUserReturn {
   user: User | null;
   loading: boolean;
   isAuthenticated: boolean;
@@ -13,7 +13,7 @@ interface UseCurrentUserReturn {
   refetch: () => Promise<void>;
 }
 
-export const useCurrentUser = (): UseCurrentUserReturn => {
+export const useUser = (): UseUserReturn => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
