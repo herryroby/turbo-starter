@@ -105,6 +105,9 @@ importers:
       ioredis:
         specifier: ^5.6.1
         version: 5.6.1
+      lucide-react:
+        specifier: ^0.378.0
+        version: 0.378.0(react@19.1.0)
       next:
         specifier: ^15.3.4
         version: 15.3.4(@babel/core@7.27.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -154,9 +157,6 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4.1.4
         version: 4.1.10
-      '@tanstack/react-table':
-        specifier: ^8.21.3
-        version: 8.21.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@types/node':
         specifier: ^22.14.0
         version: 22.15.32
@@ -169,9 +169,6 @@ importers:
       eslint:
         specifier: ^9.25.0
         version: 9.29.0(jiti@2.4.2)
-      lucide-react:
-        specifier: ^0.503.0
-        version: 0.503.0(react@19.1.0)
       postcss:
         specifier: ^8.5.3
         version: 8.5.6
@@ -3843,6 +3840,11 @@ packages:
   lru-cache@7.18.3:
     resolution: {integrity: sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==}
     engines: {node: '>=12'}
+
+  lucide-react@0.378.0:
+    resolution: {integrity: sha512-u6EPU8juLUk9ytRcyapkWI18epAv3RU+6+TC23ivjR0e+glWKBobFeSgRwOIJihzktILQuy6E0E80P2jVTDR5g==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0
 
   lucide-react@0.503.0:
     resolution: {integrity: sha512-HGGkdlPWQ0vTF8jJ5TdIqhQXZi6uh3LnNgfZ8MHiuxFfX3RZeA79r2MW2tHAZKlAVfoNE8esm3p+O6VkIvpj6w==}
@@ -9364,6 +9366,10 @@ snapshots:
       yallist: 3.1.1
 
   lru-cache@7.18.3: {}
+
+  lucide-react@0.378.0(react@19.1.0):
+    dependencies:
+      react: 19.1.0
 
   lucide-react@0.503.0(react@19.1.0):
     dependencies:

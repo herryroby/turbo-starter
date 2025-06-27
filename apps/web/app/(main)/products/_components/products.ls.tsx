@@ -22,11 +22,16 @@ const ProductsList = async ({ searchParams }: { searchParams: Record<string, str
     fetchPolicy: 'no-cache' 
   });
 
+  console.log('--- Product List Data Fetch ---');
+  console.log('GraphQL Error:', JSON.stringify(error, null, 2));
+  console.log('GraphQL Data:', JSON.stringify(data, null, 2));
+
   if (error) {
     return <div>Error: {error.message}</div>;
   }
 
   const products = data.productsCollection?.edges.map((edge) => edge.node) || [];
+  console.log('Processed Products:', products);
   const pageInfo = data.productsCollection?.pageInfo;
 
   // Note: Supabase GraphQL does not provide totalCount. 
