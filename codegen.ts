@@ -23,7 +23,7 @@ const config: CodegenConfig = {
   ],
   // This is where we define the files that contain our GraphQL operations.
   // We're telling codegen to look for .ts, .tsx and .graphql files.
-  documents: ['apps/web/lib/graphql/queries/**/*.graphql'],
+  documents: ['apps/web/lib/graphql/**/*.graphql'],
 
   // Where to output the generated files
   generates: {

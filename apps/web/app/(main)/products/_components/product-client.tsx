@@ -1,6 +1,6 @@
 'use client';
 
-import ListPage from '@/components/shared/list-page';
+import { ListPage } from '@repo/ui';
 import {
   Button,
   CustomColumnDef,
@@ -11,14 +11,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@repo/ui';
+import { CellContext } from '@tanstack/react-table';
 import { MoreVertical } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Product } from './products.ls';
 
+import { PageInfo } from '@/lib/graphql/generated/graphql';
+
 interface ProductClientProps {
   data: Product[];
-  columns: CustomColumnDef<Product, unknown>[];
   pageCount: number;
+  pageInfo?: PageInfo | null;
   pageTitle: string;
   filterColumn: string;
   searchPlaceholder: string;
@@ -27,8 +30,8 @@ interface ProductClientProps {
 
 export const ProductClient = ({ 
   data, 
-  columns, 
   pageCount, 
+  pageInfo,
   pageTitle, 
   filterColumn, 
   searchPlaceholder, 
@@ -36,48 +39,74 @@ export const ProductClient = ({
 }: ProductClientProps) => {
   const router = useRouter();
 
-  const actionColumn: CustomColumnDef<Product, unknown> = {
-    id: 'actions',
-    cell: ({ row }) => {
-      const product = row.original;
-
-      return (
-        <div className="w-1">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost">
-                <MoreVertical />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => navigator.clipboard.writeText(product.id)}>
-                Copy product ID
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => router.push(`/products/${product.id}/edit`)}>
-                Edit product
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      );
+  const columns: CustomColumnDef<Product, unknown>[] = [
+    {
+      accessorKey: 'name',
+      header: 'Name'
     },
-    enableSorting: false,
-    enableHiding: false
-  };
+    {
+      accessorKey: 'product_categories.name',
+      header: 'Category',
+      cell: ({ row }: CellContext<Product, unknown>) => row.original.product_categories?.name
+    },
+    {
+      accessorKey: 'selling_price',
+      header: 'Price',
+      cell: ({ row }: CellContext<Product, unknown>) => {
+        const amount = row.original.selling_price ?? 0;
+        const formatted = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD'
+        }).format(amount);
+        return <div className="text-right font-medium">{formatted}</div>;
+      }
+    },
+    {
+      accessorKey: 'is_active',
+      header: 'Status',
+      cell: ({ row }: CellContext<Product, unknown>) => (row.original.is_active ? 'Active' : 'Inactive')
+    },
+    {
+      id: 'actions',
+      cell: ({ row }: CellContext<Product, unknown>) => {
+        const product = row.original;
 
-  const allColumns = [actionColumn, ...columns];
+        return (
+          <div className="w-1">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreVertical className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuItem onClick={() => navigator.clipboard.writeText(product.id)}>
+                  Copy ID
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => router.push(`/products/${product.id}`)}>
+                  View details
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        );
+      }
+    }
+  ];
 
   return (
     <ListPage
-      pageTitle={pageTitle}
-      addLink={addLink}
-      columns={allColumns}
+      columns={columns}
       data={data}
+      pageCount={pageCount}
+      pageInfo={pageInfo}
+      pageTitle={pageTitle}
       filterColumn={filterColumn}
       searchPlaceholder={searchPlaceholder}
-      pageCount={pageCount}
+      addLink={addLink}
     />
   );
 };

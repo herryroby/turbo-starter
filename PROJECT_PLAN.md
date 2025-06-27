@@ -74,6 +74,10 @@ This plan adheres to the user-defined rules, emphasizing:
 
 **Objective:** Begin development of the core ERP features, starting with a basic dashboard to display user and tenant information.
 
+**Prequisites:**
+
+- [] Follow the guide at <https://github.com/apollographql/apollo-client-integrations/tree/main/packages/nextjs>. Use `@apollo/client-integration-nextjs` instead of `@apollo/client-nextjs-experimental-ssr`.
+
 **Next Steps:**
 
 - Build out the main dashboard layout.

@@ -1,8 +1,17 @@
 'use client';
 
-import { Button, CustomColumnDef, DataTable } from '@repo/ui';
+import { Button } from './ui/button';
+import { DataTable } from './composite/data-table';
+import type { CustomColumnDef } from './composite/data-table/data-table';
 import { FilePlus } from 'lucide-react';
 import Link from 'next/link';
+
+interface PageInfo {
+  endCursor?: string | null;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  startCursor?: string | null;
+}
 
 interface ListPageProps<TData extends object> {
   pageTitle: string;
@@ -17,9 +26,10 @@ interface ListPageProps<TData extends object> {
   defaultSortableColumns?: string[];
   addLink?: string;
   pageCount?: number;
+  pageInfo?: PageInfo | null;
 }
 
-function ListPage<TData extends object>({
+export function ListPage<TData extends object>({
   pageTitle,
   subPageTitle,
   data,
@@ -29,7 +39,8 @@ function ListPage<TData extends object>({
   searchPlaceholder,
   defaultSortableColumns,
   addLink,
-  pageCount
+  pageCount,
+  pageInfo
 }: ListPageProps<TData>) {
   return (
     <div className="space-y-6">
@@ -55,9 +66,8 @@ function ListPage<TData extends object>({
         searchPlaceholder={searchPlaceholder}
         defaultSortableColumns={defaultSortableColumns}
         pageCount={pageCount}
+        pageInfo={pageInfo}
       />
     </div>
   );
 }
-
-export default ListPage;

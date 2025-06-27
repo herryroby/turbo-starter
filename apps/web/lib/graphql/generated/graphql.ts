@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -6,6 +7,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -240,6 +242,8 @@ export type Mutation = {
   deleteFromtenant_subscription_add_onsCollection: Tenant_Subscription_Add_OnsDeleteResponse;
   /** Deletes zero or more records from the `tenants` collection */
   deleteFromtenantsCollection: TenantsDeleteResponse;
+  /** Deletes zero or more records from the `unit_of_measures` collection */
+  deleteFromunit_of_measuresCollection: Unit_Of_MeasuresDeleteResponse;
   /** Deletes zero or more records from the `warehouses` collection */
   deleteFromwarehousesCollection: WarehousesDeleteResponse;
   /** Adds one or more `add_ons` records to the collection */
@@ -304,6 +308,8 @@ export type Mutation = {
   insertIntotenant_subscription_add_onsCollection?: Maybe<Tenant_Subscription_Add_OnsInsertResponse>;
   /** Adds one or more `tenants` records to the collection */
   insertIntotenantsCollection?: Maybe<TenantsInsertResponse>;
+  /** Adds one or more `unit_of_measures` records to the collection */
+  insertIntounit_of_measuresCollection?: Maybe<Unit_Of_MeasuresInsertResponse>;
   /** Adds one or more `warehouses` records to the collection */
   insertIntowarehousesCollection?: Maybe<WarehousesInsertResponse>;
   is_current_user_super_admin?: Maybe<Scalars['Boolean']['output']>;
@@ -369,6 +375,8 @@ export type Mutation = {
   updatetenant_subscription_add_onsCollection: Tenant_Subscription_Add_OnsUpdateResponse;
   /** Updates zero or more records in the `tenants` collection */
   updatetenantsCollection: TenantsUpdateResponse;
+  /** Updates zero or more records in the `unit_of_measures` collection */
+  updateunit_of_measuresCollection: Unit_Of_MeasuresUpdateResponse;
   /** Updates zero or more records in the `warehouses` collection */
   updatewarehousesCollection: WarehousesUpdateResponse;
 };
@@ -592,6 +600,13 @@ export type MutationDeleteFromtenantsCollectionArgs = {
 
 
 /** The root type for creating and mutating data */
+export type MutationDeleteFromunit_Of_MeasuresCollectionArgs = {
+  atMost?: Scalars['Int']['input'];
+  filter?: InputMaybe<Unit_Of_MeasuresFilter>;
+};
+
+
+/** The root type for creating and mutating data */
 export type MutationDeleteFromwarehousesCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<WarehousesFilter>;
@@ -781,6 +796,12 @@ export type MutationInsertIntotenant_Subscription_Add_OnsCollectionArgs = {
 /** The root type for creating and mutating data */
 export type MutationInsertIntotenantsCollectionArgs = {
   objects: Array<TenantsInsertInput>;
+};
+
+
+/** The root type for creating and mutating data */
+export type MutationInsertIntounit_Of_MeasuresCollectionArgs = {
+  objects: Array<Unit_Of_MeasuresInsertInput>;
 };
 
 
@@ -1039,6 +1060,14 @@ export type MutationUpdatetenantsCollectionArgs = {
 
 
 /** The root type for creating and mutating data */
+export type MutationUpdateunit_Of_MeasuresCollectionArgs = {
+  atMost?: Scalars['Int']['input'];
+  filter?: InputMaybe<Unit_Of_MeasuresFilter>;
+  set: Unit_Of_MeasuresUpdateInput;
+};
+
+
+/** The root type for creating and mutating data */
 export type MutationUpdatewarehousesCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<WarehousesFilter>;
@@ -1144,6 +1173,8 @@ export type Query = {
   tenant_subscription_add_onsCollection?: Maybe<Tenant_Subscription_Add_OnsConnection>;
   /** A pagable collection of type `tenants` */
   tenantsCollection?: Maybe<TenantsConnection>;
+  /** A pagable collection of type `unit_of_measures` */
+  unit_of_measuresCollection?: Maybe<Unit_Of_MeasuresConnection>;
   /** A pagable collection of type `warehouses` */
   warehousesCollection?: Maybe<WarehousesConnection>;
 };
@@ -1524,6 +1555,18 @@ export type QueryTenantsCollectionArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<TenantsOrderBy>>;
+};
+
+
+/** The root type for querying data */
+export type QueryUnit_Of_MeasuresCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  filter?: InputMaybe<Unit_Of_MeasuresFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<Unit_Of_MeasuresOrderBy>>;
 };
 
 
@@ -2618,6 +2661,7 @@ export type Deliveries = Node & {
   status?: Maybe<Scalars['String']['output']>;
   tenant_id: Scalars['UUID']['output'];
   tenants?: Maybe<Tenants>;
+  updated_at?: Maybe<Scalars['Datetime']['output']>;
   vehicle_number?: Maybe<Scalars['String']['output']>;
   warehouse_id: Scalars['UUID']['output'];
   warehouses?: Maybe<Warehouses>;
@@ -2676,6 +2720,7 @@ export type DeliveriesFilter = {
   shipping_cost?: InputMaybe<BigFloatFilter>;
   status?: InputMaybe<StringFilter>;
   tenant_id?: InputMaybe<UuidFilter>;
+  updated_at?: InputMaybe<DatetimeFilter>;
   vehicle_number?: InputMaybe<StringFilter>;
   warehouse_id?: InputMaybe<UuidFilter>;
 };
@@ -2695,6 +2740,7 @@ export type DeliveriesInsertInput = {
   shipping_cost?: InputMaybe<Scalars['BigFloat']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   tenant_id?: InputMaybe<Scalars['UUID']['input']>;
+  updated_at?: InputMaybe<Scalars['Datetime']['input']>;
   vehicle_number?: InputMaybe<Scalars['String']['input']>;
   warehouse_id?: InputMaybe<Scalars['UUID']['input']>;
 };
@@ -2722,6 +2768,7 @@ export type DeliveriesOrderBy = {
   shipping_cost?: InputMaybe<OrderByDirection>;
   status?: InputMaybe<OrderByDirection>;
   tenant_id?: InputMaybe<OrderByDirection>;
+  updated_at?: InputMaybe<OrderByDirection>;
   vehicle_number?: InputMaybe<OrderByDirection>;
   warehouse_id?: InputMaybe<OrderByDirection>;
 };
@@ -2741,6 +2788,7 @@ export type DeliveriesUpdateInput = {
   shipping_cost?: InputMaybe<Scalars['BigFloat']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   tenant_id?: InputMaybe<Scalars['UUID']['input']>;
+  updated_at?: InputMaybe<Scalars['Datetime']['input']>;
   vehicle_number?: InputMaybe<Scalars['String']['input']>;
   warehouse_id?: InputMaybe<Scalars['UUID']['input']>;
 };
@@ -3023,6 +3071,7 @@ export type Goods_Receipts = Node & {
   tenant_id: Scalars['UUID']['output'];
   tenants?: Maybe<Tenants>;
   total_amount?: Maybe<Scalars['BigFloat']['output']>;
+  updated_at?: Maybe<Scalars['Datetime']['output']>;
   warehouse_id: Scalars['UUID']['output'];
   warehouses?: Maybe<Warehouses>;
 };
@@ -3077,6 +3126,7 @@ export type Goods_ReceiptsFilter = {
   supplier_id?: InputMaybe<UuidFilter>;
   tenant_id?: InputMaybe<UuidFilter>;
   total_amount?: InputMaybe<BigFloatFilter>;
+  updated_at?: InputMaybe<DatetimeFilter>;
   warehouse_id?: InputMaybe<UuidFilter>;
 };
 
@@ -3092,6 +3142,7 @@ export type Goods_ReceiptsInsertInput = {
   supplier_id?: InputMaybe<Scalars['UUID']['input']>;
   tenant_id?: InputMaybe<Scalars['UUID']['input']>;
   total_amount?: InputMaybe<Scalars['BigFloat']['input']>;
+  updated_at?: InputMaybe<Scalars['Datetime']['input']>;
   warehouse_id?: InputMaybe<Scalars['UUID']['input']>;
 };
 
@@ -3115,6 +3166,7 @@ export type Goods_ReceiptsOrderBy = {
   supplier_id?: InputMaybe<OrderByDirection>;
   tenant_id?: InputMaybe<OrderByDirection>;
   total_amount?: InputMaybe<OrderByDirection>;
+  updated_at?: InputMaybe<OrderByDirection>;
   warehouse_id?: InputMaybe<OrderByDirection>;
 };
 
@@ -3130,6 +3182,7 @@ export type Goods_ReceiptsUpdateInput = {
   supplier_id?: InputMaybe<Scalars['UUID']['input']>;
   tenant_id?: InputMaybe<Scalars['UUID']['input']>;
   total_amount?: InputMaybe<Scalars['BigFloat']['input']>;
+  updated_at?: InputMaybe<Scalars['Datetime']['input']>;
   warehouse_id?: InputMaybe<Scalars['UUID']['input']>;
 };
 
@@ -3976,6 +4029,7 @@ export type Payments = Node & {
   suppliers?: Maybe<Suppliers>;
   tenant_id: Scalars['UUID']['output'];
   tenants?: Maybe<Tenants>;
+  updated_at?: Maybe<Scalars['Datetime']['output']>;
 };
 
 
@@ -4035,6 +4089,7 @@ export type PaymentsFilter = {
   reference_number?: InputMaybe<StringFilter>;
   supplier_id?: InputMaybe<UuidFilter>;
   tenant_id?: InputMaybe<UuidFilter>;
+  updated_at?: InputMaybe<DatetimeFilter>;
 };
 
 export type PaymentsInsertInput = {
@@ -4056,6 +4111,7 @@ export type PaymentsInsertInput = {
   reference_number?: InputMaybe<Scalars['String']['input']>;
   supplier_id?: InputMaybe<Scalars['UUID']['input']>;
   tenant_id?: InputMaybe<Scalars['UUID']['input']>;
+  updated_at?: InputMaybe<Scalars['Datetime']['input']>;
 };
 
 export type PaymentsInsertResponse = {
@@ -4085,6 +4141,7 @@ export type PaymentsOrderBy = {
   reference_number?: InputMaybe<OrderByDirection>;
   supplier_id?: InputMaybe<OrderByDirection>;
   tenant_id?: InputMaybe<OrderByDirection>;
+  updated_at?: InputMaybe<OrderByDirection>;
 };
 
 export type PaymentsUpdateInput = {
@@ -4106,6 +4163,7 @@ export type PaymentsUpdateInput = {
   reference_number?: InputMaybe<Scalars['String']['input']>;
   supplier_id?: InputMaybe<Scalars['UUID']['input']>;
   tenant_id?: InputMaybe<Scalars['UUID']['input']>;
+  updated_at?: InputMaybe<Scalars['Datetime']['input']>;
 };
 
 export type PaymentsUpdateResponse = {
@@ -4378,7 +4436,8 @@ export type Products = Node & {
   tax_rate?: Maybe<Scalars['BigFloat']['output']>;
   tenant_id: Scalars['UUID']['output'];
   tenants?: Maybe<Tenants>;
-  unit_of_measure?: Maybe<Scalars['String']['output']>;
+  unit_of_measure_id: Scalars['UUID']['output'];
+  unit_of_measures?: Maybe<Unit_Of_Measures>;
   updated_at?: Maybe<Scalars['Datetime']['output']>;
   warranty_period?: Maybe<Scalars['Int']['output']>;
   weight?: Maybe<Scalars['BigFloat']['output']>;
@@ -4508,7 +4567,7 @@ export type ProductsFilter = {
   sku?: InputMaybe<StringFilter>;
   tax_rate?: InputMaybe<BigFloatFilter>;
   tenant_id?: InputMaybe<UuidFilter>;
-  unit_of_measure?: InputMaybe<StringFilter>;
+  unit_of_measure_id?: InputMaybe<UuidFilter>;
   updated_at?: InputMaybe<DatetimeFilter>;
   warranty_period?: InputMaybe<IntFilter>;
   weight?: InputMaybe<BigFloatFilter>;
@@ -4534,7 +4593,7 @@ export type ProductsInsertInput = {
   sku?: InputMaybe<Scalars['String']['input']>;
   tax_rate?: InputMaybe<Scalars['BigFloat']['input']>;
   tenant_id?: InputMaybe<Scalars['UUID']['input']>;
-  unit_of_measure?: InputMaybe<Scalars['String']['input']>;
+  unit_of_measure_id?: InputMaybe<Scalars['UUID']['input']>;
   updated_at?: InputMaybe<Scalars['Datetime']['input']>;
   warranty_period?: InputMaybe<Scalars['Int']['input']>;
   weight?: InputMaybe<Scalars['BigFloat']['input']>;
@@ -4568,7 +4627,7 @@ export type ProductsOrderBy = {
   sku?: InputMaybe<OrderByDirection>;
   tax_rate?: InputMaybe<OrderByDirection>;
   tenant_id?: InputMaybe<OrderByDirection>;
-  unit_of_measure?: InputMaybe<OrderByDirection>;
+  unit_of_measure_id?: InputMaybe<OrderByDirection>;
   updated_at?: InputMaybe<OrderByDirection>;
   warranty_period?: InputMaybe<OrderByDirection>;
   weight?: InputMaybe<OrderByDirection>;
@@ -4594,7 +4653,7 @@ export type ProductsUpdateInput = {
   sku?: InputMaybe<Scalars['String']['input']>;
   tax_rate?: InputMaybe<Scalars['BigFloat']['input']>;
   tenant_id?: InputMaybe<Scalars['UUID']['input']>;
-  unit_of_measure?: InputMaybe<Scalars['String']['input']>;
+  unit_of_measure_id?: InputMaybe<Scalars['UUID']['input']>;
   updated_at?: InputMaybe<Scalars['Datetime']['input']>;
   warranty_period?: InputMaybe<Scalars['Int']['input']>;
   weight?: InputMaybe<Scalars['BigFloat']['input']>;
@@ -6120,6 +6179,7 @@ export type Tenants = Node & {
   tenant_subscription_add_onsCollection?: Maybe<Tenant_Subscription_Add_OnsConnection>;
   timezone?: Maybe<Scalars['String']['output']>;
   trial_ends_at?: Maybe<Scalars['Datetime']['output']>;
+  unit_of_measuresCollection?: Maybe<Unit_Of_MeasuresConnection>;
   updated_at?: Maybe<Scalars['Datetime']['output']>;
   warehousesCollection?: Maybe<WarehousesConnection>;
 };
@@ -6389,6 +6449,17 @@ export type TenantsTenant_Subscription_Add_OnsCollectionArgs = {
 };
 
 
+export type TenantsUnit_Of_MeasuresCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  filter?: InputMaybe<Unit_Of_MeasuresFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<Unit_Of_MeasuresOrderBy>>;
+};
+
+
 export type TenantsWarehousesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6576,6 +6647,115 @@ export type Unit_Of_MeasureFilter = {
   neq?: InputMaybe<Unit_Of_Measure>;
 };
 
+export type Unit_Of_Measures = Node & {
+  __typename?: 'unit_of_measures';
+  abbreviation: Scalars['String']['output'];
+  created_at?: Maybe<Scalars['Datetime']['output']>;
+  id: Scalars['UUID']['output'];
+  is_active?: Maybe<Scalars['Boolean']['output']>;
+  name: Scalars['String']['output'];
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars['ID']['output'];
+  productsCollection?: Maybe<ProductsConnection>;
+  tenant_id: Scalars['UUID']['output'];
+  tenants?: Maybe<Tenants>;
+  updated_at?: Maybe<Scalars['Datetime']['output']>;
+};
+
+
+export type Unit_Of_MeasuresProductsCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  filter?: InputMaybe<ProductsFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ProductsOrderBy>>;
+};
+
+export type Unit_Of_MeasuresConnection = {
+  __typename?: 'unit_of_measuresConnection';
+  edges: Array<Unit_Of_MeasuresEdge>;
+  pageInfo: PageInfo;
+};
+
+export type Unit_Of_MeasuresDeleteResponse = {
+  __typename?: 'unit_of_measuresDeleteResponse';
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output'];
+  /** Array of records impacted by the mutation */
+  records: Array<Unit_Of_Measures>;
+};
+
+export type Unit_Of_MeasuresEdge = {
+  __typename?: 'unit_of_measuresEdge';
+  cursor: Scalars['String']['output'];
+  node: Unit_Of_Measures;
+};
+
+export type Unit_Of_MeasuresFilter = {
+  abbreviation?: InputMaybe<StringFilter>;
+  /** Returns true only if all its inner filters are true, otherwise returns false */
+  and?: InputMaybe<Array<Unit_Of_MeasuresFilter>>;
+  created_at?: InputMaybe<DatetimeFilter>;
+  id?: InputMaybe<UuidFilter>;
+  is_active?: InputMaybe<BooleanFilter>;
+  name?: InputMaybe<StringFilter>;
+  nodeId?: InputMaybe<IdFilter>;
+  /** Negates a filter */
+  not?: InputMaybe<Unit_Of_MeasuresFilter>;
+  /** Returns true if at least one of its inner filters is true, otherwise returns false */
+  or?: InputMaybe<Array<Unit_Of_MeasuresFilter>>;
+  tenant_id?: InputMaybe<UuidFilter>;
+  updated_at?: InputMaybe<DatetimeFilter>;
+};
+
+export type Unit_Of_MeasuresInsertInput = {
+  abbreviation?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['Datetime']['input']>;
+  id?: InputMaybe<Scalars['UUID']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  tenant_id?: InputMaybe<Scalars['UUID']['input']>;
+  updated_at?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+export type Unit_Of_MeasuresInsertResponse = {
+  __typename?: 'unit_of_measuresInsertResponse';
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output'];
+  /** Array of records impacted by the mutation */
+  records: Array<Unit_Of_Measures>;
+};
+
+export type Unit_Of_MeasuresOrderBy = {
+  abbreviation?: InputMaybe<OrderByDirection>;
+  created_at?: InputMaybe<OrderByDirection>;
+  id?: InputMaybe<OrderByDirection>;
+  is_active?: InputMaybe<OrderByDirection>;
+  name?: InputMaybe<OrderByDirection>;
+  tenant_id?: InputMaybe<OrderByDirection>;
+  updated_at?: InputMaybe<OrderByDirection>;
+};
+
+export type Unit_Of_MeasuresUpdateInput = {
+  abbreviation?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['Datetime']['input']>;
+  id?: InputMaybe<Scalars['UUID']['input']>;
+  is_active?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  tenant_id?: InputMaybe<Scalars['UUID']['input']>;
+  updated_at?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+export type Unit_Of_MeasuresUpdateResponse = {
+  __typename?: 'unit_of_measuresUpdateResponse';
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output'];
+  /** Array of records impacted by the mutation */
+  records: Array<Unit_Of_Measures>;
+};
+
 export type Warehouses = Node & {
   __typename?: 'warehouses';
   address?: Maybe<Scalars['String']['output']>;
@@ -6598,6 +6778,7 @@ export type Warehouses = Node & {
   stock_movementsCollection?: Maybe<Stock_MovementsConnection>;
   tenant_id: Scalars['UUID']['output'];
   tenants?: Maybe<Tenants>;
+  updated_at?: Maybe<Scalars['Datetime']['output']>;
 };
 
 
@@ -6705,6 +6886,7 @@ export type WarehousesFilter = {
   phone?: InputMaybe<StringFilter>;
   province?: InputMaybe<StringFilter>;
   tenant_id?: InputMaybe<UuidFilter>;
+  updated_at?: InputMaybe<DatetimeFilter>;
 };
 
 export type WarehousesInsertInput = {
@@ -6719,6 +6901,7 @@ export type WarehousesInsertInput = {
   phone?: InputMaybe<Scalars['String']['input']>;
   province?: InputMaybe<Scalars['String']['input']>;
   tenant_id?: InputMaybe<Scalars['UUID']['input']>;
+  updated_at?: InputMaybe<Scalars['Datetime']['input']>;
 };
 
 export type WarehousesInsertResponse = {
@@ -6741,6 +6924,7 @@ export type WarehousesOrderBy = {
   phone?: InputMaybe<OrderByDirection>;
   province?: InputMaybe<OrderByDirection>;
   tenant_id?: InputMaybe<OrderByDirection>;
+  updated_at?: InputMaybe<OrderByDirection>;
 };
 
 export type WarehousesUpdateInput = {
@@ -6755,6 +6939,7 @@ export type WarehousesUpdateInput = {
   phone?: InputMaybe<Scalars['String']['input']>;
   province?: InputMaybe<Scalars['String']['input']>;
   tenant_id?: InputMaybe<Scalars['UUID']['input']>;
+  updated_at?: InputMaybe<Scalars['Datetime']['input']>;
 };
 
 export type WarehousesUpdateResponse = {
@@ -6764,3 +6949,71 @@ export type WarehousesUpdateResponse = {
   /** Array of records impacted by the mutation */
   records: Array<Warehouses>;
 };
+
+export type ProductsCollectionQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']['input']>;
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+}>;
+
+
+export type ProductsCollectionQuery = { __typename?: 'Query', productsCollection?: { __typename?: 'productsConnection', edges: Array<{ __typename?: 'productsEdge', cursor: string, node: { __typename?: 'products', id: any, name: string, selling_price?: any | null, is_active?: boolean | null, product_categories?: { __typename?: 'product_categories', name: string } | null } }>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null } } | null };
+
+
+export const ProductsCollectionDocument = gql`
+    query ProductsCollection($first: Int, $after: Cursor) {
+  productsCollection(first: $first, after: $after) {
+    edges {
+      cursor
+      node {
+        id
+        name
+        selling_price
+        is_active
+        product_categories {
+          name
+        }
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+  }
+}
+    `;
+
+/**
+ * __useProductsCollectionQuery__
+ *
+ * To run a query within a React component, call `useProductsCollectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductsCollectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProductsCollectionQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      after: // value for 'after'
+ *   },
+ * });
+ */
+export function useProductsCollectionQuery(baseOptions?: Apollo.QueryHookOptions<ProductsCollectionQuery, ProductsCollectionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProductsCollectionQuery, ProductsCollectionQueryVariables>(ProductsCollectionDocument, options);
+      }
+export function useProductsCollectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProductsCollectionQuery, ProductsCollectionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProductsCollectionQuery, ProductsCollectionQueryVariables>(ProductsCollectionDocument, options);
+        }
+export function useProductsCollectionSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ProductsCollectionQuery, ProductsCollectionQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<ProductsCollectionQuery, ProductsCollectionQueryVariables>(ProductsCollectionDocument, options);
+        }
+export type ProductsCollectionQueryHookResult = ReturnType<typeof useProductsCollectionQuery>;
+export type ProductsCollectionLazyQueryHookResult = ReturnType<typeof useProductsCollectionLazyQuery>;
+export type ProductsCollectionSuspenseQueryHookResult = ReturnType<typeof useProductsCollectionSuspenseQuery>;
+export type ProductsCollectionQueryResult = Apollo.QueryResult<ProductsCollectionQuery, ProductsCollectionQueryVariables>;

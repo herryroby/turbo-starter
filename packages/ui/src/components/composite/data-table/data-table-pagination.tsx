@@ -1,26 +1,31 @@
 'use client';
 
 import { Table } from '@tanstack/react-table';
-import { ChevronsLeft, ChevronsRight } from 'lucide-react';
+
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import * as React from 'react';
 
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious
+  PaginationNext
 } from '@repo/ui/components/ui/pagination';
 import { Select } from '@repo/ui/components/composite/select';
 
-interface DataTablePaginationProps<TData> {
-  table: Table<TData>;
+interface PageInfo {
+  endCursor?: string | null;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  startCursor?: string | null;
 }
 
-export const DataTablePagination = <TData,>({ table }: DataTablePaginationProps<TData>): React.ReactElement => {
+interface DataTablePaginationProps<TData> {
+  table: Table<TData>;
+  pageInfo?: PageInfo | null;
+}
+
+export const DataTablePagination = <TData,>({ table, pageInfo }: DataTablePaginationProps<TData>): React.ReactElement => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -40,8 +45,9 @@ export const DataTablePagination = <TData,>({ table }: DataTablePaginationProps<
     [searchParams]
   );
 
-  const handlePageChange = (pageIndex: number): void => {
-    router.push(`${pathname}?${createQueryString({ page: pageIndex < 0 ? 1 : pageIndex + 1 })}`, {
+    const handleNextPage = (): void => {
+    if (!pageInfo?.hasNextPage || !pageInfo.endCursor) return;
+    router.push(`${pathname}?${createQueryString({ after: pageInfo.endCursor, page: null })}`, {
       scroll: false
     });
   };
@@ -52,39 +58,7 @@ export const DataTablePagination = <TData,>({ table }: DataTablePaginationProps<
     });
   };
 
-  const basePage = table.getState().pagination.pageIndex + 1;
-  const totalPages = table.getPageCount();
-
-  const generatePagination = (): (number | string)[] => {
-    if (totalPages <= 7) {
-      return Array.from({ length: totalPages || 0 }, (_, i) => i + 1);
-    }
-
-    const basePages = [1, totalPages];
-    const startPages = basePage <= 3 ? [2, 3, 4] : [];
-    const endPages = basePage >= totalPages - 2 ? [totalPages - 3, totalPages - 2, totalPages - 1] : [];
-    const middlePages = basePage > 3 && basePage < totalPages - 2 ? [basePage - 1, basePage, basePage + 1] : [];
-
-    const uniquePages = [...new Set([...basePages, ...startPages, ...middlePages, ...endPages])].sort(
-      (a, b) => a - b
-    ) as number[];
-
-    const pagesWithEllipsis: (number | string)[] = [];
-    for (let i = 0; i < uniquePages.length; i++) {
-      if (typeof uniquePages[i] !== 'undefined') {
-        pagesWithEllipsis.push(uniquePages[i] as number);
-      }
-      const nextPage = uniquePages[i + 1];
-      const currentPage = uniquePages[i];
-      if (nextPage && currentPage && nextPage - currentPage > 1) {
-        pagesWithEllipsis.push('ellipsis');
-      }
-    }
-
-    return pagesWithEllipsis;
-  };
-
-  const pages = generatePagination();
+  
 
   return (
     <div className="flex flex-col items-center justify-between gap-4 px-2 sm:flex-row">
@@ -114,83 +88,23 @@ export const DataTablePagination = <TData,>({ table }: DataTablePaginationProps<
           />
         </div>
 
-        <Pagination>
+                <Pagination>
           <PaginationContent>
-            <PaginationItem className="hidden sm:inline-flex">
-              <PaginationLink
-                size="icon"
-                onClick={!table.getCanPreviousPage() ? undefined : () => handlePageChange(0)}
-                aria-label="First page"
-                aria-disabled={!table.getCanPreviousPage()}
-                tabIndex={!table.getCanPreviousPage() ? -1 : 0}
-                className={!table.getCanPreviousPage() ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-              >
-                <ChevronsLeft className="h-4 w-4" />
-              </PaginationLink>
-            </PaginationItem>
-
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={!table.getCanPreviousPage() ? undefined : () => handlePageChange(table.getState().pagination.pageIndex - 1)}
-                aria-label="Previous page"
-                aria-disabled={!table.getCanPreviousPage()}
-                tabIndex={!table.getCanPreviousPage() ? -1 : 0}
-                className={!table.getCanPreviousPage() ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-                size="default"
-              />
-            </PaginationItem>
-
-            {pages.map((page, i) => {
-              if (page === 'ellipsis') {
-                return (
-                  <PaginationItem key={`ellipsis-${i}`} className="hidden cursor-pointer sm:inline-flex">
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                );
-              }
-
-              return (
-                <PaginationItem key={`page-${page}-${i}`} className="hidden cursor-pointer sm:inline-flex">
-                  <PaginationLink
-                    isActive={page === basePage}
-                    onClick={() => handlePageChange(typeof page === 'number' ? page - 1 : 0)}
-                    size="default"
-                  >
-                    {page}
-                  </PaginationLink>
-                </PaginationItem>
-              );
-            })}
-
+            {/* Previous button can be implemented later if hasPreviousPage is available */}
             <PaginationItem>
               <PaginationNext
-                onClick={!table.getCanNextPage() ? undefined : () => handlePageChange(table.getState().pagination.pageIndex + 1)}
+                onClick={handleNextPage}
                 aria-label="Next page"
-                aria-disabled={!table.getCanNextPage()}
-                tabIndex={!table.getCanNextPage() ? -1 : 0}
-                className={!table.getCanNextPage() ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                aria-disabled={!pageInfo?.hasNextPage}
+                tabIndex={!pageInfo?.hasNextPage ? -1 : 0}
+                className={!pageInfo?.hasNextPage ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
                 size="default"
               />
-            </PaginationItem>
-
-            <PaginationItem className="hidden sm:inline-flex">
-              <PaginationLink
-                size="icon"
-                onClick={!table.getCanNextPage() ? undefined : () => handlePageChange(table.getPageCount() - 1)}
-                aria-label="Last page"
-                aria-disabled={!table.getCanNextPage()}
-                tabIndex={!table.getCanNextPage() ? -1 : 0}
-                className={!table.getCanNextPage() ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-              >
-                <ChevronsRight className="h-4 w-4" />
-              </PaginationLink>
             </PaginationItem>
           </PaginationContent>
         </Pagination>
 
-        <div className="text-sm font-medium sm:hidden">
-          {basePage} of {totalPages}
-        </div>
+        
       </div>
     </div>
   );

@@ -39,6 +39,13 @@ export type CustomColumnDef<TData extends object, TValue = unknown> = TanStackCo
   headerAlign?: 'left' | 'center' | 'right';
 };
 
+interface PageInfo {
+  endCursor?: string | null;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  startCursor?: string | null;
+}
+
 interface DataTableProps<TData extends object, TValue> {
   columns: CustomColumnDef<TData, TValue>[];
   data: TData[];
@@ -57,6 +64,7 @@ interface DataTableProps<TData extends object, TValue> {
   globalFilterPlaceholder?: string;
   filename?: string;
   pageCount?: number;
+  pageInfo?: PageInfo | null;
 }
 
 export const DataTable = <TData extends object, TValue = unknown>({
@@ -70,7 +78,8 @@ export const DataTable = <TData extends object, TValue = unknown>({
   enableGlobalFilter = false,
   globalFilterPlaceholder = 'Search all columns...',
   filename = 'data-export',
-  pageCount
+  pageCount,
+  pageInfo
 }: DataTableProps<TData, TValue>): React.ReactElement => {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -402,7 +411,7 @@ export const DataTable = <TData extends object, TValue = unknown>({
           )}
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      <DataTablePagination table={table} pageInfo={pageInfo} />
     </div>
   );
 };

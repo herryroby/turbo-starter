@@ -39,6 +39,7 @@ export {
 export { DataTable } from './src/components/composite/data-table';
 export { Select } from './src/components/composite/select';
 export { ThemeToggle } from './src/components/composite/theme-toggle';
+export { ListPage } from './src/components/list-page';
 
 // ===== LAYOUT COMPONENTS =====
 
