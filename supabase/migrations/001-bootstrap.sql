@@ -158,8 +158,7 @@ CREATE TABLE app_users (
     -- PENTING: Dalam lingkungan Supabase nyata, `id` ini HARUS merujuk ke `auth.users.id`.
     -- Untuk tujuan skrip contoh ini, foreign key sementara dihapus agar skrip dapat berjalan tanpa perlu mendaftar pengguna nyata.
     -- Jika Anda ingin mengaktifkan kembali foreign key ini, hapus komentar pada baris di bawah ini dan pastikan ID yang Anda masukkan ada di auth.users.
-    -- id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-    id UUID PRIMARY KEY, -- Removed REFERENCES auth.users(id) for sample data script execution
+    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
     tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
     email VARCHAR(255) NOT NULL, -- Redundant dengan auth.users, tapi berguna untuk aplikasi
     full_name VARCHAR(255) NOT NULL,

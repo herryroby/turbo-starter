@@ -15,6 +15,11 @@ export {
   CardTitle,
   Checkbox,
   Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -37,13 +42,14 @@ export {
 
 // ===== COMPOSITE COMPONENTS =====
 export { DataTable } from './src/components/composite/data-table';
+export { ListPage } from './src/components/composite/list-page';
 export { Select } from './src/components/composite/select';
 export { ThemeToggle } from './src/components/composite/theme-toggle';
-export { ListPage } from './src/components/list-page';
 
 // ===== LAYOUT COMPONENTS =====
 
 // ===== TYPES =====
+export type { ColumnDef } from '@tanstack/react-table';
 export type { CustomColumnDef } from './src/components/composite/data-table/data-table';
 
 // ===== UTILITIES =====

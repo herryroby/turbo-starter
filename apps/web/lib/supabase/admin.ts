@@ -5,8 +5,8 @@
 
 // IMPORTANT: This client uses the service_role key and should NEVER be exposed to the client-side.
 
-import { createClient } from '@supabase/supabase-js';
 import type { Database } from '@/types/supabase';
+import { createClient } from '@supabase/supabase-js';
 
 // Ensure the environment variables are not undefined. The exclamation mark asserts this.
 // In a real-world scenario, you might want to have a more robust configuration management.
@@ -22,8 +22,8 @@ export const createAdminClient = () => {
   return createClient<Database>(supabaseUrl, serviceRoleKey, {
     auth: {
       autoRefreshToken: false,
-      persistSession: false,
-    },
+      persistSession: false
+    }
   });
 };
 

@@ -1,10 +1,10 @@
 'use client';
 
-import { Button } from './ui/button';
-import { DataTable } from './composite/data-table';
-import type { CustomColumnDef } from './composite/data-table/data-table';
 import { FilePlus } from 'lucide-react';
 import Link from 'next/link';
+import { Button } from '../ui/button';
+import { DataTable } from './data-table';
+import type { CustomColumnDef } from './data-table/data-table';
 
 interface PageInfo {
   endCursor?: string | null;

@@ -3,7 +3,7 @@ export { Avatar, AvatarFallback, AvatarImage } from './avatar';
 export { Button } from './button';
 export { Card, CardContent, CardFooter, CardHeader, CardTitle } from './card';
 export { Checkbox } from './checkbox';
-export { Dialog } from './dialog';
+export { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './dialog';
 export {
   DropdownMenu,
   DropdownMenuContent,

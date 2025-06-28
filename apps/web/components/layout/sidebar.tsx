@@ -10,6 +10,7 @@ import {
   Home,
   Package,
   Settings,
+  ShieldAlert,
   ShoppingBasket,
   Users
 } from 'lucide-react';
@@ -72,6 +73,14 @@ const menuItems: MenuItem[] = [
     submenu: [
       { name: 'Overview', icon: <ChevronRight className="h-3 w-3" />, href: '/users' },
       { name: 'Add User', icon: <ChevronRight className="h-3 w-3" />, href: '/users/add' }
+    ]
+  },
+  {
+    name: 'Admin',
+    icon: <ShieldAlert className="h-4 w-4" />,
+    submenu: [
+      { name: 'Users', icon: <ChevronRight className="h-3 w-3" />, href: '/users' },
+      { name: 'Tenants', icon: <ChevronRight className="h-3 w-3" />, href: '/tenants' }
     ]
   },
   {

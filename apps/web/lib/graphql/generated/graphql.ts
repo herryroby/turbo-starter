@@ -246,6 +246,7 @@ export type Mutation = {
   deleteFromunit_of_measuresCollection: Unit_Of_MeasuresDeleteResponse;
   /** Deletes zero or more records from the `warehouses` collection */
   deleteFromwarehousesCollection: WarehousesDeleteResponse;
+  get_current_tenant_id?: Maybe<Scalars['UUID']['output']>;
   /** Adds one or more `add_ons` records to the collection */
   insertIntoadd_onsCollection?: Maybe<Add_OnsInsertResponse>;
   /** Adds one or more `app_users` records to the collection */
