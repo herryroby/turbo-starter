@@ -1,5 +1,5 @@
-import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
+import { gql } from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -10,20 +10,20 @@ export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' |
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
-  BigFloat: { input: any; output: any; }
-  BigInt: { input: any; output: any; }
-  Cursor: { input: any; output: any; }
-  Date: { input: any; output: any; }
-  Datetime: { input: any; output: any; }
-  JSON: { input: any; output: any; }
-  Opaque: { input: any; output: any; }
-  Time: { input: any; output: any; }
-  UUID: { input: any; output: any; }
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
+  BigFloat: { input: any; output: any };
+  BigInt: { input: any; output: any };
+  Cursor: { input: any; output: any };
+  Date: { input: any; output: any };
+  Datetime: { input: any; output: any };
+  JSON: { input: any; output: any };
+  Opaque: { input: any; output: any };
+  Time: { input: any; output: any };
+  UUID: { input: any; output: any };
 };
 
 /** Boolean expression comparing fields on type "BigFloat" */
@@ -382,13 +382,11 @@ export type Mutation = {
   updatewarehousesCollection: WarehousesUpdateResponse;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationDeleteFromadd_OnsCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Add_OnsFilter>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationDeleteFromapp_UsersCollectionArgs = {
@@ -396,13 +394,11 @@ export type MutationDeleteFromapp_UsersCollectionArgs = {
   filter?: InputMaybe<App_UsersFilter>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationDeleteFromaudit_LogsCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Audit_LogsFilter>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationDeleteFrombank_AccountsCollectionArgs = {
@@ -410,13 +406,11 @@ export type MutationDeleteFrombank_AccountsCollectionArgs = {
   filter?: InputMaybe<Bank_AccountsFilter>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationDeleteFromchart_Of_AccountsCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Chart_Of_AccountsFilter>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationDeleteFromcustomersCollectionArgs = {
@@ -424,13 +418,11 @@ export type MutationDeleteFromcustomersCollectionArgs = {
   filter?: InputMaybe<CustomersFilter>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationDeleteFromdeliveriesCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<DeliveriesFilter>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationDeleteFromdelivery_ItemsCollectionArgs = {
@@ -438,13 +430,11 @@ export type MutationDeleteFromdelivery_ItemsCollectionArgs = {
   filter?: InputMaybe<Delivery_ItemsFilter>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationDeleteFromgoods_Receipt_ItemsCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Goods_Receipt_ItemsFilter>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationDeleteFromgoods_ReceiptsCollectionArgs = {
@@ -452,13 +442,11 @@ export type MutationDeleteFromgoods_ReceiptsCollectionArgs = {
   filter?: InputMaybe<Goods_ReceiptsFilter>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationDeleteFrominventoryCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<InventoryFilter>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationDeleteFrominvoice_ItemsCollectionArgs = {
@@ -466,13 +454,11 @@ export type MutationDeleteFrominvoice_ItemsCollectionArgs = {
   filter?: InputMaybe<Invoice_ItemsFilter>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationDeleteFrominvoicesCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<InvoicesFilter>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationDeleteFromjournal_EntriesCollectionArgs = {
@@ -480,13 +466,11 @@ export type MutationDeleteFromjournal_EntriesCollectionArgs = {
   filter?: InputMaybe<Journal_EntriesFilter>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationDeleteFromjournal_Entry_LinesCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Journal_Entry_LinesFilter>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationDeleteFrompayment_AllocationsCollectionArgs = {
@@ -494,13 +478,11 @@ export type MutationDeleteFrompayment_AllocationsCollectionArgs = {
   filter?: InputMaybe<Payment_AllocationsFilter>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationDeleteFrompaymentsCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<PaymentsFilter>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationDeleteFrompermissionsCollectionArgs = {
@@ -508,13 +490,11 @@ export type MutationDeleteFrompermissionsCollectionArgs = {
   filter?: InputMaybe<PermissionsFilter>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationDeleteFromproduct_CategoriesCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Product_CategoriesFilter>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationDeleteFromproductsCollectionArgs = {
@@ -522,13 +502,11 @@ export type MutationDeleteFromproductsCollectionArgs = {
   filter?: InputMaybe<ProductsFilter>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationDeleteFrompurchase_Order_ItemsCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Purchase_Order_ItemsFilter>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationDeleteFrompurchase_OrdersCollectionArgs = {
@@ -536,13 +514,11 @@ export type MutationDeleteFrompurchase_OrdersCollectionArgs = {
   filter?: InputMaybe<Purchase_OrdersFilter>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationDeleteFromrole_PermissionsCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Role_PermissionsFilter>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationDeleteFromrolesCollectionArgs = {
@@ -550,13 +526,11 @@ export type MutationDeleteFromrolesCollectionArgs = {
   filter?: InputMaybe<RolesFilter>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationDeleteFromsales_Order_ItemsCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Sales_Order_ItemsFilter>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationDeleteFromsales_OrdersCollectionArgs = {
@@ -564,13 +538,11 @@ export type MutationDeleteFromsales_OrdersCollectionArgs = {
   filter?: InputMaybe<Sales_OrdersFilter>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationDeleteFromstock_MovementsCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Stock_MovementsFilter>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationDeleteFromsubscription_PlansCollectionArgs = {
@@ -578,13 +550,11 @@ export type MutationDeleteFromsubscription_PlansCollectionArgs = {
   filter?: InputMaybe<Subscription_PlansFilter>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationDeleteFromsuppliersCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<SuppliersFilter>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationDeleteFromtenant_Subscription_Add_OnsCollectionArgs = {
@@ -592,13 +562,11 @@ export type MutationDeleteFromtenant_Subscription_Add_OnsCollectionArgs = {
   filter?: InputMaybe<Tenant_Subscription_Add_OnsFilter>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationDeleteFromtenantsCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<TenantsFilter>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationDeleteFromunit_Of_MeasuresCollectionArgs = {
@@ -606,211 +574,176 @@ export type MutationDeleteFromunit_Of_MeasuresCollectionArgs = {
   filter?: InputMaybe<Unit_Of_MeasuresFilter>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationDeleteFromwarehousesCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<WarehousesFilter>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationInsertIntoadd_OnsCollectionArgs = {
   objects: Array<Add_OnsInsertInput>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationInsertIntoapp_UsersCollectionArgs = {
   objects: Array<App_UsersInsertInput>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationInsertIntoaudit_LogsCollectionArgs = {
   objects: Array<Audit_LogsInsertInput>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationInsertIntobank_AccountsCollectionArgs = {
   objects: Array<Bank_AccountsInsertInput>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationInsertIntochart_Of_AccountsCollectionArgs = {
   objects: Array<Chart_Of_AccountsInsertInput>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationInsertIntocustomersCollectionArgs = {
   objects: Array<CustomersInsertInput>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationInsertIntodeliveriesCollectionArgs = {
   objects: Array<DeliveriesInsertInput>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationInsertIntodelivery_ItemsCollectionArgs = {
   objects: Array<Delivery_ItemsInsertInput>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationInsertIntogoods_Receipt_ItemsCollectionArgs = {
   objects: Array<Goods_Receipt_ItemsInsertInput>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationInsertIntogoods_ReceiptsCollectionArgs = {
   objects: Array<Goods_ReceiptsInsertInput>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationInsertIntoinventoryCollectionArgs = {
   objects: Array<InventoryInsertInput>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationInsertIntoinvoice_ItemsCollectionArgs = {
   objects: Array<Invoice_ItemsInsertInput>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationInsertIntoinvoicesCollectionArgs = {
   objects: Array<InvoicesInsertInput>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationInsertIntojournal_EntriesCollectionArgs = {
   objects: Array<Journal_EntriesInsertInput>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationInsertIntojournal_Entry_LinesCollectionArgs = {
   objects: Array<Journal_Entry_LinesInsertInput>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationInsertIntopayment_AllocationsCollectionArgs = {
   objects: Array<Payment_AllocationsInsertInput>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationInsertIntopaymentsCollectionArgs = {
   objects: Array<PaymentsInsertInput>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationInsertIntopermissionsCollectionArgs = {
   objects: Array<PermissionsInsertInput>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationInsertIntoproduct_CategoriesCollectionArgs = {
   objects: Array<Product_CategoriesInsertInput>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationInsertIntoproductsCollectionArgs = {
   objects: Array<ProductsInsertInput>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationInsertIntopurchase_Order_ItemsCollectionArgs = {
   objects: Array<Purchase_Order_ItemsInsertInput>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationInsertIntopurchase_OrdersCollectionArgs = {
   objects: Array<Purchase_OrdersInsertInput>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationInsertIntorole_PermissionsCollectionArgs = {
   objects: Array<Role_PermissionsInsertInput>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationInsertIntorolesCollectionArgs = {
   objects: Array<RolesInsertInput>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationInsertIntosales_Order_ItemsCollectionArgs = {
   objects: Array<Sales_Order_ItemsInsertInput>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationInsertIntosales_OrdersCollectionArgs = {
   objects: Array<Sales_OrdersInsertInput>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationInsertIntostock_MovementsCollectionArgs = {
   objects: Array<Stock_MovementsInsertInput>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationInsertIntosubscription_PlansCollectionArgs = {
   objects: Array<Subscription_PlansInsertInput>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationInsertIntosuppliersCollectionArgs = {
   objects: Array<SuppliersInsertInput>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationInsertIntotenant_Subscription_Add_OnsCollectionArgs = {
   objects: Array<Tenant_Subscription_Add_OnsInsertInput>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationInsertIntotenantsCollectionArgs = {
   objects: Array<TenantsInsertInput>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationInsertIntounit_Of_MeasuresCollectionArgs = {
   objects: Array<Unit_Of_MeasuresInsertInput>;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationInsertIntowarehousesCollectionArgs = {
   objects: Array<WarehousesInsertInput>;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationUpdateadd_OnsCollectionArgs = {
@@ -819,14 +752,12 @@ export type MutationUpdateadd_OnsCollectionArgs = {
   set: Add_OnsUpdateInput;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationUpdateapp_UsersCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<App_UsersFilter>;
   set: App_UsersUpdateInput;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationUpdateaudit_LogsCollectionArgs = {
@@ -835,14 +766,12 @@ export type MutationUpdateaudit_LogsCollectionArgs = {
   set: Audit_LogsUpdateInput;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationUpdatebank_AccountsCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Bank_AccountsFilter>;
   set: Bank_AccountsUpdateInput;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationUpdatechart_Of_AccountsCollectionArgs = {
@@ -851,14 +780,12 @@ export type MutationUpdatechart_Of_AccountsCollectionArgs = {
   set: Chart_Of_AccountsUpdateInput;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationUpdatecustomersCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<CustomersFilter>;
   set: CustomersUpdateInput;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationUpdatedeliveriesCollectionArgs = {
@@ -867,14 +794,12 @@ export type MutationUpdatedeliveriesCollectionArgs = {
   set: DeliveriesUpdateInput;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationUpdatedelivery_ItemsCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Delivery_ItemsFilter>;
   set: Delivery_ItemsUpdateInput;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationUpdategoods_Receipt_ItemsCollectionArgs = {
@@ -883,14 +808,12 @@ export type MutationUpdategoods_Receipt_ItemsCollectionArgs = {
   set: Goods_Receipt_ItemsUpdateInput;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationUpdategoods_ReceiptsCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Goods_ReceiptsFilter>;
   set: Goods_ReceiptsUpdateInput;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationUpdateinventoryCollectionArgs = {
@@ -899,14 +822,12 @@ export type MutationUpdateinventoryCollectionArgs = {
   set: InventoryUpdateInput;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationUpdateinvoice_ItemsCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Invoice_ItemsFilter>;
   set: Invoice_ItemsUpdateInput;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationUpdateinvoicesCollectionArgs = {
@@ -915,14 +836,12 @@ export type MutationUpdateinvoicesCollectionArgs = {
   set: InvoicesUpdateInput;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationUpdatejournal_EntriesCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Journal_EntriesFilter>;
   set: Journal_EntriesUpdateInput;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationUpdatejournal_Entry_LinesCollectionArgs = {
@@ -931,14 +850,12 @@ export type MutationUpdatejournal_Entry_LinesCollectionArgs = {
   set: Journal_Entry_LinesUpdateInput;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationUpdatepayment_AllocationsCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Payment_AllocationsFilter>;
   set: Payment_AllocationsUpdateInput;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationUpdatepaymentsCollectionArgs = {
@@ -947,14 +864,12 @@ export type MutationUpdatepaymentsCollectionArgs = {
   set: PaymentsUpdateInput;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationUpdatepermissionsCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<PermissionsFilter>;
   set: PermissionsUpdateInput;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationUpdateproduct_CategoriesCollectionArgs = {
@@ -963,14 +878,12 @@ export type MutationUpdateproduct_CategoriesCollectionArgs = {
   set: Product_CategoriesUpdateInput;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationUpdateproductsCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<ProductsFilter>;
   set: ProductsUpdateInput;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationUpdatepurchase_Order_ItemsCollectionArgs = {
@@ -979,14 +892,12 @@ export type MutationUpdatepurchase_Order_ItemsCollectionArgs = {
   set: Purchase_Order_ItemsUpdateInput;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationUpdatepurchase_OrdersCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Purchase_OrdersFilter>;
   set: Purchase_OrdersUpdateInput;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationUpdaterole_PermissionsCollectionArgs = {
@@ -995,14 +906,12 @@ export type MutationUpdaterole_PermissionsCollectionArgs = {
   set: Role_PermissionsUpdateInput;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationUpdaterolesCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<RolesFilter>;
   set: RolesUpdateInput;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationUpdatesales_Order_ItemsCollectionArgs = {
@@ -1011,14 +920,12 @@ export type MutationUpdatesales_Order_ItemsCollectionArgs = {
   set: Sales_Order_ItemsUpdateInput;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationUpdatesales_OrdersCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Sales_OrdersFilter>;
   set: Sales_OrdersUpdateInput;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationUpdatestock_MovementsCollectionArgs = {
@@ -1027,14 +934,12 @@ export type MutationUpdatestock_MovementsCollectionArgs = {
   set: Stock_MovementsUpdateInput;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationUpdatesubscription_PlansCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Subscription_PlansFilter>;
   set: Subscription_PlansUpdateInput;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationUpdatesuppliersCollectionArgs = {
@@ -1043,14 +948,12 @@ export type MutationUpdatesuppliersCollectionArgs = {
   set: SuppliersUpdateInput;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationUpdatetenant_Subscription_Add_OnsCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Tenant_Subscription_Add_OnsFilter>;
   set: Tenant_Subscription_Add_OnsUpdateInput;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationUpdatetenantsCollectionArgs = {
@@ -1059,14 +962,12 @@ export type MutationUpdatetenantsCollectionArgs = {
   set: TenantsUpdateInput;
 };
 
-
 /** The root type for creating and mutating data */
 export type MutationUpdateunit_Of_MeasuresCollectionArgs = {
   atMost?: Scalars['Int']['input'];
   filter?: InputMaybe<Unit_Of_MeasuresFilter>;
   set: Unit_Of_MeasuresUpdateInput;
 };
-
 
 /** The root type for creating and mutating data */
 export type MutationUpdatewarehousesCollectionArgs = {
@@ -1180,7 +1081,6 @@ export type Query = {
   warehousesCollection?: Maybe<WarehousesConnection>;
 };
 
-
 /** The root type for querying data */
 export type QueryAdd_OnsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1191,7 +1091,6 @@ export type QueryAdd_OnsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Add_OnsOrderBy>>;
 };
-
 
 /** The root type for querying data */
 export type QueryApp_UsersCollectionArgs = {
@@ -1204,7 +1103,6 @@ export type QueryApp_UsersCollectionArgs = {
   orderBy?: InputMaybe<Array<App_UsersOrderBy>>;
 };
 
-
 /** The root type for querying data */
 export type QueryAudit_LogsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1215,7 +1113,6 @@ export type QueryAudit_LogsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Audit_LogsOrderBy>>;
 };
-
 
 /** The root type for querying data */
 export type QueryBank_AccountsCollectionArgs = {
@@ -1228,7 +1125,6 @@ export type QueryBank_AccountsCollectionArgs = {
   orderBy?: InputMaybe<Array<Bank_AccountsOrderBy>>;
 };
 
-
 /** The root type for querying data */
 export type QueryChart_Of_AccountsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1239,7 +1135,6 @@ export type QueryChart_Of_AccountsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Chart_Of_AccountsOrderBy>>;
 };
-
 
 /** The root type for querying data */
 export type QueryCustomersCollectionArgs = {
@@ -1252,7 +1147,6 @@ export type QueryCustomersCollectionArgs = {
   orderBy?: InputMaybe<Array<CustomersOrderBy>>;
 };
 
-
 /** The root type for querying data */
 export type QueryDeliveriesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1263,7 +1157,6 @@ export type QueryDeliveriesCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<DeliveriesOrderBy>>;
 };
-
 
 /** The root type for querying data */
 export type QueryDelivery_ItemsCollectionArgs = {
@@ -1276,7 +1169,6 @@ export type QueryDelivery_ItemsCollectionArgs = {
   orderBy?: InputMaybe<Array<Delivery_ItemsOrderBy>>;
 };
 
-
 /** The root type for querying data */
 export type QueryGoods_Receipt_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1287,7 +1179,6 @@ export type QueryGoods_Receipt_ItemsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Goods_Receipt_ItemsOrderBy>>;
 };
-
 
 /** The root type for querying data */
 export type QueryGoods_ReceiptsCollectionArgs = {
@@ -1300,7 +1191,6 @@ export type QueryGoods_ReceiptsCollectionArgs = {
   orderBy?: InputMaybe<Array<Goods_ReceiptsOrderBy>>;
 };
 
-
 /** The root type for querying data */
 export type QueryInventoryCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1311,7 +1201,6 @@ export type QueryInventoryCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<InventoryOrderBy>>;
 };
-
 
 /** The root type for querying data */
 export type QueryInvoice_ItemsCollectionArgs = {
@@ -1324,7 +1213,6 @@ export type QueryInvoice_ItemsCollectionArgs = {
   orderBy?: InputMaybe<Array<Invoice_ItemsOrderBy>>;
 };
 
-
 /** The root type for querying data */
 export type QueryInvoicesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1335,7 +1223,6 @@ export type QueryInvoicesCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<InvoicesOrderBy>>;
 };
-
 
 /** The root type for querying data */
 export type QueryJournal_EntriesCollectionArgs = {
@@ -1348,7 +1235,6 @@ export type QueryJournal_EntriesCollectionArgs = {
   orderBy?: InputMaybe<Array<Journal_EntriesOrderBy>>;
 };
 
-
 /** The root type for querying data */
 export type QueryJournal_Entry_LinesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1360,12 +1246,10 @@ export type QueryJournal_Entry_LinesCollectionArgs = {
   orderBy?: InputMaybe<Array<Journal_Entry_LinesOrderBy>>;
 };
 
-
 /** The root type for querying data */
 export type QueryNodeArgs = {
   nodeId: Scalars['ID']['input'];
 };
-
 
 /** The root type for querying data */
 export type QueryPayment_AllocationsCollectionArgs = {
@@ -1378,7 +1262,6 @@ export type QueryPayment_AllocationsCollectionArgs = {
   orderBy?: InputMaybe<Array<Payment_AllocationsOrderBy>>;
 };
 
-
 /** The root type for querying data */
 export type QueryPaymentsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1389,7 +1272,6 @@ export type QueryPaymentsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<PaymentsOrderBy>>;
 };
-
 
 /** The root type for querying data */
 export type QueryPermissionsCollectionArgs = {
@@ -1402,7 +1284,6 @@ export type QueryPermissionsCollectionArgs = {
   orderBy?: InputMaybe<Array<PermissionsOrderBy>>;
 };
 
-
 /** The root type for querying data */
 export type QueryProduct_CategoriesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1413,7 +1294,6 @@ export type QueryProduct_CategoriesCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Product_CategoriesOrderBy>>;
 };
-
 
 /** The root type for querying data */
 export type QueryProductsCollectionArgs = {
@@ -1426,7 +1306,6 @@ export type QueryProductsCollectionArgs = {
   orderBy?: InputMaybe<Array<ProductsOrderBy>>;
 };
 
-
 /** The root type for querying data */
 export type QueryPurchase_Order_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1437,7 +1316,6 @@ export type QueryPurchase_Order_ItemsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Purchase_Order_ItemsOrderBy>>;
 };
-
 
 /** The root type for querying data */
 export type QueryPurchase_OrdersCollectionArgs = {
@@ -1450,7 +1328,6 @@ export type QueryPurchase_OrdersCollectionArgs = {
   orderBy?: InputMaybe<Array<Purchase_OrdersOrderBy>>;
 };
 
-
 /** The root type for querying data */
 export type QueryRole_PermissionsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1461,7 +1338,6 @@ export type QueryRole_PermissionsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Role_PermissionsOrderBy>>;
 };
-
 
 /** The root type for querying data */
 export type QueryRolesCollectionArgs = {
@@ -1474,7 +1350,6 @@ export type QueryRolesCollectionArgs = {
   orderBy?: InputMaybe<Array<RolesOrderBy>>;
 };
 
-
 /** The root type for querying data */
 export type QuerySales_Order_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1485,7 +1360,6 @@ export type QuerySales_Order_ItemsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Sales_Order_ItemsOrderBy>>;
 };
-
 
 /** The root type for querying data */
 export type QuerySales_OrdersCollectionArgs = {
@@ -1498,7 +1372,6 @@ export type QuerySales_OrdersCollectionArgs = {
   orderBy?: InputMaybe<Array<Sales_OrdersOrderBy>>;
 };
 
-
 /** The root type for querying data */
 export type QueryStock_MovementsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1509,7 +1382,6 @@ export type QueryStock_MovementsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Stock_MovementsOrderBy>>;
 };
-
 
 /** The root type for querying data */
 export type QuerySubscription_PlansCollectionArgs = {
@@ -1522,7 +1394,6 @@ export type QuerySubscription_PlansCollectionArgs = {
   orderBy?: InputMaybe<Array<Subscription_PlansOrderBy>>;
 };
 
-
 /** The root type for querying data */
 export type QuerySuppliersCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1533,7 +1404,6 @@ export type QuerySuppliersCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<SuppliersOrderBy>>;
 };
-
 
 /** The root type for querying data */
 export type QueryTenant_Subscription_Add_OnsCollectionArgs = {
@@ -1546,7 +1416,6 @@ export type QueryTenant_Subscription_Add_OnsCollectionArgs = {
   orderBy?: InputMaybe<Array<Tenant_Subscription_Add_OnsOrderBy>>;
 };
 
-
 /** The root type for querying data */
 export type QueryTenantsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1558,7 +1427,6 @@ export type QueryTenantsCollectionArgs = {
   orderBy?: InputMaybe<Array<TenantsOrderBy>>;
 };
 
-
 /** The root type for querying data */
 export type QueryUnit_Of_MeasuresCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1569,7 +1437,6 @@ export type QueryUnit_Of_MeasuresCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Unit_Of_MeasuresOrderBy>>;
 };
-
 
 /** The root type for querying data */
 export type QueryWarehousesCollectionArgs = {
@@ -1659,7 +1526,6 @@ export type Add_Ons = Node & {
   tenant_subscription_add_onsCollection?: Maybe<Tenant_Subscription_Add_OnsConnection>;
   updated_at?: Maybe<Scalars['Datetime']['output']>;
 };
-
 
 export type Add_OnsTenant_Subscription_Add_OnsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1788,7 +1654,6 @@ export type App_Users = Node & {
   user_settings?: Maybe<Scalars['JSON']['output']>;
 };
 
-
 export type App_UsersAudit_LogsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1798,7 +1663,6 @@ export type App_UsersAudit_LogsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Audit_LogsOrderBy>>;
 };
-
 
 export type App_UsersDeliveriesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1810,7 +1674,6 @@ export type App_UsersDeliveriesCollectionArgs = {
   orderBy?: InputMaybe<Array<DeliveriesOrderBy>>;
 };
 
-
 export type App_UsersGoods_ReceiptsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1820,7 +1683,6 @@ export type App_UsersGoods_ReceiptsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Goods_ReceiptsOrderBy>>;
 };
-
 
 export type App_UsersInvoicesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1832,7 +1694,6 @@ export type App_UsersInvoicesCollectionArgs = {
   orderBy?: InputMaybe<Array<InvoicesOrderBy>>;
 };
 
-
 export type App_UsersJournal_EntriesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1842,7 +1703,6 @@ export type App_UsersJournal_EntriesCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Journal_EntriesOrderBy>>;
 };
-
 
 export type App_UsersPaymentsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1854,7 +1714,6 @@ export type App_UsersPaymentsCollectionArgs = {
   orderBy?: InputMaybe<Array<PaymentsOrderBy>>;
 };
 
-
 export type App_UsersPurchase_OrdersCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1865,7 +1724,6 @@ export type App_UsersPurchase_OrdersCollectionArgs = {
   orderBy?: InputMaybe<Array<Purchase_OrdersOrderBy>>;
 };
 
-
 export type App_UsersSales_OrdersCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1875,7 +1733,6 @@ export type App_UsersSales_OrdersCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Sales_OrdersOrderBy>>;
 };
-
 
 export type App_UsersStock_MovementsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -2149,7 +2006,6 @@ export type Bank_Accounts = Node & {
   updated_at?: Maybe<Scalars['Datetime']['output']>;
 };
 
-
 export type Bank_AccountsPaymentsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -2285,7 +2141,6 @@ export type Chart_Of_Accounts = Node & {
   tenants?: Maybe<Tenants>;
 };
 
-
 export type Chart_Of_AccountsBank_AccountsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -2295,7 +2150,6 @@ export type Chart_Of_AccountsBank_AccountsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Bank_AccountsOrderBy>>;
 };
-
 
 export type Chart_Of_AccountsChart_Of_AccountsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -2307,7 +2161,6 @@ export type Chart_Of_AccountsChart_Of_AccountsCollectionArgs = {
   orderBy?: InputMaybe<Array<Chart_Of_AccountsOrderBy>>;
 };
 
-
 export type Chart_Of_AccountsInvoice_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -2317,7 +2170,6 @@ export type Chart_Of_AccountsInvoice_ItemsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Invoice_ItemsOrderBy>>;
 };
-
 
 export type Chart_Of_AccountsJournal_Entry_LinesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -2456,7 +2308,6 @@ export type Customers = Node & {
   updated_at?: Maybe<Scalars['Datetime']['output']>;
 };
 
-
 export type CustomersDeliveriesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -2466,7 +2317,6 @@ export type CustomersDeliveriesCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<DeliveriesOrderBy>>;
 };
-
 
 export type CustomersInvoicesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -2478,7 +2328,6 @@ export type CustomersInvoicesCollectionArgs = {
   orderBy?: InputMaybe<Array<InvoicesOrderBy>>;
 };
 
-
 export type CustomersPaymentsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -2488,7 +2337,6 @@ export type CustomersPaymentsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<PaymentsOrderBy>>;
 };
-
 
 export type CustomersSales_OrdersCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -2667,7 +2515,6 @@ export type Deliveries = Node & {
   warehouse_id: Scalars['UUID']['output'];
   warehouses?: Maybe<Warehouses>;
 };
-
 
 export type DeliveriesDelivery_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -3077,7 +2924,6 @@ export type Goods_Receipts = Node & {
   warehouses?: Maybe<Warehouses>;
 };
 
-
 export type Goods_ReceiptsGoods_Receipt_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -3480,7 +3326,6 @@ export type Invoices = Node & {
   updated_at?: Maybe<Scalars['Datetime']['output']>;
 };
 
-
 export type InvoicesInvoice_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -3490,7 +3335,6 @@ export type InvoicesInvoice_ItemsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Invoice_ItemsOrderBy>>;
 };
-
 
 export type InvoicesPayment_AllocationsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -3681,7 +3525,6 @@ export type Journal_Entries = Node & {
   total_credit?: Maybe<Scalars['BigFloat']['output']>;
   total_debit?: Maybe<Scalars['BigFloat']['output']>;
 };
-
 
 export type Journal_EntriesJournal_Entry_LinesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -4033,7 +3876,6 @@ export type Payments = Node & {
   updated_at?: Maybe<Scalars['Datetime']['output']>;
 };
 
-
 export type PaymentsPayment_AllocationsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -4187,7 +4029,6 @@ export type Permissions = Node & {
   updated_at?: Maybe<Scalars['Datetime']['output']>;
 };
 
-
 export type PermissionsRole_PermissionsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -4292,7 +4133,6 @@ export type Product_Categories = Node & {
   tenants?: Maybe<Tenants>;
 };
 
-
 export type Product_CategoriesProduct_CategoriesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -4302,7 +4142,6 @@ export type Product_CategoriesProduct_CategoriesCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Product_CategoriesOrderBy>>;
 };
-
 
 export type Product_CategoriesProductsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -4444,7 +4283,6 @@ export type Products = Node & {
   weight?: Maybe<Scalars['BigFloat']['output']>;
 };
 
-
 export type ProductsDelivery_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -4454,7 +4292,6 @@ export type ProductsDelivery_ItemsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Delivery_ItemsOrderBy>>;
 };
-
 
 export type ProductsGoods_Receipt_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -4466,7 +4303,6 @@ export type ProductsGoods_Receipt_ItemsCollectionArgs = {
   orderBy?: InputMaybe<Array<Goods_Receipt_ItemsOrderBy>>;
 };
 
-
 export type ProductsInventoryCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -4476,7 +4312,6 @@ export type ProductsInventoryCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<InventoryOrderBy>>;
 };
-
 
 export type ProductsInvoice_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -4488,7 +4323,6 @@ export type ProductsInvoice_ItemsCollectionArgs = {
   orderBy?: InputMaybe<Array<Invoice_ItemsOrderBy>>;
 };
 
-
 export type ProductsPurchase_Order_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -4499,7 +4333,6 @@ export type ProductsPurchase_Order_ItemsCollectionArgs = {
   orderBy?: InputMaybe<Array<Purchase_Order_ItemsOrderBy>>;
 };
 
-
 export type ProductsSales_Order_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -4509,7 +4342,6 @@ export type ProductsSales_Order_ItemsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Sales_Order_ItemsOrderBy>>;
 };
-
 
 export type ProductsStock_MovementsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -4692,7 +4524,6 @@ export type Purchase_Order_Items = Node & {
   unit_price: Scalars['BigFloat']['output'];
 };
 
-
 export type Purchase_Order_ItemsGoods_Receipt_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -4847,7 +4678,6 @@ export type Purchase_Orders = Node & {
   warehouses?: Maybe<Warehouses>;
 };
 
-
 export type Purchase_OrdersGoods_ReceiptsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -4857,7 +4687,6 @@ export type Purchase_OrdersGoods_ReceiptsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Goods_ReceiptsOrderBy>>;
 };
-
 
 export type Purchase_OrdersPurchase_Order_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -5099,7 +4928,6 @@ export type Roles = Node & {
   updated_at?: Maybe<Scalars['Datetime']['output']>;
 };
 
-
 export type RolesApp_UsersCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -5109,7 +4937,6 @@ export type RolesApp_UsersCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<App_UsersOrderBy>>;
 };
-
 
 export type RolesRole_PermissionsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -5219,7 +5046,6 @@ export type Sales_Order_Items = Node & {
   total_amount: Scalars['BigFloat']['output'];
   unit_price: Scalars['BigFloat']['output'];
 };
-
 
 export type Sales_Order_ItemsDelivery_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -5378,7 +5204,6 @@ export type Sales_Orders = Node & {
   warehouses?: Maybe<Warehouses>;
 };
 
-
 export type Sales_OrdersDeliveriesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -5388,7 +5213,6 @@ export type Sales_OrdersDeliveriesCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<DeliveriesOrderBy>>;
 };
-
 
 export type Sales_OrdersSales_Order_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -5709,7 +5533,6 @@ export type Subscription_Plans = Node & {
   updated_at?: Maybe<Scalars['Datetime']['output']>;
 };
 
-
 export type Subscription_PlansTenantsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -5849,7 +5672,6 @@ export type Suppliers = Node & {
   updated_at?: Maybe<Scalars['Datetime']['output']>;
 };
 
-
 export type SuppliersGoods_ReceiptsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -5859,7 +5681,6 @@ export type SuppliersGoods_ReceiptsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Goods_ReceiptsOrderBy>>;
 };
-
 
 export type SuppliersInvoicesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -5871,7 +5692,6 @@ export type SuppliersInvoicesCollectionArgs = {
   orderBy?: InputMaybe<Array<InvoicesOrderBy>>;
 };
 
-
 export type SuppliersPaymentsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -5881,7 +5701,6 @@ export type SuppliersPaymentsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<PaymentsOrderBy>>;
 };
-
 
 export type SuppliersPurchase_OrdersCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6185,7 +6004,6 @@ export type Tenants = Node & {
   warehousesCollection?: Maybe<WarehousesConnection>;
 };
 
-
 export type TenantsApp_UsersCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6195,7 +6013,6 @@ export type TenantsApp_UsersCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<App_UsersOrderBy>>;
 };
-
 
 export type TenantsBank_AccountsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6207,7 +6024,6 @@ export type TenantsBank_AccountsCollectionArgs = {
   orderBy?: InputMaybe<Array<Bank_AccountsOrderBy>>;
 };
 
-
 export type TenantsChart_Of_AccountsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6217,7 +6033,6 @@ export type TenantsChart_Of_AccountsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Chart_Of_AccountsOrderBy>>;
 };
-
 
 export type TenantsCustomersCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6229,7 +6044,6 @@ export type TenantsCustomersCollectionArgs = {
   orderBy?: InputMaybe<Array<CustomersOrderBy>>;
 };
 
-
 export type TenantsDeliveriesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6239,7 +6053,6 @@ export type TenantsDeliveriesCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<DeliveriesOrderBy>>;
 };
-
 
 export type TenantsDelivery_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6251,7 +6064,6 @@ export type TenantsDelivery_ItemsCollectionArgs = {
   orderBy?: InputMaybe<Array<Delivery_ItemsOrderBy>>;
 };
 
-
 export type TenantsGoods_Receipt_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6261,7 +6073,6 @@ export type TenantsGoods_Receipt_ItemsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Goods_Receipt_ItemsOrderBy>>;
 };
-
 
 export type TenantsGoods_ReceiptsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6273,7 +6084,6 @@ export type TenantsGoods_ReceiptsCollectionArgs = {
   orderBy?: InputMaybe<Array<Goods_ReceiptsOrderBy>>;
 };
 
-
 export type TenantsInventoryCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6283,7 +6093,6 @@ export type TenantsInventoryCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<InventoryOrderBy>>;
 };
-
 
 export type TenantsInvoice_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6295,7 +6104,6 @@ export type TenantsInvoice_ItemsCollectionArgs = {
   orderBy?: InputMaybe<Array<Invoice_ItemsOrderBy>>;
 };
 
-
 export type TenantsInvoicesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6305,7 +6113,6 @@ export type TenantsInvoicesCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<InvoicesOrderBy>>;
 };
-
 
 export type TenantsJournal_EntriesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6317,7 +6124,6 @@ export type TenantsJournal_EntriesCollectionArgs = {
   orderBy?: InputMaybe<Array<Journal_EntriesOrderBy>>;
 };
 
-
 export type TenantsJournal_Entry_LinesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6327,7 +6133,6 @@ export type TenantsJournal_Entry_LinesCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Journal_Entry_LinesOrderBy>>;
 };
-
 
 export type TenantsPayment_AllocationsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6339,7 +6144,6 @@ export type TenantsPayment_AllocationsCollectionArgs = {
   orderBy?: InputMaybe<Array<Payment_AllocationsOrderBy>>;
 };
 
-
 export type TenantsPaymentsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6349,7 +6153,6 @@ export type TenantsPaymentsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<PaymentsOrderBy>>;
 };
-
 
 export type TenantsProduct_CategoriesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6361,7 +6164,6 @@ export type TenantsProduct_CategoriesCollectionArgs = {
   orderBy?: InputMaybe<Array<Product_CategoriesOrderBy>>;
 };
 
-
 export type TenantsProductsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6371,7 +6173,6 @@ export type TenantsProductsCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<ProductsOrderBy>>;
 };
-
 
 export type TenantsPurchase_Order_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6383,7 +6184,6 @@ export type TenantsPurchase_Order_ItemsCollectionArgs = {
   orderBy?: InputMaybe<Array<Purchase_Order_ItemsOrderBy>>;
 };
 
-
 export type TenantsPurchase_OrdersCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6393,7 +6193,6 @@ export type TenantsPurchase_OrdersCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Purchase_OrdersOrderBy>>;
 };
-
 
 export type TenantsSales_Order_ItemsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6405,7 +6204,6 @@ export type TenantsSales_Order_ItemsCollectionArgs = {
   orderBy?: InputMaybe<Array<Sales_Order_ItemsOrderBy>>;
 };
 
-
 export type TenantsSales_OrdersCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6415,7 +6213,6 @@ export type TenantsSales_OrdersCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Sales_OrdersOrderBy>>;
 };
-
 
 export type TenantsStock_MovementsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6427,7 +6224,6 @@ export type TenantsStock_MovementsCollectionArgs = {
   orderBy?: InputMaybe<Array<Stock_MovementsOrderBy>>;
 };
 
-
 export type TenantsSuppliersCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6437,7 +6233,6 @@ export type TenantsSuppliersCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<SuppliersOrderBy>>;
 };
-
 
 export type TenantsTenant_Subscription_Add_OnsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6449,7 +6244,6 @@ export type TenantsTenant_Subscription_Add_OnsCollectionArgs = {
   orderBy?: InputMaybe<Array<Tenant_Subscription_Add_OnsOrderBy>>;
 };
 
-
 export type TenantsUnit_Of_MeasuresCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6459,7 +6253,6 @@ export type TenantsUnit_Of_MeasuresCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Unit_Of_MeasuresOrderBy>>;
 };
-
 
 export type TenantsWarehousesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6663,7 +6456,6 @@ export type Unit_Of_Measures = Node & {
   updated_at?: Maybe<Scalars['Datetime']['output']>;
 };
 
-
 export type Unit_Of_MeasuresProductsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6782,7 +6574,6 @@ export type Warehouses = Node & {
   updated_at?: Maybe<Scalars['Datetime']['output']>;
 };
 
-
 export type WarehousesDeliveriesCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6792,7 +6583,6 @@ export type WarehousesDeliveriesCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<DeliveriesOrderBy>>;
 };
-
 
 export type WarehousesGoods_ReceiptsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6804,7 +6594,6 @@ export type WarehousesGoods_ReceiptsCollectionArgs = {
   orderBy?: InputMaybe<Array<Goods_ReceiptsOrderBy>>;
 };
 
-
 export type WarehousesInventoryCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6814,7 +6603,6 @@ export type WarehousesInventoryCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<InventoryOrderBy>>;
 };
-
 
 export type WarehousesPurchase_OrdersCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6826,7 +6614,6 @@ export type WarehousesPurchase_OrdersCollectionArgs = {
   orderBy?: InputMaybe<Array<Purchase_OrdersOrderBy>>;
 };
 
-
 export type WarehousesSales_OrdersCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6836,7 +6623,6 @@ export type WarehousesSales_OrdersCollectionArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<Sales_OrdersOrderBy>>;
 };
-
 
 export type WarehousesStock_MovementsCollectionArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
@@ -6956,34 +6742,109 @@ export type ProductsCollectionQueryVariables = Exact<{
   after?: InputMaybe<Scalars['Cursor']['input']>;
 }>;
 
+export type ProductsCollectionQuery = {
+  __typename?: 'Query';
+  productsCollection?: {
+    __typename?: 'productsConnection';
+    edges: Array<{
+      __typename?: 'productsEdge';
+      cursor: string;
+      node: {
+        __typename?: 'products';
+        id: any;
+        name: string;
+        selling_price?: any | null;
+        is_active?: boolean | null;
+        product_categories?: { __typename?: 'product_categories'; name: string } | null;
+      };
+    }>;
+    pageInfo: {
+      __typename?: 'PageInfo';
+      endCursor?: string | null;
+      hasNextPage: boolean;
+      hasPreviousPage: boolean;
+      startCursor?: string | null;
+    };
+  } | null;
+};
 
-export type ProductsCollectionQuery = { __typename?: 'Query', productsCollection?: { __typename?: 'productsConnection', edges: Array<{ __typename?: 'productsEdge', cursor: string, node: { __typename?: 'products', id: any, name: string, selling_price?: any | null, is_active?: boolean | null, product_categories?: { __typename?: 'product_categories', name: string } | null } }>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null } } | null };
+export type TenantsCollectionQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']['input']>;
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+}>;
 
+export type TenantsCollectionQuery = {
+  __typename?: 'Query';
+  tenantsCollection?: {
+    __typename?: 'tenantsConnection';
+    edges: Array<{
+      __typename?: 'tenantsEdge';
+      cursor: string;
+      node: {
+        __typename?: 'tenants';
+        id: any;
+        business_name: string;
+        display_name: string;
+        subdomain: string;
+        business_type: string;
+        industry?: string | null;
+        tax_id?: string | null;
+        phone?: string | null;
+        email?: string | null;
+        address?: string | null;
+        city?: string | null;
+        province?: string | null;
+        postal_code?: string | null;
+        country?: string | null;
+        currency?: string | null;
+        timezone?: string | null;
+        subscription_plan_id?: any | null;
+        subscription_status?: string | null;
+        subscription_start_at?: any | null;
+        subscription_ends_at?: any | null;
+        last_billed_at?: any | null;
+        is_trial?: boolean | null;
+        trial_ends_at?: any | null;
+        settings?: any | null;
+        is_active?: boolean | null;
+        created_at?: any | null;
+        updated_at?: any | null;
+      };
+    }>;
+    pageInfo: {
+      __typename?: 'PageInfo';
+      endCursor?: string | null;
+      hasNextPage: boolean;
+      hasPreviousPage: boolean;
+      startCursor?: string | null;
+    };
+  } | null;
+};
 
 export const ProductsCollectionDocument = gql`
-    query ProductsCollection($first: Int, $after: Cursor) {
-  productsCollection(first: $first, after: $after) {
-    edges {
-      cursor
-      node {
-        id
-        name
-        selling_price
-        is_active
-        product_categories {
+  query ProductsCollection($first: Int, $after: Cursor) {
+    productsCollection(first: $first, after: $after) {
+      edges {
+        cursor
+        node {
+          id
           name
+          selling_price
+          is_active
+          product_categories {
+            name
+          }
         }
       }
-    }
-    pageInfo {
-      endCursor
-      hasNextPage
-      hasPreviousPage
-      startCursor
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useProductsCollectionQuery__
@@ -7002,19 +6863,129 @@ export const ProductsCollectionDocument = gql`
  *   },
  * });
  */
-export function useProductsCollectionQuery(baseOptions?: Apollo.QueryHookOptions<ProductsCollectionQuery, ProductsCollectionQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ProductsCollectionQuery, ProductsCollectionQueryVariables>(ProductsCollectionDocument, options);
-      }
-export function useProductsCollectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProductsCollectionQuery, ProductsCollectionQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ProductsCollectionQuery, ProductsCollectionQueryVariables>(ProductsCollectionDocument, options);
-        }
-export function useProductsCollectionSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ProductsCollectionQuery, ProductsCollectionQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<ProductsCollectionQuery, ProductsCollectionQueryVariables>(ProductsCollectionDocument, options);
-        }
+export function useProductsCollectionQuery(
+  baseOptions?: Apollo.QueryHookOptions<ProductsCollectionQuery, ProductsCollectionQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<ProductsCollectionQuery, ProductsCollectionQueryVariables>(
+    ProductsCollectionDocument,
+    options
+  );
+}
+export function useProductsCollectionLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<ProductsCollectionQuery, ProductsCollectionQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<ProductsCollectionQuery, ProductsCollectionQueryVariables>(
+    ProductsCollectionDocument,
+    options
+  );
+}
+export function useProductsCollectionSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<ProductsCollectionQuery, ProductsCollectionQueryVariables>
+) {
+  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<ProductsCollectionQuery, ProductsCollectionQueryVariables>(
+    ProductsCollectionDocument,
+    options
+  );
+}
 export type ProductsCollectionQueryHookResult = ReturnType<typeof useProductsCollectionQuery>;
 export type ProductsCollectionLazyQueryHookResult = ReturnType<typeof useProductsCollectionLazyQuery>;
 export type ProductsCollectionSuspenseQueryHookResult = ReturnType<typeof useProductsCollectionSuspenseQuery>;
-export type ProductsCollectionQueryResult = Apollo.QueryResult<ProductsCollectionQuery, ProductsCollectionQueryVariables>;
+export type ProductsCollectionQueryResult = Apollo.QueryResult<
+  ProductsCollectionQuery,
+  ProductsCollectionQueryVariables
+>;
+export const TenantsCollectionDocument = gql`
+  query TenantsCollection {
+    tenantsCollection {
+      edges {
+        cursor
+        node {
+          id
+          business_name
+          display_name
+          subdomain
+          business_type
+          industry
+          tax_id
+          phone
+          email
+          address
+          city
+          province
+          postal_code
+          country
+          currency
+          timezone
+          subscription_plan_id
+          subscription_status
+          subscription_start_at
+          subscription_ends_at
+          last_billed_at
+          is_trial
+          trial_ends_at
+          settings
+          is_active
+          created_at
+          updated_at
+        }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+      }
+    }
+  }
+`;
+
+/**
+ * __useTenantsCollectionQuery__
+ *
+ * To run a query within a React component, call `useTenantsCollectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTenantsCollectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTenantsCollectionQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTenantsCollectionQuery(
+  baseOptions?: Apollo.QueryHookOptions<TenantsCollectionQuery, TenantsCollectionQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<TenantsCollectionQuery, TenantsCollectionQueryVariables>(TenantsCollectionDocument, options);
+}
+export function useTenantsCollectionLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<TenantsCollectionQuery, TenantsCollectionQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<TenantsCollectionQuery, TenantsCollectionQueryVariables>(
+    TenantsCollectionDocument,
+    options
+  );
+}
+export function useTenantsCollectionSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<TenantsCollectionQuery, TenantsCollectionQueryVariables>
+) {
+  const options = baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<TenantsCollectionQuery, TenantsCollectionQueryVariables>(
+    TenantsCollectionDocument,
+    options
+  );
+}
+export type TenantsCollectionQueryHookResult = ReturnType<typeof useTenantsCollectionQuery>;
+export type TenantsCollectionLazyQueryHookResult = ReturnType<typeof useTenantsCollectionLazyQuery>;
+export type TenantsCollectionSuspenseQueryHookResult = ReturnType<typeof useTenantsCollectionSuspenseQuery>;
+export type TenantsCollectionQueryResult = Apollo.QueryResult<TenantsCollectionQuery, TenantsCollectionQueryVariables>;

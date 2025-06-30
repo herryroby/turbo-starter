@@ -1,7 +1,7 @@
 'use client';
 
-import { Tenant } from '@/app/(main)/(admin)/tenants/types';
 import { ColumnDef } from '@repo/ui';
+import { Tenant } from './types';
 
 export const columns: ColumnDef<Tenant>[] = [
   {
@@ -25,14 +25,18 @@ export const columns: ColumnDef<Tenant>[] = [
     header: 'Active'
   },
   {
-    accessorKey: 'subdomain',
-    header: 'Schema Name'
-  },
-  {
     accessorKey: 'created_at',
     header: 'Created At',
     cell: ({ row }) => {
       const date = new Date(row.getValue('created_at'));
+      return date.toLocaleDateString();
+    }
+  },
+  {
+    accessorKey: 'updated_at',
+    header: 'Updated At',
+    cell: ({ row }) => {
+      const date = new Date(row.getValue('updated_at'));
       return date.toLocaleDateString();
     }
   }

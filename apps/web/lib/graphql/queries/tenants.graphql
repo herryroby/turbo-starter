@@ -1,0 +1,42 @@
+query TenantsCollection {
+  tenantsCollection {
+    edges {
+      cursor
+      node {
+        id
+        business_name
+        display_name
+        subdomain
+        business_type
+        industry
+        tax_id
+        phone
+        email
+        address
+        city
+        province
+        postal_code
+        country
+        currency
+        timezone
+        subscription_plan_id
+        subscription_status
+        subscription_start_at
+        subscription_ends_at
+        last_billed_at
+        is_trial
+        trial_ends_at
+        settings
+        is_active
+        created_at
+        updated_at
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+  }
+}
