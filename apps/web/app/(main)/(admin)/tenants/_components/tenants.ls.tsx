@@ -7,7 +7,6 @@ import { FilePlus } from 'lucide-react';
 import { useTenantModal } from '../_context/tenant-modal-context';
 import { PageInfo, Tenant } from '../types';
 
-
 interface TenantListProps {
   data: Tenant[];
   pageCount: number;
@@ -98,7 +97,6 @@ export const TenantsList = ({
         searchPlaceholder={searchPlaceholder}
         defaultSortableColumns={sortableColumns}
       />
-      
     </div>
   );
 };
