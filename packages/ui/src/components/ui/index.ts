@@ -1,4 +1,15 @@
 export { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './accordion';
+export {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
+} from './alert-dialog';
 export { Avatar, AvatarFallback, AvatarImage } from './avatar';
 export { Button } from './button';
 export { Card, CardContent, CardFooter, CardHeader, CardTitle } from './card';
@@ -12,7 +23,7 @@ export {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from './dropdown-menu';
-export { Form } from './form';
+export { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './form';
 export { Input } from './input';
 export { Label } from './label';
 export { Pagination } from './pagination';
