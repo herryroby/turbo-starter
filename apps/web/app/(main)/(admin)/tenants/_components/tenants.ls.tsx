@@ -4,9 +4,9 @@ import { getSortableColumns } from '@/lib/utils/table';
 import { Button, DataTable } from '@repo/ui';
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { FilePlus } from 'lucide-react';
-import { useState } from 'react';
+import { useTenantModal } from '../_context/tenant-modal-context';
 import { PageInfo, Tenant } from '../types';
-import { TenantFormModal } from './tenant.fm';
+
 
 interface TenantListProps {
   data: Tenant[];
@@ -25,13 +25,7 @@ export const TenantsList = ({
   filterColumn,
   searchPlaceholder
 }: TenantListProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedTenant, setSelectedTenant] = useState<Tenant | undefined>(undefined);
-
-  const handleOpenModal = (tenant?: Tenant) => {
-    setSelectedTenant(tenant);
-    setIsModalOpen(true);
-  };
+  const { openModal } = useTenantModal();
 
   const columns: ColumnDef<Tenant>[] = [
     {
@@ -41,7 +35,7 @@ export const TenantsList = ({
         <button
           type="button"
           className="text-primary m-0 cursor-pointer border-none bg-transparent p-0"
-          onClick={() => handleOpenModal(row.original)}
+          onClick={() => openModal(row.original)}
           style={{ background: 'none', border: 'none' }}
         >
           {row.getValue('business_name')}
@@ -90,7 +84,7 @@ export const TenantsList = ({
         <div>
           <h1 className="mb-1 text-3xl font-medium">{pageTitle}</h1>
         </div>
-        <Button onClick={() => handleOpenModal()}>
+        <Button onClick={() => openModal()}>
           <FilePlus className="size-4" />
           <span>Add Tenant</span>
         </Button>
@@ -104,7 +98,7 @@ export const TenantsList = ({
         searchPlaceholder={searchPlaceholder}
         defaultSortableColumns={sortableColumns}
       />
-      <TenantFormModal tenant={selectedTenant} open={isModalOpen} onOpenChangeAction={setIsModalOpen} />
+      
     </div>
   );
 };

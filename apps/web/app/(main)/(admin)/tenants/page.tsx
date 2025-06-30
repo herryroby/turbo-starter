@@ -5,6 +5,8 @@ import {
   TenantsCollectionQueryVariables
 } from '@/lib/graphql/generated/graphql';
 import { TenantsList } from './_components/tenants.ls';
+import { TenantFormModal } from './_components/tenant.fm';
+import { TenantModalProvider } from './_context/tenant-modal-context';
 import { PageInfo, Tenant } from './types';
 
 const TenantsPage = async ({ searchParams }: { searchParams: Record<string, string> | null | undefined }) => {
@@ -34,14 +36,17 @@ const TenantsPage = async ({ searchParams }: { searchParams: Record<string, stri
   const pageCount = -1; // Indicate that we don't have a total page count
 
   return (
-    <TenantsList
-      data={tenants}
-      pageCount={pageCount}
-      pageInfo={pageInfo}
-      pageTitle="Tenants"
-      filterColumn="name"
-      searchPlaceholder="Search for tenants..."
-    />
+    <TenantModalProvider>
+      <TenantsList
+        data={tenants}
+        pageCount={pageCount}
+        pageInfo={pageInfo}
+        pageTitle="Tenants"
+        filterColumn="name"
+        searchPlaceholder="Search for tenants..."
+      />
+      <TenantFormModal />
+    </TenantModalProvider>
   );
 };
 

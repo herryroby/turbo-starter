@@ -1,13 +1,13 @@
 'use client';
 
-import { Tenant } from '@/app/(main)/(admin)/tenants/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { useEffect, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { addTenant, deleteTenant, updateTenant } from '../actions';
+import { Tenant } from '../types';
 
 const tenantFormSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -18,11 +18,11 @@ export type TenantFormValues = z.infer<typeof tenantFormSchema>;
 
 interface UseTenantFormProps {
   tenant?: Tenant;
-  onCloseAction: () => void;
 }
 
-export const useTenantForm = ({ tenant, onCloseAction }: UseTenantFormProps) => {
+export const useTenantForm = ({ tenant }: UseTenantFormProps) => {
   const [isPending, startTransition] = useTransition();
+  const [isSuccess, setIsSuccess] = useState(false);
   const router = useRouter();
 
   const form = useForm<TenantFormValues>({
@@ -61,7 +61,7 @@ export const useTenantForm = ({ tenant, onCloseAction }: UseTenantFormProps) => 
       } else {
         toast.success(`Tenant ${tenant ? 'updated' : 'added'} successfully!`);
         router.refresh();
-        onCloseAction();
+        setIsSuccess(true);
       }
     });
   };
@@ -76,10 +76,10 @@ export const useTenantForm = ({ tenant, onCloseAction }: UseTenantFormProps) => 
       } else {
         toast.success('Tenant deleted successfully!');
         router.refresh();
-        onCloseAction();
+        setIsSuccess(true);
       }
     });
   };
 
-  return { form, onSubmit, handleDelete, isPending };
+  return { form, onSubmit, handleDelete, isPending, isSuccess };
 };

@@ -23,25 +23,31 @@ import {
   FormMessage,
   Input
 } from '@repo/ui';
+import { useEffect } from 'react';
+import { useTenantModal } from '../_context/tenant-modal-context';
 import { useTenantForm } from '../_hooks/use-tenant-form';
-import { Tenant } from '../types';
 
-interface TenantFormModalProps {
-  tenant?: Tenant;
-  open: boolean;
-  onOpenChangeAction: (open: boolean) => void;
-}
 
-export const TenantFormModal = ({ tenant, open, onOpenChangeAction }: TenantFormModalProps) => {
-  const { form, onSubmit, handleDelete, isPending } = useTenantForm({
-    tenant,
-    onCloseAction: () => onOpenChangeAction(false)
+export const TenantFormModal = () => {
+  const { isOpen, tenant, closeModal } = useTenantModal();
+  const { form, onSubmit, handleDelete, isPending, isSuccess } = useTenantForm({
+    tenant
   });
+
+  useEffect(() => {
+    if (isSuccess) {
+      closeModal();
+    }
+  }, [isSuccess, closeModal]);
 
   const isEditMode = !!tenant;
 
+  if (!isOpen) {
+    return null;
+  }
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChangeAction}>
+    <Dialog open={isOpen} onOpenChange={closeModal}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{isEditMode ? 'Edit Tenant' : 'Add New Tenant'}</DialogTitle>
