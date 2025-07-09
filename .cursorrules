@@ -1,4 +1,4 @@
-# Project Rules - Production-Ready & Enterprise-Grade Development
+# Global Rules - Production-Ready & Enterprise-Grade Development
 
 ## General Rules
 
@@ -55,7 +55,7 @@
 
 ### File & Directory Standards
 
-- **Component Files**: Use kebab-case for React component file names and directories (e.g., `user-card.tsx`, not `UserCard.tsx`).
+- **Component Files**: Use kebab-case for React component file names and directories (e.g., `user-card.tsx`, not `UserCard.tsx`). For List Page components, use the following format `*.ls.tsx` (e.g., `user.ls.tsx`) and for Form Page components, use the following format `*.fm.tsx` (e.g., `user.fm.tsx`).
 - **Exports**: Favor named exports for all components and utilities.
 - **Consistency**: Maintain consistent naming conventions and folder structure throughout the project.
 
