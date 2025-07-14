@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import ListPage from '@/components/shared/list-page';
 import type { PurchaseInvoice } from '@/types/purchases';
+import { ListPage } from '@repo/ui/index';
 import type { ColumnDef, Row } from '@tanstack/react-table';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function PurchaseInvoicesClient() {
   const router = useRouter();
@@ -96,18 +96,15 @@ export default function PurchaseInvoicesClient() {
       header: 'Status',
       cell: ({ row }) => {
         const status = row.getValue('status') as string;
-        const statusClass = {
-          Paid: 'bg-green-100 text-green-800',
-          Unpaid: 'bg-yellow-100 text-yellow-800',
-          Overdue: 'bg-red-100 text-red-800',
-          Cancelled: 'bg-gray-100 text-gray-800'
-        }[status] || 'bg-gray-100 text-gray-800';
+        const statusClass =
+          {
+            Paid: 'bg-green-100 text-green-800',
+            Unpaid: 'bg-yellow-100 text-yellow-800',
+            Overdue: 'bg-red-100 text-red-800',
+            Cancelled: 'bg-gray-100 text-gray-800'
+          }[status] || 'bg-gray-100 text-gray-800';
 
-        return (
-          <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusClass}`}>
-            {status}
-          </span>
-        );
+        return <span className={`rounded-full px-2 py-1 text-xs font-medium ${statusClass}`}>{status}</span>;
       }
     }
   ];
