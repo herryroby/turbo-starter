@@ -18,7 +18,7 @@ export const GiroCard: React.FC = () => (
     <CardHeader>
       <CardTitle className="text-base font-medium">Giro</CardTitle>
       <div className="text-muted-foreground text-xs">
-        Balance in qubix: 21,011,170
+        Balance in Qonsula: 21,011,170
         <br />
         Statement Balance: 12,448,479
       </div>

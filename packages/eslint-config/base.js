@@ -14,6 +14,9 @@ export const config = [
   eslintConfigPrettier,
   ...tseslint.configs.recommended,
   {
+    ignores: ['**/lib/graphql/generated/**/*.tsx', '**/lib/graphql/generated/**/*.ts'],
+  },
+  {
     plugins: {
       turbo: turboPlugin
     },

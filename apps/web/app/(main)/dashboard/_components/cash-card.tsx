@@ -19,7 +19,7 @@ export const CashCard: React.FC = () => {
       <CardHeader>
         <CardTitle className="text-base font-medium">Cash</CardTitle>
         <div className="text-muted-foreground text-xs">
-          Balance in qubix: 21,834,420
+          Balance in Qonsula: 21,834,420
           <br />
           Statement Balance: 1,752,500
         </div>

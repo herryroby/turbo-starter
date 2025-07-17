@@ -1,4 +1,4 @@
-# Qubix ERP - Enterprise SaaS Implementation Plan
+# Qonsula ERP - Enterprise SaaS Implementation Plan
 
 ## 1. Project Vision & Core Objective
 

@@ -1,8 +1,8 @@
+import { ApolloWrapper } from '@/lib/apollo/ApolloWrapper';
 import '@repo/ui/globals.css';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { ReactNode } from 'react';
-import { ApolloWrapper } from '@/lib/apollo/ApolloWrapper';
 import './globals.css';
 
 const geistSans = localFont({
@@ -15,7 +15,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Qubix - Enterprise SaaS',
+  title: 'Qonsula - Enterprise SaaS',
   description: 'Next-gen enterprise resource planning.',
 };
 
