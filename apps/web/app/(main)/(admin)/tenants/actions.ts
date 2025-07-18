@@ -1,8 +1,8 @@
 'use server';
 
-import { Tenant } from '@/app/(main)/(admin)/tenants/types';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { revalidatePath } from 'next/cache';
+import { Tenant } from './types';
 
 export const addTenant = async (formData: FormData) => {
   const supabase = createAdminClient();

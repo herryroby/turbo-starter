@@ -1,4 +1,4 @@
-import { UserClient } from '@/app/(main)/(admin)/users/user-client';
+import { UserClient } from './_components/user.ls';
 
 export default function UsersPage() {
   return <UserClient />;

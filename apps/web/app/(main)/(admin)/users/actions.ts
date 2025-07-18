@@ -1,8 +1,8 @@
 'use server';
 
-import { User } from '@/app/(main)/(admin)/users/types';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { createClient } from '@/lib/supabase/server';
+import { User } from './types';
 
 export const getUsers = async (): Promise<User[]> => {
   try {

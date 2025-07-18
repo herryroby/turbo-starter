@@ -1,7 +1,7 @@
 'use client';
 
-import { User } from '@/app/(main)/(admin)/users/types';
 import { ColumnDef } from '@repo/ui';
+import { User } from './types';
 
 export const columns: ColumnDef<User>[] = [
   {

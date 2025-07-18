@@ -1,11 +1,11 @@
 'use client';
 
-import { getUsers, syncUser } from '@/app/(main)/(admin)/users/actions';
-import { columns } from '@/app/(main)/(admin)/users/columns';
-import { User } from '@/app/(main)/(admin)/users/types';
 import { DataTable } from '@repo/ui';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { getUsers, syncUser } from '../actions';
+import { columns } from '../columns';
+import { User } from '../types';
 
 export const UserClient = () => {
   const [users, setUsers] = useState<User[]>([]);
