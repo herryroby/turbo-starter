@@ -1,8 +1,9 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -18,11 +19,11 @@ export type TenantFormValues = z.infer<typeof tenantFormSchema>;
 
 interface UseTenantFormProps {
   tenant?: Tenant;
+  onSuccess?: () => void;
 }
 
-export const useTenantForm = ({ tenant }: UseTenantFormProps) => {
-  const [isPending, startTransition] = useTransition();
-  const [isSuccess, setIsSuccess] = useState(false);
+export const useTenantForm = ({ tenant, onSuccess }: UseTenantFormProps) => {
+  const queryClient = useQueryClient();
   const router = useRouter();
 
   const form = useForm<TenantFormValues>({
@@ -48,8 +49,8 @@ export const useTenantForm = ({ tenant }: UseTenantFormProps) => {
     }
   }, [tenant, form]);
 
-  const onSubmit = (values: TenantFormValues) => {
-    startTransition(async () => {
+  const { mutate: mutateTenant, isPending: isSaving } = useMutation({
+    mutationFn: async (values: TenantFormValues) => {
       const formData = new FormData();
       formData.append('name', values.name);
       formData.append('schema_name', values.schema_name);
@@ -57,29 +58,49 @@ export const useTenantForm = ({ tenant }: UseTenantFormProps) => {
       const result = tenant ? await updateTenant(tenant.id, formData) : await addTenant(formData);
 
       if (result.error) {
-        toast.error(`Error: ${result.error}`);
-      } else {
-        toast.success(`Tenant ${tenant ? 'updated' : 'added'} successfully!`);
-        router.refresh();
-        setIsSuccess(true);
+        throw new Error(result.error);
       }
-    });
+
+      return result.data;
+    },
+    onSuccess: () => {
+      toast.success(`Tenant ${tenant ? 'updated' : 'added'} successfully!`);
+      queryClient.invalidateQueries({ queryKey: ['tenants'] });
+      router.refresh();
+      onSuccess?.();
+    },
+    onError: (error) => {
+      toast.error(`Error: ${error.message}`);
+    }
+  });
+
+  const onSubmit = (values: TenantFormValues) => {
+    mutateTenant(values);
   };
 
-  const handleDelete = () => {
-    if (!tenant) return;
-
-    startTransition(async () => {
+  const { mutate: deleteTenantMutation, isPending: isDeleting } = useMutation({
+    mutationFn: async () => {
+      if (!tenant) return;
       const result = await deleteTenant(tenant.id);
       if (result.error) {
-        toast.error(`Error: ${result.error}`);
-      } else {
-        toast.success('Tenant deleted successfully!');
-        router.refresh();
-        setIsSuccess(true);
+        throw new Error(result.error);
       }
-    });
+      return result;
+    },
+    onSuccess: () => {
+      toast.success('Tenant deleted successfully!');
+      queryClient.invalidateQueries({ queryKey: ['tenants'] });
+      router.refresh();
+      onSuccess?.();
+    },
+    onError: (error) => {
+      toast.error(`Error: ${error.message}`);
+    }
+  });
+
+  const handleDelete = () => {
+    deleteTenantMutation();
   };
 
-  return { form, onSubmit, handleDelete, isPending, isSuccess };
+  return { form, onSubmit, handleDelete, isPending: isSaving || isDeleting };
 };

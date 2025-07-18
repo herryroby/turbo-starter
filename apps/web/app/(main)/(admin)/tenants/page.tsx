@@ -1,23 +1,12 @@
-import { getClient } from '@/lib/apollo-client';
-import { TenantsCollectionDocument, TenantsCollectionQuery } from '@/lib/graphql/generated/graphql';
+import { getTenants } from './actions';
 import { TenantFormModal } from './_components/tenant.fm';
 import { TenantsList } from './_components/tenants.ls';
 import { TenantModalProvider } from './_context/tenant-modal-context';
 import { PageInfo, Tenant } from './types';
 
 const TenantsPage = async () => {
-  const client = getClient();
-  const { data, error } = await client.query<TenantsCollectionQuery>({
-    query: TenantsCollectionDocument,
-    fetchPolicy: 'no-cache'
-  });
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
-  const tenants: Tenant[] = data.tenantsCollection?.edges.map((edge) => edge.node) || [];
-  const pageInfo: PageInfo | undefined = data.tenantsCollection?.pageInfo;
+    const tenants: Tenant[] = await getTenants();
+  const pageInfo: PageInfo | undefined = undefined; // TODO: Implement pagination for REST API
 
   // Note: Supabase GraphQL does not provide totalCount.
   // We'll rely on hasNextPage for pagination controls.

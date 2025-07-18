@@ -23,22 +23,18 @@ import {
   FormMessage,
   Input
 } from '@repo/ui';
-import { useEffect } from 'react';
+
 import { useTenantModal } from '../_context/tenant-modal-context';
 import { useTenantForm } from '../_hooks/use-tenant-form';
 
 
 export const TenantFormModal = () => {
   const { isOpen, tenant, closeModal } = useTenantModal();
-  const { form, onSubmit, handleDelete, isPending, isSuccess } = useTenantForm({
-    tenant
+  const { form, onSubmit, handleDelete, isPending } = useTenantForm({
+    tenant,
+    onSuccess: closeModal
   });
 
-  useEffect(() => {
-    if (isSuccess) {
-      closeModal();
-    }
-  }, [isSuccess, closeModal]);
 
   const isEditMode = !!tenant;
 

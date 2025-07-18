@@ -9,7 +9,7 @@ To build a production-ready, multi-tenant Enterprise SaaS ERP application. The s
 - **Monorepo:** Turborepo with pnpm
 - **Frontend:** Next.js (App Router)
 - **Backend/BaaS:** Supabase Cloud (Auth, Database, Storage)
-- **API:** GraphQL (via Supabase's PostgREST/GraphQL layer)
+- **API:** REST (via Supabase's REST API)
 - **Styling:** Tailwind CSS + Shadcn UI
 - **State Management:** TanStack Query (React Query)
 - **Forms:** React Hook Form + Zod
@@ -54,29 +54,40 @@ This plan adheres to the user-defined rules, emphasizing:
 
 ---
 
-### Phase 2: Data & GraphQL Layer (100% Completed)
+### Phase 2: Data & REST Layer (100% Completed)
 
-**Objective:** Define the data structure, implement security policies, and set up the GraphQL API layer for data fetching and mutations.
+**Objective:** Define the data structure, implement security policies, and set up the REST API layer for data fetching and mutations.
 
 **Summary of Achievements:**
 
 - ✅ **Switched to Supabase Cloud:** Shifted the entire workflow from a local Docker setup to a dedicated Supabase Cloud project, resolving numerous environment inconsistencies.
 - ✅ **Unified Database Schema:** Consolidated all individual migration files into a single, comprehensive bootstrap script (`001-bootstrap.sql`) in `supabase/migrations/`. This script successfully set up all required tables, functions, and policies in the cloud.
 - ✅ **Robust Row-Level Security (RLS):** Implemented and verified multi-tenancy RLS policies.
-- ✅ **Secure GraphQL Introspection:** Configured the correct permissions (`GRANT USAGE`, `GRANT SELECT`) and a restrictive RLS policy (`USING (false)`) for the `anon` role. This allows GraphQL Codegen to securely introspect the schema without exposing any data.
-- ✅ **Successful GraphQL Codegen:** After resolving schema, permission, and query issues, the `pnpm gen:graphql` command executed successfully.
 - ✅ **Stable Apollo Client Integration:** Successfully integrated Apollo Client with Next.js 15 (App Router & Turbopack) after resolving complex runtime and build errors. The setup now correctly uses `@apollo/client-integration-nextjs` for stable client-side data fetching.
 - ✅ **Build & Runtime Errors Resolved:** The successful codegen and stable Apollo setup have resolved all critical build and runtime errors, enabling a smooth development workflow.
+
+---
+
+### Phase 2.5: Migration from GraphQL to REST (Completed)
+
+**Objective:** Migrate the application's data layer from GraphQL (Apollo Client) to a RESTful architecture using Supabase's built-in REST API and TanStack Query for client-side state management. This aligns with the project's original core technology stack and best practices for a Next.js and Supabase setup.
+
+**Rules Applied:** `REST API`, `TanStack Query`, `Clean Architecture`, `Dependency Cleanup`
+
+**Summary of Actions:**
+
+- ✅ **Analyzed and Removed Dependencies**: All GraphQL-related packages (`@apollo/client`, `graphql`, codegen tools) were identified and removed from both the root and `apps/web` `package.json` files.
+- ✅ **Refactored Tenant Module**: The Tenants module was fully migrated from Apollo Client to use server actions for data fetching and TanStack Query (`useMutation`) for client-side mutations (create, update, delete).
+- ✅ **Integrated TanStack Query**: Installed and configured TanStack Query with a `QueryProvider` in the root layout.
+- ✅ **Cleaned Up Configuration**: Removed the `ApolloWrapper`, all related client setup code in `apps/web/lib/apollo`, and the root `codegen.ts` file.
+- ✅ **Verified Functionality**: The complete CRUD lifecycle for tenants was tested and confirmed to be working correctly.
+- ⏳ **Pending Documentation**: The `README.md` still needs to be updated to reflect the new REST architecture.
 
 ---
 
 ### Phase 3: Core ERP Modules (In Progress)
 
 **Objective:** Begin development of the core ERP features, starting with a basic dashboard to display user and tenant information.
-
-**Prequisites:**
-
-- [] Follow the guide at <https://github.com/apollographql/apollo-client-integrations/tree/main/packages/nextjs>. Use `@apollo/client-integration-nextjs` instead of `@apollo/client-nextjs-experimental-ssr`.
 
 **Next Steps:**
 
@@ -94,7 +105,6 @@ This plan adheres to the user-defined rules, emphasizing:
    - Design a clean and simple dashboard layout using Shadcn UI components (`Card`, `Table`, etc.).
 2. **Product Management Module:**
    - Create a new page for listing products (`/apps/web/app/(main)/products/page.tsx`) if doesn't exist. If it does, review the existing page and update it to match the new requirements.
-   - Use the types that are generated from the database using `pnpm gen:graphql`.
    - Make the listing products page server component, server data fetching, and SEO-friendly.
    - Use `Suspense` and `SuspenseList` to handle loading states.
    - Naming convention for Client List Component (`products.ls.tsx`) and for Add Product Component (`products.fm.tsx`).
@@ -125,13 +135,11 @@ This plan adheres to the user-defined rules, emphasizing:
 2. **Feature: Sales Invoices:**
    - **List View (`/sales/invoices`):**
      - Create a server component to display invoices in a `DataTable`.
-     - Use a generated GraphQL query hook for data fetching.
      - Implement server-side pagination and sorting.
    - **Create/Edit Form (`/sales/invoices/new`, `/sales/invoices/[id]/edit`):**
      - Use client components for interactivity.
      - Manage form state with `React Hook Form`.
      - Validate with a Zod schema (`InvoiceSchema`).
-     - Use a generated GraphQL mutation hook (`useCreateInvoiceMutation`) to submit data.
      - Show notifications on success/error using `sonner`.
 3. **State Management:**
    - Rely on TanStack Query (via Apollo Client's cache) for server state.

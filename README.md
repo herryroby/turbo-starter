@@ -1,84 +1,67 @@
-# Turborepo starter
+# Qonsula ERP - Enterprise SaaS
 
-This Turborepo starter is maintained by the Turborepo core team.
+This repository contains the source code for Qonsula, a production-ready, multi-tenant Enterprise SaaS ERP application built with a modern technology stack.
 
-## Using this example
+## Core Technologies
 
-Run the following command:
+- **Monorepo**: [Turborepo](https://turbo.build/repo) with [pnpm](https://pnpm.io/)
+- **Framework**: [Next.js](https://nextjs.org/) (App Router)
+- **Backend as a Service (BaaS)**: [Supabase](https://supabase.com/) (Database, Auth, Storage)
+- **API Layer**: RESTful services via Supabase's REST API & Next.js Server Actions
+- **UI Components**: [Shadcn UI](https://ui.shadcn.com/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Data Fetching & State**: [TanStack Query](https://tanstack.com/query/latest)
+- **Forms**: [React Hook Form](https://react-hook-form.com/) & [Zod](https://zod.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+
+## Project Structure
+
+- `apps/web`: The main Next.js web application.
+- `packages/ui`: Shared React components library based on Shadcn UI.
+- `packages/typescript-config`: Shared TypeScript configurations.
+- `packages/eslint-config`: Shared ESLint configurations.
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or later)
+- pnpm (v8 or later)
+- A Supabase project.
+
+### 1. Clone the repository
 
 ```sh
-npx create-turbo@latest
+git clone <repository-url>
+cd qonsola
 ```
 
-## What's inside?
+### 2. Install dependencies
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+```sh
+pnpm install
 ```
 
-### Develop
+### 3. Set up environment variables
 
-To develop all apps and packages, run the following command:
+Create a `.env.local` file in the `apps/web` directory by copying the example file:
 
+```sh
+cp apps/web/.env.example apps/web/.env.local
 ```
-cd my-turborepo
+
+Update `apps/web/.env.local` with your Supabase project URL and anon key.
+
+### 4. Run the development server
+
+```sh
 pnpm dev
 ```
 
-### Remote Caching
+The application will be available at `http://localhost:3000`.
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+## Architectural Principles
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turborepo.com/docs/core-concepts/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+- **Clean Architecture**: The codebase follows a strict separation of concerns, isolating UI, business logic, and data access layers.
+- **Multi-Tenancy**: Data is isolated between tenants using Supabase's Row-Level Security (RLS).
+- **Server-First**: We leverage Next.js Server Components and Server Actions for performance and a better developer experience.
