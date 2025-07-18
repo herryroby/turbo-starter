@@ -2,7 +2,7 @@
 
 import { createAdminClient } from '@/lib/supabase/admin';
 import { revalidatePath } from 'next/cache';
-import { Tenant } from './types';
+import { PaginatedData, Tenant } from './types';
 
 export const addTenant = async (formData: FormData) => {
   const supabase = createAdminClient();
@@ -73,14 +73,42 @@ export const deleteTenant = async (id: string) => {
   return {};
 };
 
-export const getTenants = async (): Promise<Tenant[]> => {
+export const getTenants = async ({
+  page = 1,
+  pageSize = 10
+}: {
+  page?: number;
+  pageSize?: number;
+}): Promise<PaginatedData<Tenant>> => {
   const supabase = createAdminClient();
-  const { data, error } = await supabase.from('tenants').select('*');
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
 
-  if (error) {
-    console.error('Error fetching tenants:', error);
-    return [];
+  // Fetch tenants and total count concurrently
+  const tenantsPromise = supabase
+    .from('tenants')
+    .select('*')
+    .range(from, to)
+    .order('created_at', { ascending: false });
+
+  const countPromise = supabase
+    .from('tenants')
+    .select('id', { count: 'exact', head: true });
+
+  const [{ data: tenants, error: tenantsError }, { count, error: countError }] =
+    await Promise.all([tenantsPromise, countPromise]);
+
+  if (tenantsError) {
+    console.error('Error fetching tenants:', tenantsError);
+    throw new Error(tenantsError.message);
+  }
+  if (countError) {
+    console.error('Error fetching tenants count:', countError);
+    throw new Error(countError.message);
   }
 
-  return data;
+  return {
+    data: tenants || [],
+    totalCount: count || 0
+  };
 };

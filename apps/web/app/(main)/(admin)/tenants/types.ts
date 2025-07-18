@@ -1,5 +1,11 @@
-import { TenantsCollectionQuery } from '@/lib/graphql/generated/graphql';
+export interface Tenant {
+  id: string;
+  subdomain: string;
+  business_name: string;
+  created_at: string | null;
+}
 
-export type Tenant = NonNullable<TenantsCollectionQuery['tenantsCollection']>['edges'][0]['node'];
-
-export type PageInfo = NonNullable<TenantsCollectionQuery['tenantsCollection']>['pageInfo'];
+export interface PaginatedData<T> {
+  data: T[];
+  totalCount: number;
+}

@@ -2,27 +2,22 @@ import { TenantFormModal } from './_components/tenant.fm';
 import { TenantsList } from './_components/tenants.ls';
 import { TenantModalProvider } from './_context/tenant-modal-context';
 import { getTenants } from './actions';
-import { PageInfo, Tenant } from './types';
 
-const TenantsPage = async () => {
-  const tenants: Tenant[] = await getTenants();
-  const pageInfo: PageInfo | undefined = undefined; // TODO: Implement pagination for REST API
+interface TenantsPageProps {
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  };
+}
 
-  // Note: Supabase GraphQL does not provide totalCount.
-  // We'll rely on hasNextPage for pagination controls.
-  // A separate query would be needed for a full page count.
-  const pageCount = -1; // Indicate that we don't have a total page count
+const TenantsPage = async ({ searchParams }: TenantsPageProps) => {
+  const page = typeof searchParams.page === 'string' ? Number(searchParams.page) : 1;
+  const pageSize = typeof searchParams.limit === 'string' ? Number(searchParams.limit) : 10;
+
+  const { data: tenants, totalCount } = await getTenants({ page, pageSize });
 
   return (
     <TenantModalProvider>
-      <TenantsList
-        data={tenants}
-        pageCount={pageCount}
-        pageInfo={pageInfo}
-        pageTitle="Tenants"
-        filterColumn="name"
-        searchPlaceholder="Search for tenants..."
-      />
+      <TenantsList data={tenants} totalCount={totalCount} />
       <TenantFormModal />
     </TenantModalProvider>
   );

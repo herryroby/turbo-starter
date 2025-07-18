@@ -79,7 +79,15 @@ This plan adheres to the user-defined rules, emphasizing:
 - ✅ **Analyzed and Removed Dependencies**: All GraphQL-related packages (`@apollo/client`, `graphql`, codegen tools) were identified and removed from both the root and `apps/web` `package.json` files.
 - ✅ **Refactored Tenant Module**: The Tenants module was fully migrated from Apollo Client to use server actions for data fetching and TanStack Query (`useMutation`) for client-side mutations (create, update, delete).
 - ✅ **Integrated TanStack Query**: Installed and configured TanStack Query with a `QueryProvider` in the root layout.
-- ✅ **Cleaned Up Configuration**: Removed the `ApolloWrapper`, all related client setup code in `apps/web/lib/apollo`, and the root `codegen.ts` file.
+- ✅ **Cleaned Up Dependencies**: Removed `@apollo/client` and related GraphQL packages from `package.json`.
+
+**Enhanced Tenant Module UX & Scalability:**
+
+- ✅ **Optimistic UI Updates**: Implemented optimistic updates for all tenant mutations (create, update, delete) using TanStack Query's `onMutate` lifecycle. The UI now updates instantly, providing a highly responsive user experience, with automatic rollback on error.
+- ✅ **Detailed Error Handling**: Enhanced `useTenantForm` hook to provide specific and user-friendly error messages via `sonner` toasts upon mutation failure.
+- ✅ **Full Pagination Support**: Implemented end-to-end pagination for the tenants list to ensure scalability.
+  - **Backend**: `getTenants` server action now accepts `page` and `pageSize` and uses Supabase's `.range()` for efficient data fetching.
+  - **Frontend**: The tenants list now features 'Previous' and 'Next' buttons, with state managed via URL search parameters (`?page=...`), making page state bookmarkable and shareable.
 - ✅ **Verified Functionality**: The complete CRUD lifecycle for tenants was tested and confirmed to be working correctly.
 - ⏳ **Pending Documentation**: The `README.md` still needs to be updated to reflect the new REST architecture.
 
