@@ -3,7 +3,13 @@ import ProductsList from './_components/products.ls';
 
 export const dynamic = 'force-dynamic';
 
-export default function ProductsPage() {
+interface PageProps {
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+  params: Promise<{ [key: string]: string | string[] }>;
+}
+
+export default async function ProductsPage({ searchParams }: PageProps) {
+  const resolvedSearchParams = await searchParams;
   return (
     <Suspense
       fallback={
@@ -17,7 +23,7 @@ export default function ProductsPage() {
         </div>
       }
     >
-      <ProductsList />
+      <ProductsList searchParams={resolvedSearchParams} />
     </Suspense>
   );
 }

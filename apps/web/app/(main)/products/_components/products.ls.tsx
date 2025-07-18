@@ -8,9 +8,15 @@ import { ProductClient } from './product-client';
 
 export type Product = NonNullable<ProductsCollectionQuery['productsCollection']>['edges'][0]['node'];
 
-const ProductsList = async ({ searchParams }: { searchParams: Record<string, string> | null | undefined }) => {
+interface ProductsListProps {
+  searchParams?: { [key: string]: string | string[] | undefined } | null;
+}
+
+const ProductsList = async ({ searchParams }: ProductsListProps) => {
   const pageSize = searchParams?.pageSize ? Number(searchParams.pageSize) : 10;
-  const after = searchParams?.after as string | undefined;
+  const after = Array.isArray(searchParams?.after) 
+    ? searchParams.after[0] 
+    : searchParams?.after;
 
   const client = getClient();
   const { data, error } = await client.query<ProductsCollectionQuery, ProductsCollectionQueryVariables>({ 

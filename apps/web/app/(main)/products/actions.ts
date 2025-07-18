@@ -69,17 +69,51 @@ export const saveProduct = async (prevState: FormState, formData: FormData): Pro
     };
   }
 
+    // Get the current user's tenant ID
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  
+  if (!user) {
+    return {
+      message: 'User not authenticated',
+      success: false
+    };
+  }
+
+  // Get the user's tenant ID from their profile
+  const { data: userProfile, error: profileError } = await supabase
+    .from('app_users')
+    .select('tenant_id')
+    .eq('id', user.id)
+    .single();
+
+  if (profileError || !userProfile) {
+    console.error('Error fetching user profile:', profileError);
+    return {
+      message: 'Error fetching user information',
+      success: false
+    };
+  }
+
+  // Generate a simple SKU from the product code
+  const sku = `SKU-${validatedFields.data.code.toUpperCase().replace(/\s+/g, '')}`;
+
   // Transform camelCase to snake_case for database
   const dbData = {
+    tenant_id: userProfile.tenant_id,
+    sku,
     code: validatedFields.data.code,
     name: validatedFields.data.name,
     description: validatedFields.data.description,
     category_id: validatedFields.data.categoryId,
-    unit_of_measure: validatedFields.data.unitOfMeasureId, // Changed from unit_of_measure_id to unit_of_measure
+    unit_of_measure_id: validatedFields.data.unitOfMeasureId,
+    unit_of_measure: 'pcs', // Default unit of measure
     purchase_price: validatedFields.data.purchasePrice,
     selling_price: validatedFields.data.sellingPrice,
     quantity: validatedFields.data.quantity,
-    is_active: validatedFields.data.isActive
+    is_active: validatedFields.data.isActive,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   };
 
   // Validate the transformed data against the DB schema
@@ -93,8 +127,8 @@ export const saveProduct = async (prevState: FormState, formData: FormData): Pro
     };
   }
 
-  const supabase = await createClient();
-  const { error } = await supabase.from('products').insert(dbValidated.data);
+  // Insert the product into the database
+  const { error } = await supabase.from('products').insert([dbData]);
 
   // If there's a database error, return it.
   if (error) {

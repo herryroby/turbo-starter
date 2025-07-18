@@ -178,7 +178,7 @@ const SalesInvoiceForm = () => {
               value={form.watch('customerName')}
               onChange={(value) => form.setValue('customerName', value)}
               getOptionLabel={(item) => item?.name ?? ''}
-              getOptionValue={(item) => item?.customerId ?? ''}
+              getOptionValue={(item) => item?.id ?? ''}
               placeholder="Select customer"
               addButtonLabel="Add customer"
               renderModal={(close) => (
