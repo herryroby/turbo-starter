@@ -1,21 +1,11 @@
 import { getClient } from '@/lib/apollo-client';
-import {
-  TenantsCollectionDocument,
-  TenantsCollectionQuery
-} from '@/lib/graphql/generated/graphql';
+import { TenantsCollectionDocument, TenantsCollectionQuery } from '@/lib/graphql/generated/graphql';
 import { TenantFormModal } from './_components/tenant.fm';
 import { TenantsList } from './_components/tenants.ls';
 import { TenantModalProvider } from './_context/tenant-modal-context';
 import { PageInfo, Tenant } from './types';
 
-type PageProps = {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-  params: Promise<{ [key: string]: string | string[] }>;
-};
-
-const TenantsPage = async (props: PageProps) => {
-  const searchParams = await props.searchParams;
-  
+const TenantsPage = async () => {
   const client = getClient();
   const { data, error } = await client.query<TenantsCollectionQuery>({
     query: TenantsCollectionDocument,
