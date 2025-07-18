@@ -1,11 +1,11 @@
-import { getTenants } from './actions';
 import { TenantFormModal } from './_components/tenant.fm';
 import { TenantsList } from './_components/tenants.ls';
 import { TenantModalProvider } from './_context/tenant-modal-context';
+import { getTenants } from './actions';
 import { PageInfo, Tenant } from './types';
 
 const TenantsPage = async () => {
-    const tenants: Tenant[] = await getTenants();
+  const tenants: Tenant[] = await getTenants();
   const pageInfo: PageInfo | undefined = undefined; // TODO: Implement pagination for REST API
 
   // Note: Supabase GraphQL does not provide totalCount.
